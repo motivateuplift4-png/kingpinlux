@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Checkout — KINGPIN LUX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>/* ============ KINGPIN LUX — LIGHT / BLUE THEME ============ */
+:root{
+  --bg:#f3f6fb; --surface:#ffffff; --surface-2:#fafbfe;
+  --ink:#0a1830; --ink-2:#33405a; --muted:#6b7896; --muted-2:#9aa6bd;
+  --line:#e3e8f1; --line-2:#eef1f7;
+  --blue:#1357d6; --blue-deep:#0c3a96; --blue-700:#0e44ad; --blue-tint:#e9f1ff; --blue-glow:rgba(19,87,214,.16);
+  --gold:#b08a36; --ok:#1a9e5f;
+  --serif:'Fraunces',Georgia,serif; --sans:'Manrope',-apple-system,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --shadow:0 22px 50px -28px rgba(12,40,96,.35); --shadow-sm:0 8px 24px -14px rgba(12,40,96,.28);
+  --r:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink-2);font-family:var(--sans);font-weight:400;line-height:1.6;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+h1,h2,h3,h4,h5{font-family:var(--serif);color:var(--ink);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+::selection{background:var(--blue);color:#fff}
+.wrap{max-width:1280px;margin:0 auto;padding:0 28px}
+.blue{color:var(--blue)}
+.eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--blue);font-weight:700}
+.muted{color:var(--muted)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-weight:700;
+  font-size:13px;letter-spacing:.04em;padding:15px 30px;border-radius:999px;cursor:pointer;border:1.5px solid transparent;
+  transition:.35s var(--ease);white-space:nowrap}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 12px 26px -10px var(--blue-glow)}
+.btn-primary:hover{background:var(--blue-deep);transform:translateY(-2px);box-shadow:0 18px 34px -12px var(--blue-glow)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{background:#1a2b4a;transform:translateY(-2px)}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-lg{padding:18px 40px;font-size:14px}
+.btn-block{width:100%}
+
+.pill{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;padding:6px 12px;border-radius:999px}
+.pill-blue{background:var(--blue-tint);color:var(--blue-deep)}
+.pill-sale{background:#fde9ec;color:#c0233b}
+.pill-stock{background:#fff3e0;color:#b5760a}
+
+/* ============ ANNOUNCEMENT ============ */
+.announce{background:var(--ink);color:#dfe6f5;overflow:hidden;position:relative;z-index:60}
+.announce .t{display:flex;align-items:center;height:40px;white-space:nowrap;animation:marq 40s linear infinite}
+.announce .t span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:0 34px;font-weight:600;opacity:.9}
+.announce .t span b{color:#9cc0ff}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ============ HEADER ============ */
+.hd{position:sticky;top:0;z-index:55;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);
+  border-bottom:1px solid transparent;transition:.4s var(--ease)}
+.hd.scrolled{border-bottom-color:var(--line);box-shadow:0 6px 26px -18px rgba(12,40,96,.4)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:78px;transition:.4s var(--ease);gap:18px}
+.hd.scrolled .nav{height:66px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo .crown{width:34px;color:var(--blue)}
+.logo .lt{line-height:1}
+.logo .nm{font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing:.14em;color:var(--ink)}
+.logo .sb{font-size:8px;letter-spacing:.5em;color:var(--blue);font-weight:800;text-indent:.5em}
+.menu{display:flex;gap:26px;align-items:center}
+.menu>li{position:relative}
+.menu>li>a{font-size:13.5px;font-weight:600;color:var(--ink-2);padding:12px 0;display:block;transition:.25s;letter-spacing:.01em}
+.menu>li>a:hover{color:var(--blue)}
+.menu>li>a::after{content:"";position:absolute;left:0;bottom:6px;height:2px;width:0;background:var(--blue);transition:.35s var(--ease);border-radius:2px}
+.menu>li:hover>a::after{width:100%}
+.dd{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);background:#fff;border:1px solid var(--line);
+  border-radius:14px;min-width:230px;padding:10px;opacity:0;visibility:hidden;transition:.3s var(--ease);box-shadow:var(--shadow)}
+.menu>li:hover .dd{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.dd a{display:block;padding:10px 14px;font-size:13px;font-weight:600;color:var(--ink-2);border-radius:9px;transition:.2s}
+.dd a:hover{background:var(--blue-tint);color:var(--blue-deep)}
+.icons{display:flex;gap:8px;align-items:center}
+.iconbtn{position:relative;background:none;border:none;color:var(--ink);cursor:pointer;width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;transition:.25s}
+.iconbtn:hover{background:var(--blue-tint);color:var(--blue)}
+.iconbtn svg{width:21px;height:21px}
+.bdg{position:absolute;top:4px;right:3px;background:var(--blue);color:#fff;font-size:10px;font-weight:800;min-width:17px;height:17px;
+  border-radius:999px;display:none;align-items:center;justify-content:center;padding:0 4px;font-family:var(--sans)}
+.burger{display:none}
+
+/* mobile menu */
+.mob{position:fixed;inset:0;z-index:80;background:#fff;transform:translateX(100%);transition:.45s var(--ease);
+  padding:26px 24px;overflow-y:auto;display:flex;flex-direction:column}
+.mob.on{transform:translateX(0)}
+.mob .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.mob .x{background:none;border:none;font-size:30px;color:var(--ink);cursor:pointer;line-height:1}
+.mob a{display:block;font-family:var(--serif);font-size:24px;font-weight:500;color:var(--ink);padding:15px 4px;border-bottom:1px solid var(--line-2)}
+
+/* ============ FOOTER ============ */
+footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
+.fgrid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.3fr;gap:46px;padding-bottom:54px}
+.fbrand .logo .nm{color:#fff}.fbrand .logo .crown{color:#9cc0ff}
+.fbrand p{font-size:13.5px;margin:18px 0;max-width:300px;line-height:1.8;color:#9fb0cf}
+.soc{display:flex;gap:10px}
+.soc a{width:40px;height:40px;border:1px solid rgba(255,255,255,.14);border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#aebbd6;transition:.3s}
+.soc a:hover{background:var(--blue);border-color:var(--blue);color:#fff;transform:translateY(-3px)}
+.soc svg{width:17px;height:17px}
+.fcol h5{font-family:var(--sans);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin-bottom:20px;font-weight:800}
+.fcol ul{list-style:none}.fcol li{margin-bottom:12px}
+.fcol a{font-size:13.5px;color:#9fb0cf;transition:.25s}.fcol a:hover{color:#fff}
+.ftrust{display:flex;flex-direction:column;gap:12px}
+.ftrust .r{display:flex;gap:10px;align-items:center;font-size:13px;color:#9fb0cf}
+.ftrust .r svg{width:17px;height:17px;color:#9cc0ff;flex-shrink:0}
+.pays{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.pay{height:28px;padding:0 9px;border:1px solid rgba(255,255,255,.14);border-radius:6px;display:flex;align-items:center;
+  font-size:9px;font-weight:800;letter-spacing:.03em;color:#cdd7ea;background:rgba(255,255,255,.04)}
+.fbot{border-top:1px solid rgba(255,255,255,.1);padding:24px 0;display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px}
+.fbot p{font-size:12px;color:#8295b6}
+.fbot .c{display:flex;gap:20px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8295b6}
+
+/* ============ PRODUCT CARD ============ */
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.4s var(--ease);
+  position:relative;display:flex;flex-direction:column}
+.pcard:hover{border-color:#cfdcf3;transform:translateY(-6px);box-shadow:var(--shadow)}
+.pmedia{position:relative;aspect-ratio:1;overflow:hidden;background:linear-gradient(135deg,#eef3fb,#e3ebf7);display:block}
+.pmedia img{width:100%;height:100%;object-fit:cover;transition:.7s var(--ease)}
+.pcard:hover .pmedia img{transform:scale(1.06)}
+.ptags{position:absolute;top:12px;left:12px;z-index:3;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.pwish{position:absolute;top:11px;right:11px;z-index:4;background:rgba(255,255,255,.92);border:1px solid var(--line);
+  width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);transition:.25s}
+.pwish:hover{color:var(--blue);border-color:var(--blue)}
+.pwish.on{color:#e23;border-color:#e23}.pwish.on svg{fill:#e23}
+.pwish svg{width:17px;height:17px}
+.pquick{position:absolute;left:12px;right:12px;bottom:12px;z-index:4;transform:translateY(130%);transition:.4s var(--ease);display:flex;gap:8px}
+.pcard:hover .pquick{transform:translateY(0)}
+.pquick .add{flex:1;background:var(--ink);color:#fff;border:none;border-radius:999px;padding:12px;font-family:var(--sans);
+  font-weight:700;font-size:12px;letter-spacing:.04em;cursor:pointer;transition:.25s}
+.pquick .add:hover{background:var(--blue)}
+.pquick .qv{flex:0 0 46px;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:999px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--ink);transition:.25s}
+.pquick .qv:hover{color:var(--blue);border-color:var(--blue)}
+.pbody{padding:18px 18px 20px;text-align:center;flex:1;display:flex;flex-direction:column}
+.pbody .ct{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:7px}
+.pbody h3{font-size:19px;margin-bottom:8px;color:var(--ink)}
+.stars{display:inline-flex;gap:1px;align-items:center;color:#f5a623;justify-content:center}
+.stars svg{width:14px;height:14px}.stars .rc{font-size:11.5px;color:var(--muted);margin-left:5px;font-family:var(--sans);font-weight:600}
+.price{display:flex;gap:9px;justify-content:center;align-items:baseline;margin-top:auto;padding-top:12px}
+.price .now{font-size:18px;font-weight:800;color:var(--ink);font-family:var(--sans)}
+.price .was{font-size:13px;color:var(--muted-2);text-decoration:line-through;font-family:var(--sans);font-weight:600}
+
+/* ============ DRAWER / CART ============ */
+.ov{position:fixed;inset:0;background:rgba(10,24,48,.42);z-index:90;opacity:0;visibility:hidden;transition:.4s var(--ease);backdrop-filter:blur(2px)}
+.ov.on{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(430px,100%);background:#fff;z-index:95;transform:translateX(100%);
+  transition:.45s var(--ease);display:flex;flex-direction:column;box-shadow:-30px 0 60px -30px rgba(12,40,96,.4)}
+.drawer.on{transform:translateX(0)}
+.dh{padding:22px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.dh h3{font-size:22px}.dh button{background:none;border:none;font-size:26px;color:var(--muted);cursor:pointer;line-height:1}
+.dh button:hover{color:var(--blue)}
+.ditems{flex:1;overflow-y:auto;padding:6px 24px}
+.dempty{text-align:center;color:var(--muted);padding:60px 10px;font-size:14px}
+.ci{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid var(--line-2)}
+.ci .im{width:78px;height:78px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#eef3fb}
+.ci .im img{width:100%;height:100%;object-fit:cover}
+.ci .inf{flex:1}.ci .inf h4{font-size:15px;margin-bottom:3px}.ci .inf .cp{font-size:14px;font-weight:800;color:var(--blue);font-family:var(--sans)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;margin-top:9px;overflow:hidden}
+.qty button{width:30px;height:30px;background:none;border:none;cursor:pointer;color:var(--ink);font-size:15px;transition:.2s}
+.qty button:hover{background:var(--blue-tint);color:var(--blue)}
+.qty span{min-width:30px;text-align:center;font-weight:700;font-family:var(--sans);font-size:13px}
+.ci .rm{background:none;border:none;color:var(--muted-2);font-size:12px;cursor:pointer;margin-top:8px;display:block;font-weight:600}
+.ci .rm:hover{color:#e23}
+.df{padding:22px 24px;border-top:1px solid var(--line);background:var(--surface-2)}
+.df .row{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:7px;color:var(--ink-2)}
+.df .row.g{font-size:16px;font-weight:800;color:var(--ink);margin:10px 0 16px}
+.df .row.g b{font-family:var(--sans)}
+.df .ship{text-align:center;font-size:11.5px;color:var(--muted);margin-top:12px}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140px);z-index:120;background:var(--ink);color:#fff;
+  padding:14px 24px;border-radius:999px;display:flex;gap:10px;align-items:center;transition:.45s var(--ease);box-shadow:var(--shadow)}
+.toast.on{transform:translateX(-50%) translateY(0)}
+.toast svg{width:18px;height:18px;color:#7fffc4}.toast span{font-size:13px;font-weight:700}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);transition:.8s var(--ease)}.rv.in{opacity:1;transform:none}
+[data-d="1"]{transition-delay:.07s}[data-d="2"]{transition-delay:.14s}[data-d="3"]{transition-delay:.21s}[data-d="4"]{transition-delay:.28s}
+
+/* crown svg */
+.crown svg{width:100%;height:auto}
+
+@media(max-width:980px){
+  .fgrid{grid-template-columns:1fr 1fr;gap:36px}
+}
+@media(max-width:760px){
+  .wrap{padding:0 18px}
+  .menu{display:none}.burger{display:flex}
+  .icons .iconbtn.srch,.icons .iconbtn.acct{display:none}
+  .fgrid{grid-template-columns:1fr}
+  .fbot{flex-direction:column;text-align:center}
+}
+</style>
+<style>
+/* ===== CHECKOUT ===== */
+.cohead{background:#fff;border-bottom:1px solid var(--line)}
+.cohead .wrap{display:flex;align-items:center;justify-content:space-between;height:74px}
+.cohead .secure{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--ok)}
+.cohead .secure svg{width:16px;height:16px}
+.costeps{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);font-weight:700;padding:18px 0 6px}
+.costeps b{color:var(--blue)}.costeps span{color:var(--muted-2)}
+
+.colayout{display:grid;grid-template-columns:1.3fr 1fr;gap:46px;padding:24px 0 80px;align-items:start}
+.cocard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:18px}
+.cocard h3{font-size:20px;margin-bottom:4px}
+.cocard .sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+
+.express{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.express button{height:50px;border-radius:11px;border:1.5px solid var(--line);font-weight:800;font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s;font-family:var(--sans)}
+.express button:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.express .apple{background:#000;color:#fff;border-color:#000}
+.express .paypal{background:#ffc439;color:#003087;border-color:#ffc439}
+.express .gpay{background:#fff;color:#3c4043}
+.ordiv{display:flex;align-items:center;gap:14px;margin:22px 0;color:var(--muted);font-size:12px;font-weight:700}
+.ordiv::before,.ordiv::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.field input,.field select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:14px 15px;font-family:var(--sans);
+  font-size:14px;color:var(--ink);outline:none;transition:.2s;background:#fff}
+.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.frow3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+.check{display:flex;gap:9px;align-items:center;font-size:13px;color:var(--ink-2);margin-top:4px}
+.check input{width:16px;height:16px;accent-color:var(--blue)}
+
+.shipopt{border:1.5px solid var(--blue);background:var(--blue-tint);border-radius:11px;padding:15px 16px;display:flex;
+  align-items:center;gap:12px;font-size:14px}
+.shipopt .rd{width:18px;height:18px;border-radius:50%;border:5px solid var(--blue);flex-shrink:0}
+.shipopt b{color:var(--ink)}.shipopt .free{margin-left:auto;font-weight:800;color:var(--ok)}
+
+.paybox{border:1.5px solid var(--line);border-radius:11px;padding:16px;background:var(--surface-2)}
+.cardicons{display:flex;gap:6px;margin-left:auto}
+.cardicons span{font-size:9px;font-weight:800;border:1px solid var(--line);border-radius:4px;padding:3px 6px;background:#fff;color:var(--muted)}
+
+/* order summary */
+.sumwrap{position:sticky;top:96px}
+.summary{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.sumhead{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.sumhead h3{font-size:18px}.sumhead a{font-size:12px;font-weight:700;color:var(--blue)}
+.sumitems{padding:8px 22px;max-height:330px;overflow-y:auto}
+.si{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-2)}
+.si:last-child{border-bottom:none}
+.si .im{position:relative;width:64px;height:64px;border-radius:10px;overflow:hidden;background:#eef3fb;flex-shrink:0}
+.si .im img{width:100%;height:100%;object-fit:cover}
+.si .im .qb{position:absolute;top:-7px;right:-7px;background:var(--blue);color:#fff;width:22px;height:22px;border-radius:50%;
+  font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--sans)}
+.si .nm{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3}.si .ty{font-size:11.5px;color:var(--muted)}
+.si .pr{margin-left:auto;font-weight:800;font-family:var(--sans);color:var(--ink);font-size:14px}
+.sumempty{padding:44px 22px;text-align:center;color:var(--muted);font-size:14px}
+.promo{display:flex;gap:8px;padding:16px 22px;border-top:1px solid var(--line-2)}
+.promo input{flex:1;border:1.5px solid var(--line);border-radius:9px;padding:11px 13px;font-family:var(--sans);font-size:13px;outline:none}
+.promo button{background:var(--ink);color:#fff;border:none;border-radius:9px;padding:0 18px;font-weight:700;font-size:13px;cursor:pointer;font-family:var(--sans)}
+.promomsg{padding:0 22px 6px;font-size:12px;font-weight:700;color:var(--ok);display:none}
+.totals{padding:16px 22px}
+.totals .row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:9px;color:var(--ink-2)}
+.totals .row b{font-family:var(--sans)}
+.totals .grand{display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;border-top:1px solid var(--line);margin-top:6px}
+.totals .grand .l{font-size:17px;font-weight:800;color:var(--ink);font-family:var(--serif)}
+.totals .grand .v{font-size:26px;font-weight:800;color:var(--ink);font-family:var(--sans)}
+.totals .grand .v small{font-size:12px;color:var(--muted);font-weight:700}
+.placebtn{margin:6px 22px 18px}
+.sumtrust{padding:0 22px 22px}
+.sumtrust .klarna{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12.5px;color:var(--ink-2);text-align:center;margin-bottom:14px}
+.sumtrust .klarna b{color:var(--blue)}
+.sumtrust .badges{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.sumtrust .badges .b{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:var(--muted);text-align:center}
+.sumtrust .badges .b svg{width:22px;height:22px;color:var(--blue)}
+.guarantee{display:flex;gap:11px;align-items:center;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:14px}
+.guarantee svg{width:30px;height:30px;color:var(--ok);flex-shrink:0}
+.guarantee b{font-size:13px;color:var(--ink)}.guarantee span{font-size:12px;color:var(--muted)}
+
+@media(max-width:980px){.colayout{grid-template-columns:1fr;gap:24px}.sumwrap{position:static}.colayout .sumwrap{order:-1}}
+@media(max-width:760px){.express{grid-template-columns:1fr}.frow,.frow3{grid-template-columns:1fr}.cohead .wrap{height:62px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="crown" viewBox="0 0 64 44"><path fill="currentColor" d="M4 40h56l-4-22-12 11L32 8 20 29 8 18 4 40z"/></symbol></svg>
+
+<header class="cohead"><div class="wrap">
+  <a class="logo" href="index.html"><span class="crown"><svg viewBox="0 0 64 44"><use href="#crown"/></svg></span><span class="lt"><span class="nm">KINGPIN</span><br><span class="sb">LUX</span></span></a>
+  <div class="secure"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg> Secure SSL Checkout</div>
+</div></header>
+
+<div class="wrap">
+  <div class="costeps"><b>Cart</b><span>›</span><b>Information</b><span>›</span><b>Payment</b><span>›</span>Done</div>
+
+  <div class="colayout">
+    <!-- LEFT: forms -->
+    <div class="coforms">
+      <div class="cocard">
+        <h3>Express Checkout</h3><p class="sub">Skip the form — pay in one tap.</p>
+        <div class="express">
+          <button class="apple" onclick="flash(this)"> Pay</button>
+          <button class="paypal" onclick="flash(this)">PayPal</button>
+          <button class="gpay" onclick="flash(this)">G Pay</button>
+        </div>
+        <div class="ordiv">or pay with card</div>
+
+        <h3>Contact</h3><p class="sub">We'll send your order confirmation & tracking here.</p>
+        <div class="field"><label>Email address</label><input type="email" placeholder="you@email.com"></div>
+        <label class="check"><input type="checkbox" checked> Email me with exclusive drops & VIP offers</label>
+      </div>
+
+      <div class="cocard">
+        <h3>Shipping Address</h3><p class="sub">Free insured worldwide shipping on every order.</p>
+        <div class="frow"><div class="field"><label>First name</label><input placeholder="First name"></div>
+          <div class="field"><label>Last name</label><input placeholder="Last name"></div></div>
+        <div class="field"><label>Address</label><input placeholder="Street address"></div>
+        <div class="field"><label>Apartment, suite, etc. (optional)</label><input placeholder="Apt, suite"></div>
+        <div class="frow3"><div class="field"><label>City</label><input placeholder="City"></div>
+          <div class="field"><label>State</label><input placeholder="State"></div>
+          <div class="field"><label>ZIP</label><input placeholder="ZIP"></div></div>
+        <div class="field"><label>Country</label><select><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>United Arab Emirates</option><option>Other</option></select></div>
+        <div class="field"><label>Phone (for delivery updates)</label><input placeholder="Phone number"></div>
+      </div>
+
+      <div class="cocard">
+        <h3>Shipping Method</h3>
+        <div class="shipopt"><div class="rd"></div><div><b>Express Worldwide — Insured & Tracked</b><br><span style="font-size:12px;color:var(--muted)">Arrives in 3–6 business days</span></div><span class="free">FREE</span></div>
+      </div>
+
+      <div class="cocard">
+        <h3>Payment</h3><p class="sub">All transactions are encrypted & secure. 🔒</p>
+        <div class="paybox">
+          <div class="field" style="margin-bottom:12px"><label style="display:flex;align-items:center">Card number <span class="cardicons"><span>VISA</span><span>MC</span><span>AMEX</span></span></label><input placeholder="1234 1234 1234 1234"></div>
+          <div class="frow"><div class="field" style="margin-bottom:0"><label>Expiry</label><input placeholder="MM / YY"></div>
+            <div class="field" style="margin-bottom:0"><label>CVC</label><input placeholder="CVC"></div></div>
+        </div>
+        <label class="check" style="margin-top:14px"><input type="checkbox" checked> Billing address same as shipping</label>
+      </div>
+
+      <a href="#" class="btn btn-primary btn-block btn-lg" id="placeBtnTop">Pay Now · <span id="payTotalTop">$0</span></a>
+    </div>
+
+    <!-- RIGHT: order summary -->
+    <div class="sumwrap">
+      <div class="summary">
+        <div class="sumhead"><h3>Order Summary</h3><a href="index.html#products">Edit cart</a></div>
+        <div class="sumitems" id="sumItems"></div>
+        <div class="promo"><input id="promo" placeholder="Discount code"><button id="promoBtn">Apply</button></div>
+        <div class="promomsg" id="promoMsg">✓ Code KINGPIN10 applied — 10% off</div>
+        <div class="totals">
+          <div class="row"><span>Subtotal</span><b id="coSub">$0</b></div>
+          <div class="row" id="discRow" style="display:none;color:var(--ok)"><span>Discount (10%)</span><b id="coDisc">−$0</b></div>
+          <div class="row"><span>Shipping</span><b style="color:var(--ok)">Free</b></div>
+          <div class="row"><span>Tax (est.)</span><b id="coTax">$0</b></div>
+          <div class="grand"><span class="l">Total</span><span class="v"><small>USD</small> <span id="coTotal">$0</span></span></div>
+        </div>
+        <a href="#" class="btn btn-primary btn-block btn-lg placebtn" id="placeBtn">Pay Now · <span id="payTotal">$0</span></a>
+        <div class="sumtrust">
+          <div class="klarna">or 4 interest-free payments with <b>Klarna</b> · <b>Afterpay</b></div>
+          <div class="badges">
+            <div class="b"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>SSL Encrypted</div>
+            <div class="b"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg>Buyer Protection</div>
+            <div class="b"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/><circle cx="12" cy="12" r="10"/></svg>Free Shipping</div>
+          </div>
+          <div class="guarantee"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+            <div><b>30-Day Money-Back Guarantee</b><br><span>Not in love? Full refund, no questions asked.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l4 4 10-10"/></svg><span id="toastMsg"></span></div>
+
+<script>window.KP_IMG={"img1": "assets/img/img1.jpg","img2": "assets/img/img2.jpg","img3": "assets/img/img3.jpg","img4": "assets/img/img4.jpg","img5": "assets/img/img5.jpg","img6": "assets/img/img6.jpg","img7": "assets/img/img7.jpg","img8": "assets/img/img8.jpg","img9": "assets/img/img9.jpg","img10": "assets/img/img10.jpg","img11": "assets/img/img11.jpg","img12": "assets/img/img12.jpg","img13": "assets/img/img13.jpg","img14": "assets/img/img14.jpg","p0": "assets/img/p0.jpg","p1": "assets/img/p1.jpg","p2": "assets/img/p2.jpg","p3": "assets/img/p3.jpg","p4": "assets/img/p4.jpg","p5": "assets/img/p5.jpg","p6": "assets/img/p6.jpg","p7": "assets/img/p7.jpg","p8": "assets/img/p8.jpg","p9": "assets/img/p9.jpg","p10": "assets/img/p10.jpg","p11": "assets/img/p11.jpg","p12": "assets/img/p12.jpg","p13": "assets/img/p13.jpg","p14": "assets/img/p14.jpg","p15": "assets/img/p15.jpg","p16": "assets/img/p16.jpg","p17": "assets/img/p17.jpg","p18": "assets/img/p18.jpg","p19": "assets/img/p19.jpg","p20": "assets/img/p20.jpg","p21": "assets/img/p21.jpg","p22": "assets/img/p22.jpg","p23": "assets/img/p23.jpg","p24": "assets/img/p24.jpg","p25": "assets/img/p25.jpg","p26": "assets/img/p26.jpg","p27": "assets/img/p27.jpg","p28": "assets/img/p28.jpg","p29": "assets/img/p29.jpg","p30": "assets/img/p30.jpg","p31": "assets/img/p31.jpg","p32": "assets/img/p32.jpg","p33": "assets/img/p33.jpg","p34": "assets/img/p34.jpg","p35": "assets/img/p35.jpg","p36": "assets/img/p36.jpg","p37": "assets/img/p37.jpg","p38": "assets/img/p38.jpg","p39": "assets/img/p39.jpg","p40": "assets/img/p40.jpg","p41": "assets/img/p41.jpg","p42": "assets/img/p42.jpg","p43": "assets/img/p43.jpg","p44": "assets/img/p44.jpg","p45": "assets/img/p45.jpg","p46": "assets/img/p46.jpg","p47": "assets/img/p47.jpg","p48": "assets/img/p48.jpg","p49": "assets/img/p49.jpg","p50": "assets/img/p50.jpg","p51": "assets/img/p51.jpg","p52": "assets/img/p52.jpg","p53": "assets/img/p53.jpg","p54": "assets/img/p54.jpg","p55": "assets/img/p55.jpg","p56": "assets/img/p56.jpg","p57": "assets/img/p57.jpg","p58": "assets/img/p58.jpg","p59": "assets/img/p59.jpg","p60": "assets/img/p60.jpg","p61": "assets/img/p61.jpg","p62": "assets/img/p62.jpg","p63": "assets/img/p63.jpg","p64": "assets/img/p64.jpg","p65": "assets/img/p65.jpg","p66": "assets/img/p66.jpg","p67": "assets/img/p67.jpg","p68": "assets/img/p68.jpg","p69": "assets/img/p69.jpg","p70": "assets/img/p70.jpg","p71": "assets/img/p71.jpg","p72": "assets/img/p72.jpg","p73": "assets/img/p73.jpg","p74": "assets/img/p74.jpg","p75": "assets/img/p75.jpg","p76": "assets/img/p76.jpg","p77": "assets/img/p77.jpg","p78": "assets/img/p78.jpg","p79": "assets/img/p79.jpg","p80": "assets/img/p80.jpg","p81": "assets/img/p81.jpg","p82": "assets/img/p82.jpg","p83": "assets/img/p83.jpg","p84": "assets/img/p84.jpg","p85": "assets/img/p85.jpg","p86": "assets/img/p86.jpg","p87": "assets/img/p87.jpg","p88": "assets/img/p88.jpg","p89": "assets/img/p89.jpg","p90": "assets/img/p90.jpg","p91": "assets/img/p91.jpg","p92": "assets/img/p92.jpg","p93": "assets/img/p93.jpg","p94": "assets/img/p94.jpg","p95": "assets/img/p95.jpg","p96": "assets/img/p96.jpg","p97": "assets/img/p97.jpg","p98": "assets/img/p98.jpg","p99": "assets/img/p99.jpg","p100": "assets/img/p100.jpg","p101": "assets/img/p101.jpg","p102": "assets/img/p102.jpg","p103": "assets/img/p103.jpg","p104": "assets/img/p104.jpg","p105": "assets/img/p105.jpg","p106": "assets/img/p106.jpg","p107": "assets/img/p107.jpg","p108": "assets/img/p108.jpg","p109": "assets/img/p109.jpg","p110": "assets/img/p110.jpg","p111": "assets/img/p111.jpg","p112": "assets/img/p112.jpg","p113": "assets/img/p113.jpg"};
+/* ============ PRODUCT CATALOG ============ */
+window.KP_PRODUCTS = [
+ {id:1,  name:"Custom Made VVS Moissanite Gold Skeleton Watch", type:"Skeleton · Gold",        cat:["skeleton","gold","iced","best"],            img:"p36", gallery:["p36", "p75", "p85", "p77"]},
+ {id:2,  name:"Custom Made VVS Moissanite Iced Out Arabic Watch",type:"Arabic Dial · Bust Down",cat:["arabic","bustdown","iced","best"],          img:"p95", gallery:["p95", "p4", "p98", "p40"]},
+ {id:3,  name:"Moissanite Arabic Dial Iced Out Watch",          type:"Arabic Dial · Iced Out", cat:["arabic","iced","new"],                      img:"p2", gallery:["p2", "p27", "p54", "p107", "p111"]},
+ {id:4,  name:"Custom Made VVS Moissanite Two-Tone Luxury Watch",type:"Square · Two-Tone",      cat:["square","twotone","iced","best"],           img:"p53", gallery:["p53", "p67", "p26", "p14"]},
+ {id:5,  name:"Custom Made VVS Moissanite Yellow Two Tone Watch",type:"Square · Yellow Gold",   cat:["square","gold","twotone","iced","new"],     img:"p83", gallery:["p83", "p92", "p109", "p17", "p18"]},
+ {id:6,  name:"Custom Made Two Tone Moissanite Watch",           type:"Diver · Two-Tone",       cat:["twotone","iced","new"],                     img:"p43", gallery:["p43", "p113", "p74", "p0", "p32"]},
+ {id:7,  name:"Custom Made VVS Moissanite Two Tone Luxury Watch",type:"Square · Two-Tone",      cat:["square","twotone","iced","best"],           img:"p53", gallery:["p53", "p67", "p26", "p14"]},
+ {id:8,  name:"Custom Made VVS Skeleton Moissanite Iced Out Watch",type:"Skeleton · Iced Out",  cat:["skeleton","iced","best"],                   img:"p46", gallery:["p46", "p29", "p100", "p9", "p44"]},
+ {id:9,  name:"Custom Made VVS Luxury Iced Out Roman Dial Watch",type:"Roman Dial · Iced Out",  cat:["arabic","iced","best"],                     img:"p61", gallery:["p61", "p91", "p35", "p82"]},
+ {id:10, name:"Skeleton Moissanite Iced Out Luxury Watch",       type:"Skeleton · Iced Out",    cat:["skeleton","iced","new"],                    img:"p23", gallery:["p23", "p57", "p68", "p73"]},
+ {id:11, name:"Moissanite Nautilus Iced Out Watch",              type:"Nautilus · Iced Out",    cat:["nautilus","iced","best"],                   img:"p50", gallery:["p50", "p104", "p84", "p86"]},
+ {id:12, name:"Skeleton Gold Moissanite Watch",                  type:"Skeleton · Gold",        cat:["skeleton","gold","iced","new"],             img:"p13", gallery:["p13", "p112", "p11", "p80"]},
+ {id:13, name:"Custom Made VVS Two Tone Moissanite Luxury Watch",type:"Diver · Two-Tone",       cat:["twotone","iced","new"],                     img:"p39", gallery:["p39", "p15", "p20", "p93", "p71"]},
+ {id:14, name:"Custom Made VVS Yellow Moissanite Nautilus Watch",type:"Nautilus · Yellow Gold", cat:["nautilus","gold","iced","best"],            img:"p88", gallery:["p88", "p103", "p108", "p86"]},
+ {id:15, name:"Custom Made VVS Moissanite Chronograph Watch",    type:"Chronograph · Iced Out", cat:["chrono","iced","best"],                     img:"p45", gallery:["p45", "p12", "p55", "p19", "p16"]},
+ {id:16, name:"Moissanite Two Tone Nautilus Iced Out Watch",     type:"Nautilus · Two-Tone",    cat:["nautilus","twotone","iced","new"],          img:"p24", gallery:["p24", "p37", "p106", "p22", "p86"]},
+ {id:17, name:"Custom Made VVS Moissanite Gold Chronograph Watch",type:"Chronograph · Gold",    cat:["chrono","gold","iced","best"],              img:"p72", gallery:["p72", "p49", "p6", "p101", "p8"]},
+ {id:18, name:"Octagonal Iced Out Moissanite Watch",             type:"Octagon · Iced Out",     cat:["nautilus","iced","best"],                   img:"p102", gallery:["p102", "p79", "p63", "p33"]},
+ {id:19, name:"Square Iced Out Moissanite Watch",                type:"Square · Iced Out",      cat:["square","iced","best"],                     img:"p97", gallery:["p97", "p21"]},
+ {id:20, name:"Skeleton Two Tone Moissanite Watch",              type:"Skeleton · Two-Tone",    cat:["skeleton","twotone","iced","new"],          img:"p1", gallery:["p1", "p41", "p76", "p42", "p96"]},
+ {id:21, name:"Custom Made VVS Gold Moissanite Nautilus Watch",  type:"Nautilus · Gold",        cat:["nautilus","gold","iced","best"],            img:"p60", gallery:["p60", "p99", "p48", "p105", "p78"]},
+ {id:22, name:"Chronograph Gold Moissanite Watch",               type:"Chronograph · Gold",     cat:["chrono","gold","iced","new"],               img:"p3", gallery:["p3", "p58", "p65", "p52", "p62"]},
+ {id:23, name:"Two Tone Square Iced Out Moissanite Watch",       type:"Square · Two-Tone",      cat:["square","twotone","iced","best"],           img:"p89", gallery:["p89", "p28", "p51", "p94", "p66"]},
+ {id:24, name:"Iced Out Gold Moissanite Watch",                  type:"Classic · Gold",         cat:["gold","iced","best"],                       img:"p34", gallery:["p34", "p31", "p110", "p59"]},
+ {id:25, name:"Iced Nautilus Moissanite Chronograph Watch",      type:"Nautilus · Chronograph", cat:["nautilus","chrono","iced","best"],          img:"p87", gallery:["p87", "p47", "p90", "p81"]},
+ {id:26, name:"Fully Iced Nautilus Gold Moissanite Watch",       type:"Nautilus · Gold",        cat:["nautilus","gold","iced","new"],             img:"p56", gallery:["p56", "p30", "p64", "p7", "p5"]},
+ {id:27, name:"Moissanite Square Watch Blue Dial",               type:"Square · Blue Dial",     cat:["square","iced","new","best"],               img:"p97", gallery:["p97", "p21"]},
+ {id:28, name:"Two Tone Chronograph Moissanite Watch",           type:"Chronograph · Two-Tone", cat:["chrono","twotone","iced","new"],            img:"p10", gallery:["p10", "p25", "p70", "p69", "p38"]},
+ {id:29, name:"Custom Made VVS Two-Tone Yellow Moissanite Watch",type:"Square · Yellow Gold",   cat:["square","gold","twotone","iced","best"],    img:"p83", gallery:["p83", "p92", "p109", "p17", "p18"]},
+];
+/* uniform pricing + shared fields (edit prices in KP_CONFIG above) */
+window.KP_PRODUCTS.forEach((p,i)=>{
+  p.now=900; p.was=2200;
+  p.stone="VVS Moissanite"; p.rating=5.0;
+  p.rc=[214,188,142,176,120,97,86,152,132,156,203,74,91,168,110,99,77,140,205,88,133,162,71,118,95,150,84,127,201][i]||120;
+  p.stock=[3,5,4,6,4,6,2,7,3,5,6,3,2,5,4,6,3,5,7,2,4,6,3,5,2,4,6,3,5][i]||4;
+  p.cs=p.type.indexOf("Nautilus")>-1||p.type.indexOf("Octagon")>-1?"41mm Octagon":(p.type.indexOf("Square")>-1?"40mm Square":"41mm Classic");
+  p.mv=p.type.indexOf("Skeleton")>-1?"Skeleton Automatic":(p.type.indexOf("Chrono")>-1?"Chronograph Quartz":"Automatic");
+  p.wr=p.cs.indexOf("Octagon")>-1?"50m":"100m";
+  if(!p.desc)p.desc="Fully iced-out with hand-set VVS moissanite that reflects light from every angle. Presented in the signature KINGPIN box with an authenticity card and lifetime warranty.";
+});
+
+/* ============ SHARED HELPERS + CART (localStorage, cross-page) ============ */
+window.KP = (function(){
+  const KEY="kp_cart_v1", WKEY="kp_wish_v1";
+  const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+  const money=n=>"$"+Number(n).toLocaleString();
+  const img=k=>!k?"":(/^(https?:|data:|\/\/)/.test(k)?k:((window.KP_IMG&&window.KP_IMG[k])||""));
+  const prod=id=>window.KP_PRODUCTS.find(p=>p.id==id);
+  function read(k){try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return (window["_mem_"+k]||[])}}
+  function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){window["_mem_"+k]=v}}
+  let cart=read(KEY), wish=read(WKEY);
+  const subs=[];
+  function emit(){subs.forEach(f=>f());syncBadges();}
+  function onChange(f){subs.push(f);}
+  function add(id,qty){qty=qty||1;const e=cart.find(c=>c.id==id);if(e)e.qty+=qty;else cart.push({id:+id,qty});write(KEY,cart);emit();}
+  function remove(id){cart=cart.filter(c=>c.id!=id);write(KEY,cart);emit();}
+  function setQty(id,q){const e=cart.find(c=>c.id==id);if(e){e.qty=Math.max(1,q);write(KEY,cart);emit();}}
+  function clear(){cart=[];write(KEY,cart);emit();}
+  function items(){return cart.map(c=>({...prod(c.id),qty:c.qty}));}
+  function count(){return cart.reduce((s,c)=>s+c.qty,0);}
+  function subtotal(){return items().reduce((s,p)=>s+p.now*p.qty,0);}
+  function toggleWish(id){if(wish.includes(+id))wish=wish.filter(x=>x!=id);else wish.push(+id);write(WKEY,wish);emit();return wish.includes(+id);}
+  function inWish(id){return wish.includes(+id);}
+  function wishCount(){return wish.length;}
+  function syncBadges(){
+    $$("[data-cart-badge]").forEach(b=>{const n=count();b.textContent=n;b.style.display=n?"flex":"none";});
+    $$("[data-wish-badge]").forEach(b=>{const n=wishCount();b.textContent=n;b.style.display=n?"flex":"none";});
+  }
+  return {$,$$,money,img,prod,add,remove,setQty,clear,items,count,subtotal,toggleWish,inWish,wishCount,onChange,syncBadges};
+})();
+</script>
+<script>
+const {$,$$,money,img,prod}=KP;
+let disc=0;
+function tax(n){return Math.round(n*0.0)} // tax shown as estimate 0 for demo simplicity
+function render(){
+  const it=KP.items();
+  if(!it.length){
+    $("#sumItems").innerHTML='<div class="sumempty">Your cart is empty.<br><a href="index.html#products" style="color:var(--blue);font-weight:700">Continue shopping →</a></div>';
+  }else{
+    $("#sumItems").innerHTML=it.map(p=>`<div class="si"><div class="im"><img src="${img(p.img)}"><span class="qb">${p.qty}</span></div>
+      <div><div class="nm">${p.name}</div><div class="ty">${p.type}</div></div><div class="pr">${money(p.now*p.qty)}</div></div>`).join("");
+  }
+  const sub=KP.subtotal();
+  const discAmt=Math.round(sub*disc);
+  const est=Math.round((sub-discAmt)*0.0);
+  const total=sub-discAmt+est;
+  $("#coSub").textContent=money(sub);
+  $("#coTax").textContent=money(est);
+  $("#coTotal").textContent=money(total);
+  $("#payTotal").textContent=money(total);$("#payTotalTop").textContent=money(total);
+  $("#discRow").style.display=disc?"flex":"none";$("#coDisc").textContent="−"+money(discAmt);
+  KP.syncBadges();
+}
+$("#promoBtn").onclick=()=>{const v=$("#promo").value.trim().toUpperCase();if(v==="KINGPIN10"){disc=0.10;$("#promoMsg").style.display="block";render();}else{$("#promoMsg").style.display="block";$("#promoMsg").style.color="#c0233b";$("#promoMsg").textContent="✗ Invalid code — try KINGPIN10";}};
+function toast(m){const t=$("#toast");$("#toastMsg").textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),2200);}
+function flash(b){toast("Demo only — connect a payment provider to go live");}
+function place(e){e.preventDefault();if(!KP.items().length){toast("Your cart is empty");return;}toast("✓ Order placed! (Demo) Connect Stripe/Shopify to process real payments.");}
+$("#placeBtn").onclick=place;$("#placeBtnTop").onclick=place;
+render();
+</script>
+</body>
+</html>
