@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KINGPIN LUX — Iced Out Luxury Watches & Diamond Jewelry</title>
+<title>Loading… — KINGPIN LUX</title>
 <meta name="description" content="KINGPIN LUX crafts moissanite, diamond and iced-out luxury watches for those who refuse to blend in. Free worldwide shipping. Lifetime warranty.">
 <meta property="og:title" content="KINGPIN LUX — Time Is Power">
 <meta property="og:description" content="Luxury iced-out watches crafted for those who refuse to blend in.">
@@ -536,10 +536,94 @@ html{scroll-padding-top:96px}
 </style>
 
 <style>.announce{display:none!important}</style>
+<style>
+/* ============ PRODUCT DETAIL PAGE ============ */
+.crumb{padding:22px 0 6px;font-size:12.5px;color:var(--muted);font-weight:600}
+.crumb a{color:var(--muted)}.crumb a:hover{color:var(--blue)}
+.crumb span{color:var(--ink)}
+.crumb i{font-style:normal;opacity:.5;margin:0 7px}
+
+.pdp{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;padding:22px 0 70px;align-items:start}
+
+/* gallery */
+.pdp-gal{position:sticky;top:96px}
+.pdp-main{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1;border:1px solid var(--line);
+  background:linear-gradient(135deg,#eef3fb,#e3ebf7)}
+.pdp-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  transition:.45s var(--ease-out);color:transparent}
+.pdp-main img.on{opacity:1}
+.pdp-zoom{position:absolute;right:14px;bottom:14px;z-index:3;background:rgba(255,255,255,.94);border:1px solid var(--line);
+  border-radius:999px;padding:8px 14px;font-size:11.5px;font-weight:700;color:var(--ink-2);display:flex;gap:6px;align-items:center;pointer-events:none}
+.pdp-zoom svg{width:14px;height:14px}
+.pdp-thumbs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.pdp-thumbs button{width:74px;height:74px;border-radius:11px;overflow:hidden;border:2px solid transparent;
+  cursor:pointer;padding:0;background:#eef3fb;transition:.25s}
+.pdp-thumbs button.on{border-color:var(--blue)}
+.pdp-thumbs button:hover{border-color:#b9cdf0}
+.pdp-thumbs img{width:100%;height:100%;object-fit:cover;color:transparent}
+
+/* info column */
+.pdp-info h1{font-size:clamp(28px,3.6vw,42px);margin:10px 0 12px;line-height:1.1}
+.pdp-rate{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.pdp-rate .lnk{font-size:12.5px;color:var(--muted);font-weight:600;text-decoration:underline;cursor:pointer}
+.pdp-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.pdp-price .now{font-size:36px;font-weight:800;font-family:var(--sans);color:var(--ink);letter-spacing:-.02em}
+.pdp-price .was{font-size:18px;color:var(--muted-2);text-decoration:line-through;font-family:var(--sans);font-weight:600}
+.pdp-price .sv{background:var(--urgent-bg);color:var(--urgent);font-size:12px;font-weight:800;padding:6px 13px;border-radius:999px}
+.pdp-vat{font-size:12px;color:var(--muted);margin-bottom:18px}
+.pdp-desc{font-size:15px;line-height:1.75;color:var(--ink-2);margin:18px 0 22px}
+
+.pdp-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.pdp-specs div{background:var(--surface-2);border:1px solid var(--line-2);border-radius:11px;padding:12px 15px}
+.pdp-specs .k{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pdp-specs .v{font-size:13.5px;font-weight:700;color:var(--ink);margin-top:3px}
+
+.pdp-buy{display:flex;gap:11px;align-items:center;margin-bottom:11px;flex-wrap:wrap}
+.pdp-buy .qty{margin-top:0;height:52px}
+.pdp-buy .qty button{width:42px;height:50px;font-size:17px}
+.pdp-buy .qty span{min-width:38px;font-size:14px}
+.pdp-buy .btn{flex:1;min-width:190px;height:52px}
+.pdp-buynow{margin-bottom:20px}
+
+/* payment notice */
+.paynote{border:1.5px solid var(--blue);background:var(--blue-tint);border-radius:14px;padding:16px 18px;margin-bottom:22px}
+.paynote .h{display:flex;gap:10px;align-items:center;font-size:13.5px;font-weight:800;color:var(--blue-deep);margin-bottom:7px}
+.paynote .h svg{width:18px;height:18px;flex-shrink:0}
+.paynote p{font-size:12.5px;color:var(--ink-2);line-height:1.6}
+.paynote b{color:var(--blue-deep)}
+
+.pdp-trust{display:flex;flex-direction:column;gap:11px;border-top:1px solid var(--line-2);padding-top:20px;margin-bottom:8px}
+.pdp-trust .r{display:flex;gap:11px;align-items:center;font-size:13px;color:var(--ink-2);font-weight:600}
+.pdp-trust .r svg{width:18px;height:18px;color:var(--ok);flex-shrink:0}
+
+/* accordions */
+.acc{border-top:1px solid var(--line-2)}
+.acc button{width:100%;background:none;border:none;padding:17px 0;display:flex;justify-content:space-between;
+  align-items:center;cursor:pointer;font-family:var(--serif);font-size:16px;color:var(--ink);text-align:left}
+.acc button .ix{font-size:20px;color:var(--blue);transition:.3s var(--ease-out);line-height:1}
+.acc button[aria-expanded="true"] .ix{transform:rotate(45deg)}
+.acc .bd{max-height:0;overflow:hidden;transition:max-height .4s var(--ease-out)}
+.acc .bd p{font-size:13.5px;color:var(--muted);line-height:1.75;padding-bottom:17px}
+
+/* related */
+.relwrap{background:var(--surface);border-top:1px solid var(--line)}
+
+@media(max-width:940px){
+  .pdp{grid-template-columns:1fr;gap:30px}
+  .pdp-gal{position:static}
+  .pdp-info h1{font-size:28px}
+  .pdp-price .now{font-size:30px}
+}
+@media(max-width:760px){
+  .pdp-thumbs button{width:60px;height:60px}
+  .pdp-specs{grid-template-columns:1fr}
+  .pdp-buy .btn{min-width:100%}
+}
+</style>
+
 </head>
 <body>
-<a class="skip" href="#products">Skip to products</a>
-
+<a class="skip" href="#pdp">Skip to product</a>
 <!-- URGENCY + TRUST BAR -->
 <div class="annbar" id="annbar">
   <div class="msg" id="annMsg" style="transition:opacity .3s"></div>
@@ -551,8 +635,6 @@ html{scroll-padding-top:96px}
 
 <!-- ANNOUNCE -->
 <div class="announce"><div class="t" id="annTrack"></div></div>
-
-<!-- HEADER (shared markup) -->
 <header class="hd" id="hd">
   <div class="wrap nav">
     <a class="logo" href="index.html"><span class="crown"><svg viewBox="0 0 64 44"><use href="#crown"/></svg></span>
@@ -580,100 +662,90 @@ html{scroll-padding-top:96px}
   </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-blur"></div>
-  <div class="wrap hero-grid">
-    <div class="hero-l">
-      <span class="eyebrow rv">Iced Out · VVS Moissanite · Custom Made</span>
-      <h1 class="rv" data-d="1">Time Is <em>Power</em>.</h1>
-      <p class="lede rv" data-d="2">Luxury iced-out watches crafted for those who refuse to blend in. Hand-set stones, lifetime warranty, shipped worldwide in our signature box.</p>
-      <div class="hero-cta rv" data-d="3">
-        <a href="#products" class="btn btn-primary btn-lg">Shop Watches</a>
-        <a href="#wild" class="btn btn-ghost btn-lg">View Lookbook</a>
-      </div>
-      <div class="hero-stats rv" data-d="4">
-        <div class="s"><div class="n">30K+</div><div class="l">Happy Clients</div></div>
-        <div class="s"><div class="n">4.9★</div><div class="l">Rated Excellent</div></div>
-        <div class="s"><div class="n">Lifetime</div><div class="l">Warranty</div></div>
-      </div>
+<!-- BREADCRUMB -->
+<div class="wrap"><nav class="crumb" aria-label="Breadcrumb">
+  <a href="index.html">Home</a><i>/</i><a href="index.html#products">Watches</a><i>/</i><span id="pdpCrumb">Loading…</span>
+</nav></div>
+
+<!-- PRODUCT -->
+<section class="wrap pdp" id="pdp">
+  <div class="pdp-gal">
+    <div class="pdp-main" id="pdpMain">
+      <div class="pdp-zoom"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>Tap to change view</div>
     </div>
-    <div class="hero-img rv" data-d="2">
-      <img id="heroImg" alt="Iced out luxury watches" fetchpriority="high" decoding="async">
-      <div class="float">
-        <div class="ic"><svg fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <div class="tx"><b>Authenticity Guaranteed</b><span>Every piece certified & insured</span></div>
+    <div class="pdp-thumbs" id="pdpThumbs"></div>
+  </div>
+
+  <div class="pdp-info">
+    <div class="eyebrow" id="pdpType"></div>
+    <h1 id="pdpName">Loading…</h1>
+    <div class="pdp-rate" id="pdpRate"></div>
+
+    <div class="pdp-price">
+      <span class="now" id="pdpNow"></span>
+      <span class="was" id="pdpWas"></span>
+      <span class="sv" id="pdpSave"></span>
+    </div>
+    <div class="pdp-vat">Price in USD. Import duties covered by KINGPIN LUX on all international orders.</div>
+
+    <div id="pdpStock"></div>
+    <p class="pdp-desc" id="pdpDesc"></p>
+    <div class="pdp-specs" id="pdpSpecs"></div>
+
+    <div class="pdp-buy">
+      <div class="qty" id="pdpQty">
+        <button type="button" data-q="-1" aria-label="Decrease quantity">&minus;</button>
+        <span id="pdpQn">1</span>
+        <button type="button" data-q="1" aria-label="Increase quantity">+</button>
+      </div>
+      <button class="btn btn-primary btn-lg" id="pdpAdd">Add To Cart</button>
+    </div>
+    <a href="checkout.html" class="btn btn-dark btn-block btn-lg pdp-buynow" id="pdpBuy">Reserve &amp; Pay By Bank Transfer</a>
+
+    <div class="paynote">
+      <div class="h">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 21h18M4 10h16M5 10V7l7-4 7 4v3M7 10v11M12 10v11M17 10v11"/></svg>
+        Bank Transfer / Wire Only
+      </div>
+      <p>We accept <b>bank transfer (wire)</b> exclusively — no cards, no third-party processors. Place your order and you'll receive our bank details with a unique reference. Your piece is <b>reserved for 72 hours</b> while the transfer clears, and ships the moment funds land.</p>
+    </div>
+
+    <div class="pdp-trust">
+      <div class="r"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg> Free insured worldwide shipping &amp; tracking</div>
+      <div class="r"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg> Lifetime warranty on stones and movement</div>
+      <div class="r"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg> 30-day returns &mdash; refunded to your bank account</div>
+      <div class="r"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg> Certificate of authenticity in every signature box</div>
+    </div>
+
+    <div class="acc" id="pdpAcc">
+      <div>
+        <button type="button" aria-expanded="false">Shipping &amp; Delivery <span class="ix">+</span></button>
+        <div class="bd"><p>Every order ships free worldwide, fully insured and tracked end to end. Pieces are dispatched within 24 hours of your transfer clearing and typically arrive in 3&ndash;6 business days. You'll get a tracking link by email the moment it leaves our workshop.</p></div>
+      </div>
+      <div>
+        <button type="button" aria-expanded="false">Returns &amp; Refunds <span class="ix">+</span></button>
+        <div class="bd"><p>Not in love with it? Return within 30 days in original condition with the box and authenticity card. Refunds are sent back to the account you transferred from, usually within 5 business days of the piece arriving back with us.</p></div>
+      </div>
+      <div>
+        <button type="button" aria-expanded="false">Lifetime Warranty <span class="ix">+</span></button>
+        <div class="bd"><p>Covers stone setting and movement for as long as you own the piece. If a stone loosens or the movement needs servicing, we repair or replace it. Accidental damage and normal wear to plating are not covered.</p></div>
+      </div>
+      <div>
+        <button type="button" aria-expanded="false">How Bank Transfer Works <span class="ix">+</span></button>
+        <div class="bd"><p>Place your order with your contact and shipping details. You'll immediately see our full bank details and a unique order reference &mdash; include that reference in your transfer so we can match it to your order. We hold your piece for 72 hours. Once funds arrive we confirm by email and ship within 24 hours.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TRUST STRIP -->
-<div class="tstrip"><div class="wrap">
-  <div class="ti"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/><circle cx="12" cy="12" r="10"/></svg> Free Worldwide Shipping</div>
-  <div class="ti"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg> Lifetime Warranty</div>
-  <div class="ti"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M20 7L9 18l-5-5"/></svg> 30-Day Returns</div>
-  <div class="ti"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg> Bank Transfer Checkout</div>
-  <div class="ti"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg> 24h Processing</div>
-</div></div>
-
-<!-- COLLECTIONS -->
-<section class="sec" id="collections"><div class="wrap">
-  <div class="shead rv"><span class="eyebrow">Curated For The Bold</span><h2>Featured Collections</h2><div class="dash"></div></div>
-  <div class="coll" id="collGrid"></div>
-</div></section>
-
-<!-- BEST SELLERS -->
-<section class="sec" id="products" style="padding-top:0"><div class="wrap">
-  <div class="shead rv"><span class="eyebrow">Most Coveted</span><h2>Best Sellers</h2><p>Every piece hand-set with brilliant VVS moissanite. Tap any watch for the full breakdown.</p><div class="dash"></div></div>
-  <div class="tabs rv">
-    <button class="on" data-f="all">All</button><button data-f="best">Best Sellers</button>
-    <button data-f="new">New Arrivals</button><button data-f="skeleton">Skeleton</button>
-    <button data-f="nautilus">Nautilus</button><button data-f="chrono">Chronograph</button>
-    <button data-f="twotone">Two-Tone</button><button data-f="gold">Gold</button>
+<!-- RELATED -->
+<section class="sec relwrap" id="related">
+  <div class="wrap">
+    <div class="shead rv"><span class="eyebrow">More From The Vault</span><h2>You May Also Like</h2><div class="dash"></div></div>
+    <div class="pgrid" id="relGrid"></div>
   </div>
-  <div class="pgrid" id="pGrid"></div>
-</div></section>
+</section>
 
-<!-- WHY US -->
-<section class="sec why" id="about"><div class="wrap">
-  <div class="shead rv"><span class="eyebrow">The KINGPIN Standard</span><h2>Why Choose Us</h2><div class="dash"></div></div>
-  <div class="whygrid" id="whyGrid"></div>
-</div></section>
-
-<!-- LOOKBOOK / IN THE WILD -->
-<section class="sec" id="wild"><div class="wrap">
-  <div class="shead rv"><span class="eyebrow">@KINGPINLUX</span><h2>Iced In The Wild</h2><p>Real pieces, real wrists. Tag <span class="blue">#KINGPINLUX</span> to be featured.</p><div class="dash"></div></div>
-  <div class="wild rv" id="wildGrid"></div>
-</div></section>
-
-<!-- REVIEWS -->
-<section class="sec revwrap" id="reviews"><div class="wrap">
-  <div class="shead rv"><span class="eyebrow">Verified & Loved</span><h2>What Kings Are Saying</h2><div class="dash"></div></div>
-  <div class="revtop rv">
-    <div class="sc">4.9</div>
-    <div class="stars" id="revStars"></div>
-    <div class="mt"><div class="l">Based on 30,142 verified reviews</div><div class="l blue">Rated Excellent on Trustpilot</div></div>
-  </div>
-  <div class="revg" id="revGrid"></div>
-</div></section>
-
-<!-- EMAIL CAPTURE -->
-<section class="sec" id="circle"><div class="wrap">
-  <div class="cta-circle rv">
-    <span class="eyebrow">VIP Access</span>
-    <h2>Join The KINGPIN Circle</h2>
-    <p>Exclusive drops, VIP early access, private promotions and product launches — before anyone else.</p>
-    <div class="cform">
-      <input type="email" id="email" placeholder="Your email address">
-      <button class="btn btn-lg" id="joinBtn">Join</button>
-    </div>
-    <div class="cok" id="cok">★ Welcome to the Circle — check your inbox.</div>
-    <div class="cfine">By joining you agree to receive marketing. Unsubscribe anytime.</div>
-  </div>
-</div></section>
-
-<!-- FOOTER (shared) -->
 <footer><div class="wrap">
   <div class="fgrid">
     <div class="fbrand">
@@ -706,7 +778,6 @@ html{scroll-padding-top:96px}
   <div class="fbot"><p>© <span id="yr"></span> KINGPIN LUX. All Rights Reserved.</p>
     <div class="c"><span>Lifetime Warranty</span><span>30-Day Returns</span><span>Certified Stones</span></div></div>
 </div></footer>
-
 <!-- MOBILE MENU -->
 <div class="mob" id="mob">
   <div class="top"><a class="logo" href="index.html"><span class="crown"><svg viewBox="0 0 64 44"><use href="#crown"/></svg></span><span class="lt"><span class="nm">KINGPIN</span><br><span class="sb">LUX</span></span></a><button class="x" id="mobX">×</button></div>
@@ -714,7 +785,6 @@ html{scroll-padding-top:96px}
   <a href="#products" data-coll="new">New Arrivals</a><a href="#wild">Lookbook</a>
   <a href="#products" data-coll="gold">Gold</a><a href="#reviews">Reviews</a><a href="#circle">Contact</a>
 </div>
-
 <!-- DRAWER -->
 <div class="ov" id="ov"></div>
 <aside class="drawer" id="drawer">
@@ -733,10 +803,7 @@ html{scroll-padding-top:96px}
     </div>
   </div>
 </aside>
-
-<!-- TOAST -->
 <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l4 4 10-10"/></svg><span id="toastMsg">Added to cart</span></div>
-
 <script>window.KP_IMG={"img1": "assets/img/img1.jpg","img2": "assets/img/img2.jpg","img3": "assets/img/img3.jpg","img4": "assets/img/img4.jpg","img5": "assets/img/img5.jpg","img6": "assets/img/img6.jpg","img7": "assets/img/img7.jpg","img8": "assets/img/img8.jpg","img9": "assets/img/img9.jpg","img10": "assets/img/img10.jpg","img11": "assets/img/img11.jpg","img12": "assets/img/img12.jpg","img13": "assets/img/img13.jpg","img14": "assets/img/img14.jpg","p0": "assets/img/p0.jpg","p1": "assets/img/p1.jpg","p2": "assets/img/p2.jpg","p3": "assets/img/p3.jpg","p4": "assets/img/p4.jpg","p5": "assets/img/p5.jpg","p6": "assets/img/p6.jpg","p7": "assets/img/p7.jpg","p8": "assets/img/p8.jpg","p9": "assets/img/p9.jpg","p10": "assets/img/p10.jpg","p11": "assets/img/p11.jpg","p12": "assets/img/p12.jpg","p13": "assets/img/p13.jpg","p14": "assets/img/p14.jpg","p15": "assets/img/p15.jpg","p16": "assets/img/p16.jpg","p17": "assets/img/p17.jpg","p18": "assets/img/p18.jpg","p19": "assets/img/p19.jpg","p20": "assets/img/p20.jpg","p21": "assets/img/p21.jpg","p22": "assets/img/p22.jpg","p23": "assets/img/p23.jpg","p24": "assets/img/p24.jpg","p25": "assets/img/p25.jpg","p26": "assets/img/p26.jpg","p27": "assets/img/p27.jpg","p28": "assets/img/p28.jpg","p29": "assets/img/p29.jpg","p30": "assets/img/p30.jpg","p31": "assets/img/p31.jpg","p32": "assets/img/p32.jpg","p33": "assets/img/p33.jpg","p34": "assets/img/p34.jpg","p35": "assets/img/p35.jpg","p36": "assets/img/p36.jpg","p37": "assets/img/p37.jpg","p38": "assets/img/p38.jpg","p39": "assets/img/p39.jpg","p40": "assets/img/p40.jpg","p41": "assets/img/p41.jpg","p42": "assets/img/p42.jpg","p43": "assets/img/p43.jpg","p44": "assets/img/p44.jpg","p45": "assets/img/p45.jpg","p46": "assets/img/p46.jpg","p47": "assets/img/p47.jpg","p48": "assets/img/p48.jpg","p49": "assets/img/p49.jpg","p50": "assets/img/p50.jpg","p51": "assets/img/p51.jpg","p52": "assets/img/p52.jpg","p53": "assets/img/p53.jpg","p54": "assets/img/p54.jpg","p55": "assets/img/p55.jpg","p56": "assets/img/p56.jpg","p57": "assets/img/p57.jpg","p58": "assets/img/p58.jpg","p59": "assets/img/p59.jpg","p60": "assets/img/p60.jpg","p61": "assets/img/p61.jpg","p62": "assets/img/p62.jpg","p63": "assets/img/p63.jpg","p64": "assets/img/p64.jpg","p65": "assets/img/p65.jpg","p66": "assets/img/p66.jpg","p67": "assets/img/p67.jpg","p68": "assets/img/p68.jpg","p69": "assets/img/p69.jpg","p70": "assets/img/p70.jpg","p71": "assets/img/p71.jpg","p72": "assets/img/p72.jpg","p73": "assets/img/p73.jpg","p74": "assets/img/p74.jpg","p75": "assets/img/p75.jpg","p76": "assets/img/p76.jpg","p77": "assets/img/p77.jpg","p78": "assets/img/p78.jpg","p79": "assets/img/p79.jpg","p80": "assets/img/p80.jpg","p81": "assets/img/p81.jpg","p82": "assets/img/p82.jpg","p83": "assets/img/p83.jpg","p84": "assets/img/p84.jpg","p85": "assets/img/p85.jpg","p86": "assets/img/p86.jpg","p87": "assets/img/p87.jpg","p88": "assets/img/p88.jpg","p89": "assets/img/p89.jpg","p90": "assets/img/p90.jpg","p91": "assets/img/p91.jpg","p92": "assets/img/p92.jpg","p93": "assets/img/p93.jpg","p94": "assets/img/p94.jpg","p95": "assets/img/p95.jpg","p96": "assets/img/p96.jpg","p97": "assets/img/p97.jpg","p98": "assets/img/p98.jpg","p99": "assets/img/p99.jpg","p100": "assets/img/p100.jpg","p101": "assets/img/p101.jpg","p102": "assets/img/p102.jpg","p103": "assets/img/p103.jpg","p104": "assets/img/p104.jpg","p105": "assets/img/p105.jpg","p106": "assets/img/p106.jpg","p107": "assets/img/p107.jpg","p108": "assets/img/p108.jpg","p109": "assets/img/p109.jpg","p110": "assets/img/p110.jpg","p111": "assets/img/p111.jpg","p112": "assets/img/p112.jpg","p113": "assets/img/p113.jpg"};
 /* ============ PRODUCT CATALOG ============ */
 window.KP_PRODUCTS = [
@@ -814,94 +881,6 @@ window.KP = (function(){
 </script>
 <script>
 const {$,$$,money,img,prod}=KP;
-const starSvg='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5 4.6 1.3 6.9L12 17.8 5.4 20.8 6.7 13.9 1.7 9.3l7-.8z"/></svg>';
-const stars=(r,rc)=>`<span class="stars">${starSvg.repeat(5)}${rc!=null?`<span class="rc">(${rc})</span>`:''}</span>`;
-
-/* announce */
-const ann=[["★★★★★","Rated Excellent"],["30,000+","Happy Customers"],["Free","Worldwide Shipping"],["Lifetime","Warranty"],["24 Hour","Processing"],["Secure","Checkout"]];
-$("#annTrack").innerHTML=[...ann,...ann].map(a=>`<span><b>${a[0]}</b> ${a[1]}</span>`).join("");
-
-/* hero */
-$("#heroImg").src=img("img11");
-
-/* collections */
-const nCat=f=>KP_PRODUCTS.filter(p=>p.cat.includes(f)).length;
-const imgCat=f=>{const p=KP_PRODUCTS.find(x=>x.cat.includes(f));return p?p.img:"img1";};
-const colls=[
- {n:"Skeleton Watches",f:"skeleton",wide:false},
- {n:"Nautilus Iced Out",f:"nautilus",wide:false},
- {n:"Two-Tone",f:"twotone",wide:false},
- {n:"Gold Collection",f:"gold",wide:false},
- {n:"New Arrivals",f:"new",wide:true},
- {n:"Chronograph",f:"chrono",wide:false},
-].map(c=>({...c,c:nCat(c.f)+" Pieces",img:imgCat(c.f)}));
-$("#collGrid").innerHTML=colls.map((c,i)=>`<a class="ccard rv${c.wide?' wide':''}" data-d="${(i%4)+1}" href="#products" data-coll="${c.f}">
-  <img src="${img(c.img)}" alt="${c.n}" loading="lazy" decoding="async"><div class="cb"><div class="c">${c.c}</div><h3>${c.n}</h3><div class="go">Explore →</div></div></a>`).join("");
-
-/* products */
-function renderProducts(f="all"){
-  const list=KP_PRODUCTS.filter(p=>f==="all"||p.cat.includes(f));
-  $("#pGrid").innerHTML=list.map((p,i)=>{
-    const off=Math.round((1-p.now/p.was)*100);
-    const save=p.was-p.now, low=p.stock<=4, pct=Math.max(8,Math.round(p.stock/12*100));
-    return `<div class="pcard rv" data-d="${(i%4)+1}">
-      <a class="pmedia" href="product.html?id=${p.id}" aria-label="${p.name}">
-        <div class="ptags"><span class="pill pill-sale">-${off}%</span>${p.cat.includes('new')?'<span class="pill pill-blue">New</span>':''}${low?`<span class="pill pill-stock">Only ${p.stock} left</span>`:''}</div>
-        <img src="${img(p.img)}" alt="${p.name}" loading="lazy" decoding="async"></a>
-      <button class="pwish" data-wish="${p.id}" aria-label="Wishlist"><svg fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.5-9C1 9 2.5 5 6.5 5 9 5 11 7 12 8.5 13 7 15 5 17.5 5 21.5 5 23 9 21.5 12c-2.5 4.4-9.5 9-9.5 9z"/></svg></button>
-      <div class="pquick"><button class="add" data-add="${p.id}">Add To Cart</button>
-        <button type="button" class="qv" data-quick="${p.id}" aria-label="Quick view ${p.name}"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
-      <div class="pbody"><div class="ct">${p.type}</div>
-        <h3><a href="product.html?id=${p.id}">${p.name}</a></h3>${stars(p.rating,p.rc)}
-        <div class="price"><span class="now">${money(p.now)}</span><span class="was">${money(p.was)}</span></div>
-        <div class="psave">You save ${money(save)}</div>
-        ${low?`<div class="pstock"><div class="lbl"><span>Almost gone</span><span>${p.stock} left</span></div><div class="bar"><div class="fill" style="width:${pct}%"></div></div></div>`:''}</div>
-    </div>`;
-  }).join("");
-  bind();reveal();
-}
-function bind(){
-  $$("[data-add]").forEach(b=>b.onclick=()=>{KP.add(+b.dataset.add);toast("Added to cart");openDrawer();});
-  $$("[data-wish]").forEach(b=>{
-    if(KP.inWish(+b.dataset.wish))b.classList.add("on");
-    b.onclick=()=>{const on=KP.toggleWish(+b.dataset.wish);b.classList.toggle("on",on);if(on)toast("Saved to wishlist");};
-  });
-}
-renderProducts();
-$$(".tabs button").forEach(b=>b.onclick=()=>{$$(".tabs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");renderProducts(b.dataset.f);});
-
-/* why */
-const whys=[
- {t:"Lifetime Warranty",d:"Every timepiece protected, forever.",p:"M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"},
- {t:"Hand-Set Stones",d:"Each stone placed by master setters.",p:"M12 2l3 7 7 .5-5.5 4.5 2 7-6.5-4-6.5 4 2-7L2 9.5 9 9z"},
- {t:"Worldwide Shipping",d:"Free, fast & fully insured.",p:"M2 12a10 10 0 1020 0 10 10 0 00-20 0zM2 12h20M12 2a15 15 0 010 20"},
- {t:"Bank Transfer Checkout",d:"Pay by bank transfer — no card data, ever.",p:"M5 11h14v10H5zM8 11V7a4 4 0 018 0v4"},
- {t:"Premium Materials",d:"Only the finest stones & metals.",p:"M6 3h12l3 6-9 12L3 9z"},
- {t:"Luxury Packaging",d:"Presented in our signature box.",p:"M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"},
- {t:"Water Resistant",d:"Built to live the life you live.",p:"M12 3c4 5 6 8 6 11a6 6 0 11-12 0c0-3 2-6 6-11z"},
- {t:"Satisfaction Guarantee",d:"30-day no-questions returns.",p:"M9 12l2 2 4-4M12 3a9 9 0 100 18 9 9 0 000-18z"},
-];
-$("#whyGrid").innerHTML=whys.map((w,i)=>`<div class="wc rv" data-d="${(i%4)+1}"><div class="ic"><svg width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="${w.p}"/></svg></div><h4>${w.t}</h4><p>${w.d}</p></div>`).join("");
-
-/* lookbook */
-const wildImgs=[["img5","t1"],["img9","t2"],["img11","t3"],["img1","t4"],["img12","t5"],["img3","t6"],["img4","t7"],["img13","t8"]];
-$("#wildGrid").innerHTML=wildImgs.map(w=>`<div class="wt ${w[1]}"><img src="${img(w[0])}" alt="lifestyle" loading="lazy" decoding="async"></div>`).join("");
-
-/* reviews */
-$("#revStars").innerHTML=starSvg.repeat(5);
-const reviews=[
- {q:"The detail is unreal. Looks like 10x the price and the ice doesn't stop.",n:"Marcus D.",i:"M",img:"img2"},
- {q:"Shipped in 2 days, packaging is insane, and the moissanite genuinely outshines my friend's diamond piece.",n:"Andre K.",i:"A",img:"img7"},
- {q:"Third watch from KINGPIN. Quality control is flawless every time.",n:"Sofia R.",i:"S",img:"img8"},
-];
-$("#revGrid").innerHTML=reviews.map((r,i)=>`<div class="rc rv" data-d="${i+1}">
-  <div class="ph"><img src="${img(r.img)}" alt="customer" loading="lazy" decoding="async"></div>
-  <div class="bd">${stars(5)}<p>"${r.q}"</p>
-    <div class="who"><div class="av">${r.i}</div><div><div class="nm">${r.n}</div>
-    <div class="vf"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg> Verified Purchase</div></div></div></div></div>`).join("");
-
-/* email */
-$("#joinBtn").onclick=()=>{const e=$("#email").value;if(/^[^@]+@[^@]+\.[^@]+$/.test(e)){$("#cok").style.display="block";$("#email").value="";}else $("#email").focus();};
 
 /* ===== shared interactions ===== */
 function toast(m){const t=$("#toast");$("#toastMsg").textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),2000);}
@@ -947,6 +926,114 @@ KP.onChange(renderCart);KP.syncBadges();
 var io;function reveal(){if(!("IntersectionObserver" in window)){document.querySelectorAll(".rv").forEach(function(e){e.classList.add("in")});return;}
 try{if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.1});$$(".rv:not(.in)").forEach(el=>io.observe(el));}catch(err){document.querySelectorAll(".rv").forEach(function(e){e.classList.add("in")});}}
 reveal();
+
+const starSvg='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5 4.6 1.3 6.9L12 17.8 5.4 20.8 6.7 13.9 1.7 9.3l7-.8z"/></svg>';
+const stars=(r,rc)=>`<span class="stars">${starSvg.repeat(5)}${rc!=null?`<span class="rc">(${rc})</span>`:''}</span>`;
+
+/* ---- which product? ---- */
+function currentId(){
+  const m=location.search.match(/[?&]id=(\d+)/);
+  return m?+m[1]:(KP_PRODUCTS[0]&&KP_PRODUCTS[0].id);
+}
+let P=prod(currentId())||KP_PRODUCTS[0];
+let qn=1, gal=[], gi=0;
+
+/* ---- gallery ---- */
+function showImg(n){
+  gi=n;
+  $$("#pdpMain img").forEach((im,k)=>im.classList.toggle("on",k===n));
+  $$("#pdpThumbs button").forEach((b,k)=>b.classList.toggle("on",k===n));
+}
+function buildGallery(){
+  gal=(P.gallery&&P.gallery.length?P.gallery:[P.img]);
+  const main=$("#pdpMain");
+  main.querySelectorAll("img").forEach(n=>n.remove());
+  main.insertAdjacentHTML("afterbegin",gal.map((k,i)=>
+    `<img src="${img(k)}" alt="${P.name} — view ${i+1}" class="${i===0?'on':''}" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async">`).join(""));
+  $("#pdpThumbs").innerHTML=gal.map((k,i)=>
+    `<button type="button" class="${i===0?'on':''}" data-gi="${i}" aria-label="View image ${i+1}"><img src="${img(k)}" alt="" loading="lazy"></button>`).join("");
+  gi=0;
+}
+
+/* ---- stock urgency (real inventory numbers) ---- */
+function stockHtml(p){
+  if(p.stock<=0) return '<div class="pstock"><div class="lbl"><span>Sold out</span></div></div>';
+  if(p.stock>6)  return '';
+  const pct=Math.max(8,Math.round(p.stock/12*100));
+  return `<div class="pstock"><div class="lbl"><span>Only ${p.stock} left in stock</span><span>${p.stock}/12</span></div>
+    <div class="bar"><div class="fill" style="width:${pct}%"></div></div></div>`;
+}
+
+/* ---- render ---- */
+function render(){
+  document.title=`${P.name} — KINGPIN LUX`;
+  const md=document.querySelector('meta[name="description"]');
+  if(md) md.setAttribute("content",(P.desc||"").slice(0,155));
+  $("#pdpCrumb").textContent=P.name;
+  $("#pdpType").textContent=P.type;
+  $("#pdpName").textContent=P.name;
+  $("#pdpRate").innerHTML=`${stars(P.rating,null)}<span class="lnk" id="toRev">${P.rc} verified reviews</span>`;
+  $("#pdpNow").textContent=money(P.now);
+  $("#pdpWas").textContent=money(P.was);
+  $("#pdpSave").textContent="Save "+money(P.was-P.now);
+  $("#pdpStock").innerHTML=stockHtml(P);
+  $("#pdpDesc").textContent=P.desc||"";
+  $("#pdpSpecs").innerHTML=[["Case",P.cs],["Stone",P.stone],["Movement",P.mv],["Water Resistance",P.wr]]
+    .filter(r=>r[1]).map(r=>`<div><div class="k">${r[0]}</div><div class="v">${r[1]}</div></div>`).join("");
+  $("#pdpQn").textContent=qn=1;
+  buildGallery();
+  renderRelated();
+  const tr=$("#toRev"); if(tr) tr.onclick=()=>{const r=$("#related"); if(r) r.scrollIntoView({behavior:"smooth"});};
+}
+
+/* ---- related products (same category, never itself) ---- */
+function renderRelated(){
+  const key=(P.cat||[]).find(c=>c!=="iced"&&c!=="best"&&c!=="new")||"iced";
+  let list=KP_PRODUCTS.filter(p=>p.id!==P.id&&p.cat.includes(key));
+  if(list.length<4) list=list.concat(KP_PRODUCTS.filter(p=>p.id!==P.id&&list.indexOf(p)<0));
+  list=list.slice(0,4);
+  $("#relGrid").innerHTML=list.map((p,i)=>{
+    const off=Math.round((1-p.now/p.was)*100), low=p.stock<=4;
+    return `<div class="pcard rv" data-d="${(i%4)+1}">
+      <a class="pmedia" href="product.html?id=${p.id}">
+        <div class="ptags"><span class="pill pill-sale">-${off}%</span>${low?`<span class="pill pill-stock">Only ${p.stock} left</span>`:''}</div>
+        <img src="${img(p.img)}" alt="${p.name}" loading="lazy" decoding="async"></a>
+      <div class="pquick"><button class="add" data-add="${p.id}">Add To Cart</button>
+        <a class="qv" href="product.html?id=${p.id}" aria-label="View ${p.name}"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></a></div>
+      <div class="pbody"><div class="ct">${p.type}</div>
+        <h3><a href="product.html?id=${p.id}">${p.name}</a></h3>${stars(p.rating,p.rc)}
+        <div class="price"><span class="now">${money(p.now)}</span><span class="was">${money(p.was)}</span></div>
+        <div class="psave">You save ${money(p.was-p.now)}</div></div>
+    </div>`;
+  }).join("");
+  $$("#relGrid [data-add]").forEach(b=>b.onclick=()=>{KP.add(+b.dataset.add);toast("Added to cart");openDrawer();});
+  if(typeof reveal==="function") reveal();
+}
+
+/* ---- interactions ---- */
+$("#pdpThumbs").addEventListener("click",e=>{
+  const b=e.target.closest("[data-gi]"); if(b) showImg(+b.dataset.gi);
+});
+$("#pdpMain").addEventListener("click",()=>{ if(gal.length>1) showImg((gi+1)%gal.length); });
+$("#pdpQty").addEventListener("click",e=>{
+  const b=e.target.closest("[data-q]"); if(!b) return;
+  qn=Math.max(1,qn+(+b.dataset.q)); $("#pdpQn").textContent=qn;
+});
+$("#pdpAdd").onclick=()=>{ KP.add(P.id,qn); toast("Added to cart"); openDrawer(); };
+$("#pdpBuy").onclick=()=>{ KP.add(P.id,qn); };
+
+/* accordions */
+$$("#pdpAcc button").forEach(b=>b.onclick=()=>{
+  const open=b.getAttribute("aria-expanded")==="true";
+  const bd=b.nextElementSibling;
+  b.setAttribute("aria-expanded",String(!open));
+  bd.style.maxHeight=open?"0":bd.scrollHeight+"px";
+});
+
+/* back/forward between products without a reload */
+window.addEventListener("popstate",()=>{ const p=prod(currentId()); if(p){P=p;render();window.scrollTo({top:0});} });
+
+render();
 </script>
 
 <!-- ===== QUICK VIEW ===== -->
@@ -1318,6 +1405,5 @@ document.addEventListener("error",function(e){
 window.KPX={openQuick:openQuick,renderSearch:renderSearch};
 })();
 </script>
-
 </body>
 </html>

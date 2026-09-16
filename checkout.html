@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Checkout — KINGPIN LUX</title>
+<title>Bank Transfer Checkout — KINGPIN LUX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>/* ============ KINGPIN LUX — LIGHT / BLUE THEME ============ */
@@ -285,6 +285,60 @@ footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
 @media(max-width:980px){.colayout{grid-template-columns:1fr;gap:24px}.sumwrap{position:static}.colayout .sumwrap{order:-1}}
 @media(max-width:760px){.express{grid-template-columns:1fr}.frow,.frow3{grid-template-columns:1fr}.cohead .wrap{height:62px}}
 </style>
+<style>
+/* ---- bank transfer ---- */
+.wirebox{border:1.5px solid var(--blue);background:var(--blue-tint);border-radius:14px;padding:18px}
+.wh{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.wh svg{width:26px;height:26px;color:var(--blue-deep);flex-shrink:0}
+.wh b{display:block;font-size:14px;color:var(--ink);font-weight:800}
+.wh span{font-size:12px;color:var(--muted)}
+.wtick{margin-left:auto;background:var(--blue);color:#fff;font-size:10.5px;font-weight:800;
+  padding:5px 11px;border-radius:999px;letter-spacing:.05em;text-transform:uppercase}
+.wsteps{margin:0 0 14px 18px;padding:0}
+.wsteps li{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:7px}
+.wsteps b{color:var(--ink)}
+.wnote{font-size:12px;color:var(--ink-2);background:rgba(255,255,255,.7);border-radius:10px;padding:11px 13px;line-height:1.6}
+
+/* ---- order confirmation / bank details ---- */
+.wireov{position:fixed;inset:0;z-index:150;background:rgba(10,24,48,.55);backdrop-filter:blur(3px);
+  display:flex;align-items:flex-start;justify-content:center;padding:28px 18px;overflow-y:auto;
+  opacity:0;visibility:hidden;transition:.35s cubic-bezier(.16,1,.3,1)}
+.wireov.on{opacity:1;visibility:visible}
+.wirecard{background:#fff;border-radius:20px;max-width:620px;width:100%;padding:34px 34px 30px;position:relative;
+  box-shadow:0 40px 90px -40px rgba(12,40,96,.6);transform:translateY(22px);transition:.4s cubic-bezier(.16,1,.3,1)}
+.wireov.on .wirecard{transform:none}
+.wirecard .tick{width:56px;height:56px;border-radius:50%;background:#e6f7ef;color:var(--ok);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.wirecard .tick svg{width:28px;height:28px}
+.wirecard h2{font-size:27px;margin-bottom:8px}
+.wirecard .lede{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.wireref{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.wireref .c{flex:1;min-width:170px;border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:var(--surface-2)}
+.wireref .k{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.wireref .v{font-size:19px;font-weight:800;font-family:var(--sans);color:var(--ink);margin-top:3px;letter-spacing:.02em}
+.wireref .c.hi{background:var(--blue-tint);border-color:var(--blue)}
+.wireref .c.hi .v{color:var(--blue-deep)}
+.bankrows{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-bottom:16px}
+.bankrows .r{display:flex;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid var(--line-2)}
+.bankrows .r:last-child{border-bottom:none}
+.bankrows .bk{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;width:132px;flex-shrink:0}
+.bankrows .bv{font-size:13.5px;color:var(--ink);font-weight:700;word-break:break-word;flex:1}
+.bankrows .cp{background:none;border:1px solid var(--line);border-radius:7px;padding:5px 10px;font-size:10.5px;
+  font-weight:700;color:var(--muted);cursor:pointer;transition:.2s;flex-shrink:0;font-family:var(--sans)}
+.bankrows .cp:hover{border-color:var(--blue);color:var(--blue)}
+.bankrows .cp.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.wirewarn{background:#fff8e6;border:1px solid #f0d08a;border-radius:11px;padding:13px 15px;font-size:12.5px;
+  color:#7a5a12;line-height:1.6;margin-bottom:18px}
+.wirewarn b{color:#5c4209}
+.wirecard .x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:27px;color:var(--muted-2);
+  cursor:pointer;line-height:1;transition:.25s}
+.wirecard .x:hover{color:var(--ink);transform:rotate(90deg)}
+@media(max-width:620px){
+  .wirecard{padding:26px 20px}
+  .bankrows .r{flex-wrap:wrap}
+  .bankrows .bk{width:100%}
+}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute"><symbol id="crown" viewBox="0 0 64 44"><path fill="currentColor" d="M4 40h56l-4-22-12 11L32 8 20 29 8 18 4 40z"/></symbol></svg>
@@ -295,20 +349,12 @@ footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
 </div></header>
 
 <div class="wrap">
-  <div class="costeps"><b>Cart</b><span>›</span><b>Information</b><span>›</span><b>Payment</b><span>›</span>Done</div>
+  <div class="costeps"><b>Cart</b><span>›</span><b>Information</b><span>›</span><b>Bank Transfer</b><span>›</span>Done</div>
 
   <div class="colayout">
     <!-- LEFT: forms -->
     <div class="coforms">
       <div class="cocard">
-        <h3>Express Checkout</h3><p class="sub">Skip the form — pay in one tap.</p>
-        <div class="express">
-          <button class="apple" onclick="flash(this)"> Pay</button>
-          <button class="paypal" onclick="flash(this)">PayPal</button>
-          <button class="gpay" onclick="flash(this)">G Pay</button>
-        </div>
-        <div class="ordiv">or pay with card</div>
-
         <h3>Contact</h3><p class="sub">We'll send your order confirmation & tracking here.</p>
         <div class="field"><label>Email address</label><input type="email" placeholder="you@email.com"></div>
         <label class="check"><input type="checkbox" checked> Email me with exclusive drops & VIP offers</label>
@@ -333,16 +379,24 @@ footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
       </div>
 
       <div class="cocard">
-        <h3>Payment</h3><p class="sub">All transactions are encrypted & secure. 🔒</p>
-        <div class="paybox">
-          <div class="field" style="margin-bottom:12px"><label style="display:flex;align-items:center">Card number <span class="cardicons"><span>VISA</span><span>MC</span><span>AMEX</span></span></label><input placeholder="1234 1234 1234 1234"></div>
-          <div class="frow"><div class="field" style="margin-bottom:0"><label>Expiry</label><input placeholder="MM / YY"></div>
-            <div class="field" style="margin-bottom:0"><label>CVC</label><input placeholder="CVC"></div></div>
+        <h3>Payment</h3><p class="sub">We accept bank transfer (wire) only.</p>
+        <div class="wirebox">
+          <div class="wh">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 21h18M4 10h16M5 10V7l7-4 7 4v3M7 10v11M12 10v11M17 10v11"/></svg>
+            <div><b>Bank Transfer / Wire</b><span>The only payment method we accept</span></div>
+            <div class="wtick">Selected</div>
+          </div>
+          <ol class="wsteps">
+            <li>Place your order below &mdash; nothing is charged automatically.</li>
+            <li>You'll immediately get our bank details and a <b>unique order reference</b>.</li>
+            <li>Send the transfer from your bank, quoting that reference.</li>
+            <li>We confirm by email and ship within 24 hours of the funds landing.</li>
+          </ol>
+          <div class="wnote">Your pieces are <b>reserved for 72 hours</b> while the transfer clears. No card details are ever collected or stored on this site.</div>
         </div>
-        <label class="check" style="margin-top:14px"><input type="checkbox" checked> Billing address same as shipping</label>
       </div>
 
-      <a href="#" class="btn btn-primary btn-block btn-lg" id="placeBtnTop">Pay Now · <span id="payTotalTop">$0</span></a>
+      <a href="#" class="btn btn-primary btn-block btn-lg" id="placeBtnTop">Place Order · <span id="payTotalTop">$0</span></a>
     </div>
 
     <!-- RIGHT: order summary -->
@@ -359,9 +413,8 @@ footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
           <div class="row"><span>Tax (est.)</span><b id="coTax">$0</b></div>
           <div class="grand"><span class="l">Total</span><span class="v"><small>USD</small> <span id="coTotal">$0</span></span></div>
         </div>
-        <a href="#" class="btn btn-primary btn-block btn-lg placebtn" id="placeBtn">Pay Now · <span id="payTotal">$0</span></a>
+        <a href="#" class="btn btn-primary btn-block btn-lg placebtn" id="placeBtn">Place Order · <span id="payTotal">$0</span></a>
         <div class="sumtrust">
-          <div class="klarna">or 4 interest-free payments with <b>Klarna</b> · <b>Afterpay</b></div>
           <div class="badges">
             <div class="b"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>SSL Encrypted</div>
             <div class="b"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg>Buyer Protection</div>
@@ -372,6 +425,31 @@ footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+
+<!-- ORDER PLACED / BANK DETAILS -->
+<div class="wireov" id="wireOv" role="dialog" aria-modal="true" aria-labelledby="wireH">
+  <div class="wirecard">
+    <button class="x" id="wireX" aria-label="Close">&times;</button>
+    <div class="tick"><svg fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div>
+    <h2 id="wireH">Order reserved</h2>
+    <p class="lede">Send the transfer below and your piece ships within 24 hours of the funds landing. We've held your order for 72 hours.</p>
+
+    <div class="wireref">
+      <div class="c hi"><div class="k">Amount to send</div><div class="v" id="wireAmt">$0</div></div>
+      <div class="c"><div class="k">Payment reference</div><div class="v" id="wireRef">—</div></div>
+    </div>
+
+    <div class="bankrows" id="bankRows"></div>
+
+    <div class="wirewarn">
+      <b>Include the payment reference</b> in your transfer description — it's how we match your money to your order.
+      Send the exact amount in USD; any bank fees should be paid by you (<b>OUR</b> charges) so the full total arrives.
+    </div>
+
+    <a href="index.html" class="btn btn-primary btn-block btn-lg" id="wireDone">Done — Back To The Store</a>
   </div>
 </div>
 
@@ -456,6 +534,22 @@ window.KP = (function(){
 const {$,$$,money,img,prod}=KP;
 let disc=0;
 function tax(n){return Math.round(n*0.0)} // tax shown as estimate 0 for demo simplicity
+
+/* ===================================================================
+   BANK DETAILS  —  EDIT THESE, THEN SAVE
+   These are shown to the customer after they place an order.
+   Replace every REPLACE_ME value with your real account details.
+   =================================================================== */
+window.KP_BANK = {
+  beneficiary      : "REPLACE_ME — account holder name",
+  bankName         : "REPLACE_ME — bank name",
+  iban             : "REPLACE_ME — IBAN / account number",
+  bic              : "REPLACE_ME — BIC / SWIFT",
+  bankAddress      : "REPLACE_ME — bank address",
+  currency         : "USD",
+  payEmail         : "REPLACE_ME — email for proof of payment"
+};
+
 function render(){
   const it=KP.items();
   if(!it.length){
@@ -477,8 +571,48 @@ function render(){
 }
 $("#promoBtn").onclick=()=>{const v=$("#promo").value.trim().toUpperCase();if(v==="KINGPIN10"){disc=0.10;$("#promoMsg").style.display="block";render();}else{$("#promoMsg").style.display="block";$("#promoMsg").style.color="#c0233b";$("#promoMsg").textContent="✗ Invalid code — try KINGPIN10";}};
 function toast(m){const t=$("#toast");$("#toastMsg").textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),2200);}
-function flash(b){toast("Demo only — connect a payment provider to go live");}
-function place(e){e.preventDefault();if(!KP.items().length){toast("Your cart is empty");return;}toast("✓ Order placed! (Demo) Connect Stripe/Shopify to process real payments.");}
+function orderRef(){
+  const s="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let r=""; for(let i=0;i<6;i++) r+=s[Math.floor(Math.random()*s.length)];
+  return "KPL-"+r;
+}
+function showBank(total){
+  const B=window.KP_BANK||{};
+  $("#wireAmt").textContent=money(total)+" "+(B.currency||"USD");
+  const ref=orderRef();
+  $("#wireRef").textContent=ref;
+  try{ localStorage.setItem("kp_last_ref",ref); }catch(e){}
+  const rows=[["Beneficiary",B.beneficiary],["Bank",B.bankName],["IBAN / Account",B.iban],
+              ["BIC / SWIFT",B.bic],["Bank address",B.bankAddress],["Send proof to",B.payEmail]];
+  $("#bankRows").innerHTML=rows.filter(r=>r[1]).map(r=>
+    `<div class="r"><div class="bk">${r[0]}</div><div class="bv">${r[1]}</div>
+     <button class="cp" data-copy="${String(r[1]).replace(/"/g,'&quot;')}">Copy</button></div>`).join("");
+  $("#wireOv").classList.add("on");
+  document.body.style.overflow="hidden";
+}
+function closeBank(){ $("#wireOv").classList.remove("on"); document.body.style.overflow=""; }
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-copy]"); if(!b) return;
+  const t=b.getAttribute("data-copy");
+  const done=()=>{b.textContent="Copied";b.classList.add("done");setTimeout(()=>{b.textContent="Copy";b.classList.remove("done");},1500);};
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,done); else done();
+});
+$("#wireX").onclick=closeBank;
+$("#wireDone").onclick=()=>{ KP.clear(); };
+$("#wireOv").addEventListener("click",e=>{ if(e.target===$("#wireOv")) closeBank(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&$("#wireOv").classList.contains("on")) closeBank(); });
+
+function place(e){
+  e.preventDefault();
+  if(!KP.items().length){ toast("Your cart is empty"); return; }
+  const email=document.querySelector('input[type="email"]');
+  if(email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value.trim())){
+    toast("Add your email so we can confirm your order");
+    email.focus(); email.scrollIntoView({behavior:"smooth",block:"center"}); return;
+  }
+  const sub=KP.subtotal(), discAmt=sub*disc, est=Math.round((sub-discAmt)*0.00);
+  showBank(sub-discAmt+est);
+}
 $("#placeBtn").onclick=place;$("#placeBtnTop").onclick=place;
 render();
 </script>
