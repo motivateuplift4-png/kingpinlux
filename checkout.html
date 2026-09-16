@@ -597,11 +597,10 @@ $("#wireOv").addEventListener("click",e=>{ if(e.target===$("#wireOv")) closeBank
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&$("#wireOv").classList.contains("on")) closeBank(); });
 
 /* ===================================================================
-   ORDERS  —  where placed orders are sent.
-   Paste the Google Apps Script "Web app" URL here (see
-   google-apps-script/SETUP.md). Empty = orders are NOT recorded.
+   ORDERS  —  saved by this site's own API (api/order.js) and shown
+   at /admin. Needs order storage connected in Vercel (see README).
    =================================================================== */
-window.KP_ORDERS_URL = "";
+window.KP_ORDERS_URL = "/api/order";
 
 const QKEY="kp_order_queue";
 const val=id=>{const el=$("#"+id);return el?el.value.trim():"";};

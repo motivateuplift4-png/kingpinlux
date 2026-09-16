@@ -8,7 +8,9 @@ Luxury iced-out moissanite watch store. Static site — no build step, no framew
 |---|---|---|
 | `index.html` | ~90 KB | Storefront. **Deploy this.** Images load from `assets/img/`. |
 | `product.html` | ~91 KB | Product detail page. Reads `?id=N` from the URL. |
-| `checkout.html` | ~48 KB | Checkout. Shares the cart via `localStorage`. |
+| `checkout.html` | ~48 KB | Checkout. Shares the cart via `localStorage`, sends orders to `/api/order`. |
+| `admin.html` | ~30 KB | Order dashboard at `/admin` (see below). |
+| `api/` | — | Vercel serverless functions: order intake + admin API. |
 | `assets/img/` | 7.7 MB | 128 product photos, lazy-loaded and browser-cached. |
 | `kingpin-lux-standalone.html` | 10.4 MB | Single-file copy of the storefront with every image inlined as base64. Works with no internet at all — good for sharing or offline demos, **not** for the web (nothing renders until all 10 MB downloads). |
 
@@ -33,18 +35,49 @@ in the panel automatically.
 > business account over a personal one, and watch for transfers that arrive
 > without a matching order reference.
 
-## Orders
+## Orders & admin dashboard
 
-Placed orders are sent to a Google Sheet via a small Apps Script web app.
-Setup is in [`google-apps-script/SETUP.md`](google-apps-script/SETUP.md); the
-script is `google-apps-script/orders.gs`.
+Every placed order is saved by the site's own API and shown at
+**`/admin`** (e.g. `kingpinlux.vercel.app/admin`): password login, stats, a
+"What's new" feed, search, filters, Paid / Shipped toggles, private notes, and
+Email / Call / WhatsApp / copy-address shortcuts. It refreshes every 30 seconds
+and chimes when a new order arrives while it's open.
 
-The store posts to `window.KP_ORDERS_URL` in `checkout.html`. **Until that is
-set, orders are not recorded anywhere** — they wait in the customer's browser
-and are sent the next time that customer opens checkout with the URL configured.
+### Turn on the admin dashboard (one time, ~3 minutes, in Vercel)
 
-Checkout now requires name, email, phone, street, city, postcode and country
-(with a free-text box for "Other…") so every recorded order can actually ship.
+1. **Connect order storage.** Vercel → the `kingpinlux` project → **Storage** →
+   **Create Database** → **Upstash for Redis** (free plan) → connect it to this
+   project for **all environments**. Vercel adds the connection settings itself.
+2. **Set your admin password.** **Settings → Environment Variables** → add
+   `ADMIN_PASSWORD` with a long password only you know → Save.
+3. **Redeploy.** **Deployments** → newest → **⋯ → Redeploy**. Settings only
+   apply to new deployments.
+4. Open `/admin` and log in.
+
+Until step 1 is done, orders **cannot be saved**: checkout still shows the bank
+details, and the order waits in that customer's browser to be sent later.
+Do steps 1 and 2 together — login brute-force protection uses the same storage.
+
+To change the password, edit `ADMIN_PASSWORD` and redeploy; that also logs out
+every device.
+
+### How it's built
+
+| File | What it does |
+|---|---|
+| `api/order.js` | `POST` from checkout. Validates, **recomputes the total server-side**, stores the order, ignores duplicate references, rate-limits. |
+| `api/admin/login.js`, `logout.js` | Password check → signed, HttpOnly session cookie (7 days). 8 wrong guesses per IP locks out 15 min. |
+| `api/admin/orders.js` | All orders (newest first) + activity feed. Login required. |
+| `api/admin/update.js` | Paid / shipped / note. Login required. |
+| `api/_lib/` | Storage client (Upstash REST, no packages), auth, validation, pricing. |
+| `admin.html` | The dashboard. Customer text is always rendered as plain text. |
+
+`UNIT_PRICE` / `DISCOUNTS` in `api/_lib/orders.js` must match the storefront.
+If a customer's page showed a different total (a tampered page), the order is
+stored at the real price and flagged **Check amount** in the dashboard.
+
+Checkout requires name, email, phone, street, city, postcode and country (with
+a free-text box for "Other…") so every order can actually ship.
 
 ## Catalog
 
