@@ -12,30 +12,26 @@ Luxury iced-out moissanite watch store. Static site — no build step, no framew
 | `assets/img/` | 7.7 MB | 128 product photos, lazy-loaded and browser-cached. |
 | `kingpin-lux-standalone.html` | 10.4 MB | Single-file copy of the storefront with every image inlined as base64. Works with no internet at all — good for sharing or offline demos, **not** for the web (nothing renders until all 10 MB downloads). |
 
-## ⚠️ Set your bank details before taking orders
+## Payment — bank transfer only
 
-Payment is **bank transfer / wire only**. After a customer places an order they
-are shown your bank details and a unique payment reference.
+Wire transfer is the only method. After a customer places an order they see the
+bank details, a generated reference (`KPL-XXXXXX`) and the exact amount.
 
-Those details ship as placeholders. Open `checkout.html`, find `window.KP_BANK`
-(search for `REPLACE_ME`) and fill in all six fields:
+The details live in `window.KP_BANK` in `checkout.html` (Revolut Bank UAB — the
+same account details receive both USD and EUR).
 
-```js
-window.KP_BANK = {
-  beneficiary : "...",   // account holder name
-  bankName    : "...",
-  iban        : "...",   // IBAN or account number
-  bic         : "...",   // BIC / SWIFT
-  bankAddress : "...",
-  currency    : "USD",
-  payEmail    : "..."    // where customers send proof of payment
-};
-```
+**`currency` must match what the store prices in.** The store is in USD, so
+`currency: "USD"`. If you ever reprice in euros, change it there too, or
+customers will be told to send the wrong amount.
 
-**This is a public repo on a public site.** Whatever you put here is readable by
-anyone who views the page source — unavoidable for a static store, and the
-trade-off of publishing bank details for wire payment. Use a business account,
-not a personal one.
+`payEmail` is empty — set it to a real address and a "Send proof to" row appears
+in the panel automatically.
+
+> **These details are public.** The repo and the site are public, so anyone can
+> read the IBAN via view-source. That is unavoidable for a static store taking
+> wire payments, and is the trade-off you accepted by publishing them. Prefer a
+> business account over a personal one, and watch for transfers that arrive
+> without a matching order reference.
 
 ## Catalog
 

@@ -522,18 +522,20 @@ let disc=0;
 function tax(n){return Math.round(n*0.0)} // tax shown as estimate 0 for demo simplicity
 
 /* ===================================================================
-   BANK DETAILS  —  EDIT THESE, THEN SAVE
-   These are shown to the customer after they place an order.
-   Replace every REPLACE_ME value with your real account details.
+   BANK DETAILS  —  shown to the customer after they place an order.
+   Same Revolut account details receive both USD and EUR. `currency`
+   must match what the store prices in, or customers send the wrong
+   amount — the store prices in USD, so this is USD.
    =================================================================== */
 window.KP_BANK = {
-  beneficiary      : "REPLACE_ME — account holder name",
-  bankName         : "REPLACE_ME — bank name",
-  iban             : "REPLACE_ME — IBAN / account number",
-  bic              : "REPLACE_ME — BIC / SWIFT",
-  bankAddress      : "REPLACE_ME — bank address",
+  beneficiary      : "Rami Musa",
+  bankName         : "Revolut Bank UAB",
+  bankAddress      : "Konstitucijos ave. 21B, 08130, Vilnius, Lithuania",
+  iban             : "LT03 3250 0784 3194 2534",
+  bic              : "REVOLT21",
+  correspondentBic : "CHASDEFX",
   currency         : "USD",
-  payEmail         : "REPLACE_ME — email for proof of payment"
+  payEmail         : ""   /* add an address and a "send proof to" row appears */
 };
 
 function render(){
@@ -569,7 +571,8 @@ function showBank(total){
   $("#wireRef").textContent=ref;
   try{ localStorage.setItem("kp_last_ref",ref); }catch(e){}
   const rows=[["Beneficiary",B.beneficiary],["Bank",B.bankName],["IBAN / Account",B.iban],
-              ["BIC / SWIFT",B.bic],["Bank address",B.bankAddress],["Send proof to",B.payEmail]];
+              ["BIC / SWIFT",B.bic],["Correspondent BIC",B.correspondentBic],
+              ["Bank address",B.bankAddress],["Send proof to",B.payEmail]];
   $("#bankRows").innerHTML=rows.filter(r=>r[1]).map(r=>
     `<div class="r"><div class="bk">${r[0]}</div><div class="bv">${r[1]}</div>
      <button class="cp" data-copy="${String(r[1]).replace(/"/g,'&quot;')}">Copy</button></div>`).join("");
