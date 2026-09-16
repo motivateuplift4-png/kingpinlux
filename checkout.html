@@ -272,6 +272,9 @@ footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
 @media(max-width:760px){.frow,.frow3{grid-template-columns:1fr}.cohead .wrap{height:62px}}
 </style>
 <style>
+/* ---- field validation ---- */
+.field input.bad{border-color:#c0233b!important;box-shadow:0 0 0 3px rgba(192,35,59,.12)}
+
 /* ---- bank transfer ---- */
 .wirebox{border:1.5px solid var(--blue);background:var(--blue-tint);border-radius:14px;padding:18px}
 .wh{display:flex;gap:12px;align-items:center;margin-bottom:14px}
@@ -342,21 +345,23 @@ footer{background:var(--ink);color:#c3cde2;padding-top:70px;margin-top:40px}
     <div class="coforms">
       <div class="cocard">
         <h3>Contact</h3><p class="sub">We'll send your order confirmation & tracking here.</p>
-        <div class="field"><label>Email address</label><input type="email" placeholder="you@email.com"></div>
-        <label class="check"><input type="checkbox" checked> Email me with exclusive drops & VIP offers</label>
+        <div class="field"><label for="fEmail">Email address</label><input type="email" id="fEmail" autocomplete="email" maxlength="120" placeholder="you@email.com"></div>
+        <label class="check"><input type="checkbox" id="fOptin" checked> Email me with exclusive drops & VIP offers</label>
       </div>
 
       <div class="cocard">
         <h3>Shipping Address</h3><p class="sub">Free insured worldwide shipping on every order.</p>
-        <div class="frow"><div class="field"><label>First name</label><input placeholder="First name"></div>
-          <div class="field"><label>Last name</label><input placeholder="Last name"></div></div>
-        <div class="field"><label>Address</label><input placeholder="Street address"></div>
-        <div class="field"><label>Apartment, suite, etc. (optional)</label><input placeholder="Apt, suite"></div>
-        <div class="frow3"><div class="field"><label>City</label><input placeholder="City"></div>
-          <div class="field"><label>State</label><input placeholder="State"></div>
-          <div class="field"><label>ZIP</label><input placeholder="ZIP"></div></div>
-        <div class="field"><label>Country</label><select><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>United Arab Emirates</option><option>Other</option></select></div>
-        <div class="field"><label>Phone (for delivery updates)</label><input placeholder="Phone number"></div>
+        <div class="frow"><div class="field"><label for="fFirst">First name</label><input id="fFirst" autocomplete="given-name" maxlength="60" placeholder="First name"></div>
+          <div class="field"><label for="fLast">Last name</label><input id="fLast" autocomplete="family-name" maxlength="60" placeholder="Last name"></div></div>
+        <div class="field"><label for="fAddr">Address</label><input id="fAddr" autocomplete="address-line1" maxlength="120" placeholder="Street address"></div>
+        <div class="field"><label for="fAddr2">Apartment, suite, etc. (optional)</label><input id="fAddr2" autocomplete="address-line2" maxlength="120" placeholder="Apt, suite"></div>
+        <div class="frow3"><div class="field"><label for="fCity">City</label><input id="fCity" autocomplete="address-level2" maxlength="60" placeholder="City"></div>
+          <div class="field"><label for="fState">State / Region</label><input id="fState" autocomplete="address-level1" maxlength="60" placeholder="State"></div>
+          <div class="field"><label for="fZip">ZIP / Postcode</label><input id="fZip" autocomplete="postal-code" maxlength="20" placeholder="ZIP"></div></div>
+        <div class="field"><label for="fCountry">Country</label><select id="fCountry" autocomplete="country-name"><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>United Arab Emirates</option><option>Saudi Arabia</option><option>Qatar</option><option>Kuwait</option><option>Germany</option><option>France</option><option>Netherlands</option><option value="Other">Other…</option></select></div>
+        <div class="field" id="fCountryOtherWrap" hidden><label for="fCountryOther">Which country?</label><input id="fCountryOther" maxlength="60" placeholder="Country"></div>
+        <div class="field"><label for="fPhone">Phone (for delivery updates)</label><input id="fPhone" type="tel" autocomplete="tel" maxlength="30" placeholder="Phone number"></div>
+        <input id="fHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       </div>
 
       <div class="cocard">
@@ -564,10 +569,10 @@ function orderRef(){
   let r=""; for(let i=0;i<6;i++) r+=s[Math.floor(Math.random()*s.length)];
   return "KPL-"+r;
 }
-function showBank(total){
+function showBank(total,ref){
   const B=window.KP_BANK||{};
   $("#wireAmt").textContent=money(total)+" "+(B.currency||"USD");
-  const ref=orderRef();
+  ref=ref||orderRef();
   $("#wireRef").textContent=ref;
   try{ localStorage.setItem("kp_last_ref",ref); }catch(e){}
   const rows=[["Beneficiary",B.beneficiary],["Bank",B.bankName],["IBAN / Account",B.iban],
@@ -591,17 +596,94 @@ $("#wireDone").onclick=()=>{ KP.clear(); };
 $("#wireOv").addEventListener("click",e=>{ if(e.target===$("#wireOv")) closeBank(); });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&$("#wireOv").classList.contains("on")) closeBank(); });
 
+/* ===================================================================
+   ORDERS  —  where placed orders are sent.
+   Paste the Google Apps Script "Web app" URL here (see
+   google-apps-script/SETUP.md). Empty = orders are NOT recorded.
+   =================================================================== */
+window.KP_ORDERS_URL = "";
+
+const QKEY="kp_order_queue";
+const val=id=>{const el=$("#"+id);return el?el.value.trim():"";};
+
+function sendOrder(order){
+  const url=window.KP_ORDERS_URL;
+  if(!url) return Promise.reject(new Error("orders URL not configured"));
+  const ctl=("AbortController" in window)?new AbortController():null;
+  const timer=setTimeout(()=>ctl&&ctl.abort(),9000);
+  // text/plain keeps this a "simple" request: no CORS preflight, which Apps Script can't answer
+  return fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+                    body:JSON.stringify(order),signal:ctl?ctl.signal:undefined,redirect:"follow"})
+    .then(r=>r.json())
+    .then(j=>{clearTimeout(timer); if(!j||!j.ok) throw new Error((j&&j.error)||"rejected"); return j;})
+    .catch(err=>{clearTimeout(timer); throw err;});
+}
+function queueOrder(order){
+  try{ const q=JSON.parse(localStorage.getItem(QKEY)||"[]"); if(!q.some(o=>o.ref===order.ref)) q.push(order);
+       localStorage.setItem(QKEY,JSON.stringify(q.slice(-10))); }catch(e){}
+}
+function flushQueue(){
+  let q=[]; try{ q=JSON.parse(localStorage.getItem(QKEY)||"[]"); }catch(e){}
+  if(!q.length||!window.KP_ORDERS_URL) return;
+  q.forEach(o=>sendOrder(o).then(()=>{
+    try{ const left=JSON.parse(localStorage.getItem(QKEY)||"[]").filter(x=>x.ref!==o.ref);
+         localStorage.setItem(QKEY,JSON.stringify(left)); }catch(e){}
+  }).catch(()=>{}));
+}
+
+function validate(){
+  const need=[["fEmail","your email"],["fFirst","your first name"],["fLast","your last name"],
+              ["fAddr","your street address"],["fCity","your city"],["fZip","your ZIP / postcode"],["fPhone","a phone number"]];
+  if($("#fCountry").value==="Other") need.push(["fCountryOther","your country"]);
+  $$(".field input.bad").forEach(el=>el.classList.remove("bad"));
+  for(const [id,label] of need){
+    const el=$("#"+id), v=el.value.trim();
+    const bad = !v || (id==="fEmail" && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v))
+                   || (id==="fPhone" && v.replace(/\D/g,"").length<6);
+    if(bad){ el.classList.add("bad"); toast("Please add "+label); el.focus();
+             el.scrollIntoView({behavior:"smooth",block:"center"}); return false; }
+  }
+  return true;
+}
+
+let placing=false;
 function place(e){
   e.preventDefault();
+  if(placing) return;
   if(!KP.items().length){ toast("Your cart is empty"); return; }
-  const email=document.querySelector('input[type="email"]');
-  if(email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value.trim())){
-    toast("Add your email so we can confirm your order");
-    email.focus(); email.scrollIntoView({behavior:"smooth",block:"center"}); return;
-  }
-  const sub=KP.subtotal(), discAmt=sub*disc, est=Math.round((sub-discAmt)*0.00);
-  showBank(sub-discAmt+est);
+  if($("#fHp").value) return;                       // bot filled the hidden field
+  if(!validate()) return;
+
+  const sub=KP.subtotal(), discAmt=sub*disc, total=sub-discAmt;
+  const ref=orderRef();
+  const country=$("#fCountry").value==="Other"?val("fCountryOther"):$("#fCountry").value;
+  const order={
+    ref, placedAt:new Date().toISOString(),
+    email:val("fEmail"), optin:$("#fOptin").checked,
+    firstName:val("fFirst"), lastName:val("fLast"), phone:val("fPhone"),
+    address1:val("fAddr"), address2:val("fAddr2"), city:val("fCity"), state:val("fState"),
+    zip:val("fZip"), country,
+    items:KP.items().map(p=>({id:p.id,name:p.name,qty:p.qty,price:p.now})),
+    discountCode:disc?"KINGPIN10":"", subtotal:sub, discount:discAmt, total,
+    currency:(window.KP_BANK&&window.KP_BANK.currency)||"USD", page:location.href
+  };
+
+  placing=true;
+  const btns=[$("#placeBtn"),$("#placeBtnTop")];
+  btns.forEach(b=>{b.dataset.label=b.innerHTML;b.textContent="Reserving your order…";b.style.pointerEvents="none";});
+  const done=()=>{ placing=false; btns.forEach(b=>{b.innerHTML=b.dataset.label;b.style.pointerEvents="";}); showBank(total,ref); };
+
+  sendOrder(order).then(done).catch(err=>{
+    console.warn("[KINGPIN] order not delivered yet, queued for retry:",err&&err.message);
+    queueOrder(order); done();
+  });
 }
+$("#fCountry").addEventListener("change",function(){
+  const other=this.value==="Other"; $("#fCountryOtherWrap").hidden=!other;
+  if(other) $("#fCountryOther").focus();
+});
+document.addEventListener("input",e=>{ if(e.target.classList&&e.target.classList.contains("bad")) e.target.classList.remove("bad"); });
+flushQueue();
 $("#placeBtn").onclick=place;$("#placeBtnTop").onclick=place;
 render();
 </script>

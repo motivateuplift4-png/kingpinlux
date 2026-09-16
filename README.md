@@ -33,6 +33,19 @@ in the panel automatically.
 > business account over a personal one, and watch for transfers that arrive
 > without a matching order reference.
 
+## Orders
+
+Placed orders are sent to a Google Sheet via a small Apps Script web app.
+Setup is in [`google-apps-script/SETUP.md`](google-apps-script/SETUP.md); the
+script is `google-apps-script/orders.gs`.
+
+The store posts to `window.KP_ORDERS_URL` in `checkout.html`. **Until that is
+set, orders are not recorded anywhere** — they wait in the customer's browser
+and are sent the next time that customer opens checkout with the URL configured.
+
+Checkout now requires name, email, phone, street, city, postcode and country
+(with a free-text box for "Other…") so every recorded order can actually ship.
+
 ## Catalog
 
 29 products live in `window.KP_PRODUCTS` inside `index.html`. Shared values
