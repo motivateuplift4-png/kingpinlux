@@ -4,10 +4,21 @@ const { cookie } = require('./http');
 const COOKIE = 'kp_admin';
 const SESSION_DAYS = 7;
 
-// The signing key is derived from the password, so changing ADMIN_PASSWORD
-// in Vercel logs every existing session out.
+// The canonical name is ADMIN_PASSWORD, but env var names are case-sensitive
+// and hosting dashboards make it easy to save "Admin_Password". Accept any
+// capitalisation so a typo doesn't silently leave the dashboard locked.
+function adminPassword() {
+  if (process.env.ADMIN_PASSWORD) return process.env.ADMIN_PASSWORD;
+  for (const k of Object.keys(process.env)) {
+    if (k.toLowerCase() === 'admin_password' && process.env[k]) return process.env[k];
+  }
+  return '';
+}
+
+// The signing key is derived from the password, so changing it logs every
+// existing session out.
 function key() {
-  const pw = process.env.ADMIN_PASSWORD || '';
+  const pw = adminPassword();
   return crypto.createHash('sha256')
     .update(`kp-admin-session:${pw}:${process.env.ADMIN_SESSION_SECRET || ''}`)
     .digest();
@@ -24,7 +35,7 @@ function equal(a, b) {
 }
 
 function passwordMatches(candidate) {
-  const pw = process.env.ADMIN_PASSWORD;
+  const pw = adminPassword();
   return Boolean(pw) && equal(candidate, pw);
 }
 
@@ -46,10 +57,10 @@ function cookieHeader(req, value, maxAge) {
 }
 
 function isAdmin(req) {
-  if (!process.env.ADMIN_PASSWORD) return false;
+  if (!adminPassword()) return false;
   const [exp, sig] = cookie(req, COOKIE).split('.');
   if (!exp || !sig || Number(exp) < Date.now()) return false;
   return equal(sig, sign(exp));
 }
 
-module.exports = { passwordMatches, sessionCookie, clearCookie, isAdmin };
+module.exports = { adminPassword, passwordMatches, sessionCookie, clearCookie, isAdmin };

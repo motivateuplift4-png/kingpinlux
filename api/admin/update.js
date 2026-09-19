@@ -1,12 +1,12 @@
 // POST /api/admin/update  { ref, paid?, shipped?, note? }
 const kv = require('../_lib/kv');
 const { send, readJson } = require('../_lib/http');
-const { isAdmin } = require('../_lib/auth');
+const { isAdmin, adminPassword } = require('../_lib/auth');
 const { REF_RE, logActivity } = require('../_lib/orders');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method not allowed' });
-  if (!process.env.ADMIN_PASSWORD) return send(res, 503, { ok: false, error: 'admin password not set' });
+  if (!adminPassword()) return send(res, 503, { ok: false, error: 'admin password not set' });
   if (!isAdmin(req)) return send(res, 401, { ok: false, error: 'login required' });
   // A cross-site form can't send application/json without a CORS preflight we never allow.
   if (!String(req.headers['content-type'] || '').includes('application/json')) {

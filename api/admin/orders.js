@@ -1,13 +1,13 @@
 // GET /api/admin/orders — every order (newest first) plus the activity feed.
 const kv = require('../_lib/kv');
 const { send } = require('../_lib/http');
-const { isAdmin } = require('../_lib/auth');
+const { isAdmin, adminPassword } = require('../_lib/auth');
 
 const MAX_ORDERS = 500;
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') return send(res, 405, { ok: false, error: 'method not allowed' });
-  if (!process.env.ADMIN_PASSWORD) return send(res, 503, { ok: false, error: 'admin password not set' });
+  if (!adminPassword()) return send(res, 503, { ok: false, error: 'admin password not set' });
   if (!isAdmin(req)) return send(res, 401, { ok: false, error: 'login required' });
   if (!kv.configured()) return send(res, 503, { ok: false, error: 'storage not configured' });
 

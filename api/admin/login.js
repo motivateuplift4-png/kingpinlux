@@ -1,12 +1,12 @@
 // POST /api/admin/login  { password }
 const kv = require('../_lib/kv');
 const { send, readJson, clientIp } = require('../_lib/http');
-const { passwordMatches, sessionCookie } = require('../_lib/auth');
+const { passwordMatches, sessionCookie, adminPassword } = require('../_lib/auth');
 const { overLimit } = require('../_lib/orders');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method not allowed' });
-  if (!process.env.ADMIN_PASSWORD) return send(res, 503, { ok: false, error: 'admin password not set' });
+  if (!adminPassword()) return send(res, 503, { ok: false, error: 'admin password not set' });
 
   let body;
   try { body = await readJson(req); } catch { return send(res, 400, { ok: false, error: 'bad body' }); }
