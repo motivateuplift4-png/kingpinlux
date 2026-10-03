@@ -6,7 +6,7 @@
 <title>Secure Checkout | KINGPIN LUX</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0b0a09">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0a09'/%3E%3Cpath fill='%23c9a86a' d='M8 46h48l-3.5-19-10.5 9.5L32 18 22 36.5 11.5 27 8 46z'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0a09'/%3E%3Cpath fill='%238fb0ff' d='M8 46h48l-3.5-19-10.5 9.5L32 18 22 36.5 11.5 27 8 46z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
@@ -27,7 +27,7 @@ legend span{width:30px;height:30px;border-radius:50%;display:inline-flex;align-i
 .wirebox .h svg{width:28px;height:28px;color:var(--accent)}
 .wirebox .h b{display:block;font:800 16px/1.2 var(--display);font-stretch:110%;text-transform:uppercase;color:var(--text)}
 .wirebox .h span{font-size:12.5px;color:var(--muted)}
-.wirebox .h em{margin-left:auto;font:500 10px/1 var(--sans);font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:#15110a;background:var(--gold);padding:7px 10px}
+.wirebox .h em{margin-left:auto;font:500 10px/1 var(--sans);font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:var(--on-gold);background:var(--gold);padding:7px 10px}
 .wirebox ol{margin:0 0 0 18px;display:grid;gap:8px}
 .wirebox li{font-size:14px;color:var(--text-2);line-height:1.6;padding-left:4px}
 .wirebox li::marker{color:var(--accent)}
@@ -50,7 +50,7 @@ legend span{width:30px;height:30px;border-radius:50%;display:inline-flex;align-i
 .ln:last-child{border-bottom:0}
 .ln .th{position:relative;width:70px;height:84px;background:var(--tile);border:1px solid var(--line);overflow:visible}
 .ln .th .kpa,.ln .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ln .th .qb{position:absolute;top:-8px;right:-8px;z-index:2;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--gold);color:#15110a;
+.ln .th .qb{position:absolute;top:-8px;right:-8px;z-index:2;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--gold);color:var(--on-gold);
   font:600 11px/22px var(--sans);text-align:center}
 .ln .nm{font:600 15px/1.3 var(--sans);color:var(--text)}
 .ln .fn{font-size:12px;color:var(--muted);margin-top:2px}
@@ -63,9 +63,9 @@ legend span{width:30px;height:30px;border-radius:50%;display:inline-flex;align-i
 .promo button{height:46px;padding:0 18px;border:1px solid var(--line-3);font:500 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--text);transition:all .3s}
 .promo button:hover{border-color:var(--text);background:var(--text);color:var(--bg)}
 .promomsg{padding:0 26px 12px;font-size:13px}
-.quick-promo{display:block;width:calc(100% - 52px);margin:0 26px 16px;padding:11px 14px;border:1px dashed var(--gold);background:rgba(201,168,106,.1);
+.quick-promo{display:block;width:calc(100% - 52px);margin:0 26px 16px;padding:11px 14px;border:1px dashed var(--gold);background:rgba(43,89,227,.07);
   font-size:13px;color:var(--text);text-align:left;transition:background .3s}
-.quick-promo:hover{background:rgba(201,168,106,.2)}
+.quick-promo:hover{background:rgba(43,89,227,.14)}
 .quick-promo b{color:var(--accent)}
 .promomsg.ok{color:var(--ok)}.promomsg.no{color:var(--bad)}
 .tots{padding:18px 26px 24px;border-top:1px solid var(--line)}
@@ -90,13 +90,13 @@ legend span{width:30px;height:30px;border-radius:50%;display:inline-flex;align-i
   transform:translateY(24px);transition:transform .6s var(--ease-out)}
 .wire.on .wcard{transform:none}
 .wcard .x{position:absolute;top:14px;right:14px}
-.wcard .tick{width:58px;height:58px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:#15110a;margin-bottom:20px}
+.wcard .tick{width:58px;height:58px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--on-gold);margin-bottom:20px}
 .wcard .tick svg{width:26px;height:26px}
 .wcard h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:10px}
 .wcard .lede{font-size:14.5px;margin-bottom:26px}
 .refs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
 .refs > div{padding:16px 18px;border:1px solid var(--line-2);background:var(--surface-2)}
-.refs > div.hi{border-color:var(--gold);background:rgba(200,166,103,.08)}
+.refs > div.hi{border-color:var(--gold);background:rgba(43,89,227,.06)}
 .refs .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .refs .v{font-size:22px;font-weight:800;color:var(--text);letter-spacing:.04em;font-variant-numeric:tabular-nums}
 .refs .hi .v{color:var(--gold-2)}
@@ -107,8 +107,8 @@ legend span{width:30px;height:30px;border-radius:50%;display:inline-flex;align-i
 .bank .v{font-size:14.5px;font-weight:600;color:var(--text);word-break:break-word}
 .bank .cp{height:30px;padding:0 12px;border:1px solid var(--line-2);font:500 10px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text-2);transition:all .3s}
 .bank .cp:hover{border-color:var(--text);color:var(--text)}
-.bank .cp.done{background:var(--gold);border-color:var(--gold);color:#15110a}
-.warn{padding:16px 18px;border-left:2px solid var(--gold);background:rgba(200,166,103,.06);font-size:13.5px;color:var(--text-2);line-height:1.7;margin-bottom:24px}
+.bank .cp.done{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.warn{padding:16px 18px;border-left:2px solid var(--gold);background:rgba(43,89,227,.05);font-size:13.5px;color:var(--text-2);line-height:1.7;margin-bottom:24px}
 .warn b{color:var(--text);font-weight:500}
 .wacts{display:flex;gap:12px;flex-wrap:wrap}
 .wacts .btn{flex:1 1 220px}
