@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0a1830">
+<meta name="theme-color" content="#0b0a09">
 <title>Orders — KINGPIN LUX Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f3f6fb;--surface:#fff;--surface-2:#fafbfe;--ink:#0a1830;--ink-2:#33405a;--muted:#6b7896;--muted-2:#9aa6bd;
-  --line:#e3e8f1;--line-2:#eef1f7;--blue:#1357d6;--blue-deep:#0c3a96;--blue-tint:#e9f1ff;
+  --bg:#f6f4f0;--surface:#fff;--surface-2:#faf8f4;--ink:#15130f;--ink-2:#3d3932;--muted:#746d63;--muted-2:#a39b8f;
+  --line:#e6e1d8;--line-2:#efebe4;--blue:#15130f;--blue-deep:#2b2721;--blue-tint:#f4ede0;--gold:#c9a86a;
   --ok:#1a9e5f;--ok-tint:#e6f7ef;--warn:#b5760a;--warn-tint:#fff4de;--bad:#c0233b;--bad-tint:#fde9ec;
-  --serif:'Fraunces',Georgia,serif;--sans:'Manrope',-apple-system,Segoe UI,sans-serif;
+  --serif:'Archivo',Arial,sans-serif;--sans:'Archivo',-apple-system,Segoe UI,sans-serif;
   --r:14px;--shadow:0 10px 30px -18px rgba(12,40,96,.35);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -23,8 +23,8 @@ button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
 .wrap{max-width:1120px;margin:0 auto;padding:0 18px}
-h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacing:-.01em}
-.crown{width:28px;height:20px;color:var(--blue)}
+h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:800;font-stretch:110%;letter-spacing:-.01em}
+.crown{width:28px;height:20px;color:var(--gold)}
 
 /* login */
 .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -45,11 +45,13 @@ h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacin
 .top{background:var(--ink);color:#dfe6f5;position:sticky;top:0;z-index:20}
 .top .wrap{display:flex;align-items:center;gap:12px;height:60px}
 .top .brand{display:flex;align-items:center;gap:9px;color:#fff;text-decoration:none}
-.top .brand b{font-family:var(--serif);font-size:17px;letter-spacing:.12em}
-.top .brand span{font-size:10px;letter-spacing:.2em;color:#9cc0ff;font-weight:800}
-.top .brand .crown{color:#9cc0ff}
+.top .brand b{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:19px;letter-spacing:.3em}
+.top .brand span{font-size:10px;letter-spacing:.2em;color:#dcc085;font-weight:800}
+.top .brand .crown{color:var(--gold)}
 .top .sp{flex:1}
-.top .upd{font-size:11.5px;color:#8fa1c2}
+.top .upd{font-size:11.5px;color:#9a9083}
+.top .tb.store{background:var(--gold);border-color:var(--gold);color:#15110a}
+.top .tb.store:hover{background:#dcc086}
 .top .tb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:7px 13px;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;gap:6px;align-items:center}
 .top .tb:hover{background:rgba(255,255,255,.16)}
 
@@ -125,6 +127,14 @@ h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacin
 .feed h2 .btn{padding:5px 10px;font-size:11px}
 .ev{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-2)}
 .ev:last-child{border-bottom:none}
+.subs-h{margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
+.subs-h .c{font-size:12px;font-weight:800;color:var(--muted);background:#eef1f7;border-radius:999px;padding:3px 9px}
+.subacts{display:flex;gap:8px;margin:4px 0 10px}
+.subacts .btn{padding:6px 11px;font-size:11.5px}
+.sub{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-2);font-size:13px}
+.sub:last-child{border-bottom:none}
+.sub .e{font-weight:700;color:var(--ink);word-break:break-all}
+.sub .w{font-size:11.5px;color:var(--muted);white-space:nowrap}
 .ev .i{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
 .ev .i.placed{background:var(--blue-tint);color:var(--blue)}
 .ev .i.paid{background:var(--ok-tint);color:var(--ok)}
@@ -140,6 +150,7 @@ h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacin
 
 .top .tb{white-space:nowrap}
 @media(max-width:900px){
+  .top .upd{display:none}
   .grid{grid-template-columns:1fr}
   .feed{position:static}
   .feed .ev:nth-child(n+7){display:none}      /* orders come first on a phone; keep the feed short */
@@ -150,6 +161,7 @@ h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacin
   .top .upd,.top .brand span{display:none}
   .top .wrap{gap:8px}
   .top .tb{padding:7px 11px}
+  .top .tb.store .lg{display:none}
   .stat .v{font-size:23px}
 }
 </style>
@@ -177,6 +189,7 @@ h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacin
       <a class="brand" href="/" target="_blank" rel="noopener"><svg class="crown"><use href="#crown"/></svg><b>KINGPIN</b><span>ADMIN</span></a>
       <div class="sp"></div>
       <span class="upd" id="updated"></span>
+      <a class="tb store" href="/admin/store"><span class="lg">Products &amp; </span>Website</a>
       <button class="tb" id="refreshBtn" type="button">↻ Refresh</button>
       <button class="tb" id="logoutBtn" type="button">Log out</button>
     </div>
@@ -203,6 +216,9 @@ h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacin
       <aside class="feed" aria-label="Store news">
         <h2>What's new <button class="btn btn-ghost" id="alertsBtn" type="button" hidden>🔔 Alerts</button></h2>
         <div id="feed"></div>
+        <h2 class="subs-h">Email list <span class="c" id="subCount">0</span></h2>
+        <div class="subacts"><button class="btn btn-ghost" id="subCopy" type="button">Copy emails</button><button class="btn btn-ghost" id="subCsv" type="button">Download CSV</button></div>
+        <div id="subs"></div>
       </aside>
     </div>
   </main>
@@ -216,7 +232,7 @@ h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;letter-spacin
 const $=s=>document.querySelector(s);
 const SEEN_KEY="kp_admin_seen";
 const POLL_MS=30000;
-let orders=[], activity=[], filter="all", query="", open=new Set(), knownRefs=null, seenAt=loadSeen(), timer=null, busy=false;
+let orders=[], activity=[], subs=[], filter="all", query="", open=new Set(), knownRefs=null, seenAt=loadSeen(), timer=null, busy=false;
 
 /* ---------- small helpers ---------- */
 function el(tag, props, ...kids){
@@ -294,7 +310,7 @@ async function load(first, manual){
     $("#setupNotice").hidden=true;
 
     const fresh = knownRefs ? r.orders.filter(o=>!knownRefs.has(o.ref)) : [];
-    orders=r.orders; activity=r.activity||[];
+    orders=r.orders; activity=r.activity||[]; subs=r.subscribers||[];
     knownRefs=new Set(orders.map(o=>o.ref));
     if(fresh.length) announce(fresh);
     if(first && !seenAt && !orders.length) saveSeen(new Date().toISOString());
@@ -342,7 +358,7 @@ const views={
   shipped: {label:"Shipped",          test:o=>o.status.shipped},
 };
 
-function render(){ renderNew(); renderStats(); renderTabs(); renderList(); renderFeed(); }
+function render(){ renderNew(); renderStats(); renderTabs(); renderList(); renderFeed(); renderSubs(); }
 
 function renderNew(){
   const n=orders.filter(isNew).length;
@@ -487,6 +503,33 @@ function renderFeed(){
         el("div",{class:"w",text:ago(ev.t)})));
   }));
 }
+
+/* ---------- email list: site sign-ups + customers who ticked the box at checkout ---------- */
+function emailList(){
+  const seen=new Map();
+  subs.forEach(x=>seen.set(x.email,{email:x.email,at:x.at,source:x.source||"site"}));
+  orders.filter(o=>o.customer.optin).forEach(o=>{
+    const e=o.customer.email.toLowerCase();
+    if(!seen.has(e)) seen.set(e,{email:e,at:o.placedAt,source:"checkout"});
+  });
+  return [...seen.values()].sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));
+}
+function renderSubs(){
+  const list=emailList();
+  $("#subCount").textContent=String(list.length);
+  if(!list.length){ $("#subs").replaceChildren(el("p",{class:"mini",style:"color:var(--muted);font-size:12.5px",text:"People who join the email list on the site, or tick the box at checkout, appear here."})); return; }
+  $("#subs").replaceChildren(...list.slice(0,12).map(x=>el("div",{class:"sub"},
+    el("span",{class:"e",text:x.email}), el("span",{class:"w",text:ago(x.at)+" · "+x.source}))),
+    list.length>12 ? el("p",{class:"mini",style:"color:var(--muted);font-size:12px;margin-top:6px",text:`+ ${list.length-12} more in the CSV`}) : null);
+}
+$("#subCopy").onclick=()=>{ const l=emailList(); if(!l.length) return toast("No emails yet"); copy(l.map(x=>x.email).join(", "),l.length+" emails copied"); };
+$("#subCsv").onclick=()=>{
+  const l=emailList(); if(!l.length) return toast("No emails yet");
+  const NL=String.fromCharCode(10);
+  const csv="email,joined,source"+NL+l.map(x=>[x.email,x.at,x.source].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join(NL);
+  const a=el("a",{href:URL.createObjectURL(new Blob([csv],{type:"text/csv"})),download:"kingpin-email-list.csv"});
+  document.body.append(a); a.click(); a.remove();
+};
 
 /* ---------- boot ---------- */
 setInterval(()=>{ if(!$("#appView").hidden){ renderList(); renderFeed(); } },60000);   // keep "x min ago" fresh

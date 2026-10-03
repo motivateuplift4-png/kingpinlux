@@ -9,14 +9,14 @@ function send(res, status, obj) {
 
 // Vercel pre-parses JSON bodies into objects and leaves text/plain as a string;
 // fall back to reading the stream when neither happened.
-async function readJson(req) {
+async function readJson(req, max = MAX_BODY) {
   let raw = req.body;
   if (raw === undefined) {
     raw = await new Promise((resolve, reject) => {
       let data = '';
       req.on('data', (c) => {
         data += c;
-        if (data.length > MAX_BODY) { reject(new Error('too large')); req.destroy(); }
+        if (data.length > max) { reject(new Error('too large')); req.destroy(); }
       });
       req.on('end', () => resolve(data));
       req.on('error', reject);
@@ -24,11 +24,11 @@ async function readJson(req) {
   }
   if (Buffer.isBuffer(raw)) raw = raw.toString('utf8');
   if (typeof raw === 'string') {
-    if (raw.length > MAX_BODY) throw new Error('too large');
+    if (raw.length > max) throw new Error('too large');
     return raw ? JSON.parse(raw) : {};
   }
   if (raw && typeof raw === 'object') {
-    if (JSON.stringify(raw).length > MAX_BODY) throw new Error('too large');
+    if (JSON.stringify(raw).length > max) throw new Error('too large');
     return raw;
   }
   return {};

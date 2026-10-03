@@ -1,10 +1,12 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" }
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/admin/store", "destination": "/manage.html" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
   ],
   "headers": [
     {
-      "source": "/admin(.html)?",
+      "source": "/(admin|admin.html|admin/store|manage.html)",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
         { "key": "X-Frame-Options", "value": "DENY" },

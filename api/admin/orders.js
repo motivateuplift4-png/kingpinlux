@@ -1,4 +1,4 @@
-// GET /api/admin/orders — every order (newest first) plus the activity feed.
+// GET /api/admin/orders — every order (newest first), the activity feed and the email list.
 const kv = require('../_lib/kv');
 const { send } = require('../_lib/http');
 const { isAdmin, adminPassword } = require('../_lib/auth');
@@ -16,7 +16,9 @@ module.exports = async (req, res) => {
     const raw = refs.length ? await kv.cmd('MGET', ...refs.map((r) => `order:${r}`)) : [];
     const orders = raw.filter(Boolean).map((s) => JSON.parse(s));
     const activity = ((await kv.cmd('LRANGE', 'activity', 0, 49)) || []).map((s) => JSON.parse(s));
-    return send(res, 200, { ok: true, serverTime: new Date().toISOString(), orders, activity });
+    const subscribers = ((await kv.cmd('HVALS', 'subscribers')) || []).map((s) => JSON.parse(s))
+      .sort((a, b) => Date.parse(b.at) - Date.parse(a.at));
+    return send(res, 200, { ok: true, serverTime: new Date().toISOString(), orders, activity, subscribers });
   } catch (err) {
     console.error('[orders]', err);
     return send(res, 500, { ok: false, error: 'server error' });

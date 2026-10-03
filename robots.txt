@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /manage.html
+Disallow: /checkout.html
+Disallow: /api/admin/
+Disallow: /api/order
+Disallow: /api/subscribe
+
+Sitemap: https://kingpinlux.vercel.app/sitemap.xml

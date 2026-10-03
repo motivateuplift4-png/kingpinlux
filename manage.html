@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0a09">
+<title>Store manager | KINGPIN LUX Admin</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0a09'/%3E%3Cpath fill='%23c9a86a' d='M8 46h48l-3.5-19-10.5 9.5L32 18 22 36.5 11.5 27 8 46z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+body{font-size:14.5px}
+.mtop{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line)}
+.mtop .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.mtop .logo{flex-direction:row;gap:10px}
+.mtop .logo .nm{font-size:19px}
+.mtop .logo .sb{display:none}
+.mtop .tag{font:700 10px/1 var(--sans);letter-spacing:.2em;color:var(--accent);padding:5px 8px;border:1px solid rgba(201,168,106,.4)}
+.mtabs{display:flex;gap:4px;margin-left:18px}
+.mtabs a,.mtabs button{height:38px;padding:0 14px;display:flex;align-items:center;font:600 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);border-radius:19px;transition:background .25s,color .25s}
+.mtabs a:hover,.mtabs button:hover{color:var(--text)}
+.mtabs .on{background:var(--surface-3);color:var(--text)}
+.mtop .sp{flex:1}
+.mtop .tb{height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:18px;font:600 12px/1 var(--sans);color:var(--text-2);transition:all .25s}
+.mtop .tb:hover{border-color:var(--gold);color:var(--text)}
+.mtop .tb svg{width:15px;height:15px}
+
+.mwrap{max-width:1180px;margin:0 auto;padding:28px var(--gut) 140px}
+.mh{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.mh h1{font-size:clamp(28px,3.4vw,40px)}
+.mh p{color:var(--muted);margin-top:6px;max-width:620px}
+.notice{padding:14px 18px;border-left:3px solid var(--gold);background:var(--surface);margin-bottom:20px;font-size:14px;line-height:1.6;color:var(--text-2)}
+.notice b{color:var(--text)}
+
+/* product list */
+.tools-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.tools-row input[type=search]{flex:1;min-width:200px;height:44px;padding:0 16px;border:1px solid var(--line-2);border-radius:22px;background:var(--surface);outline:none;font-size:14px}
+.tools-row input[type=search]:focus{border-color:var(--text)}
+.plist{background:var(--surface);border:1px solid var(--line)}
+.prow{display:grid;grid-template-columns:64px 1fr 110px 190px 150px;gap:16px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);transition:background .2s}
+.prow:last-child{border-bottom:0}
+.prow:hover{background:var(--surface-2)}
+.pth{position:relative;width:64px;height:76px;overflow:hidden;background:var(--tile);border:1px solid var(--line)}
+.pth img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pinfo b{display:block;font-size:15px;color:var(--text);font-weight:700}
+.pinfo span{font-size:12.5px;color:var(--muted)}
+.pprice{font-weight:800;color:var(--text);font-size:15px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font:700 10px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:6px 8px;border-radius:12px;background:var(--surface-3);color:var(--text-2)}
+.pill.live{background:#e3f1e8;color:var(--ok)}
+.pill.hid{background:#eee9e1;color:var(--muted)}
+.pill.so{background:#f6e3df;color:var(--bad)}
+.pill.ph0{background:#fbf0d9;color:#8a5d10}
+.pacts{display:flex;gap:6px;justify-content:flex-end}
+.ib2{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line-2);border-radius:17px;color:var(--text-2);transition:all .2s;background:var(--surface)}
+.ib2:hover{border-color:var(--text);color:var(--text)}
+.ib2[disabled]{opacity:.3;pointer-events:none}
+.ib2 svg{width:15px;height:15px}
+.empty-list{padding:50px 20px;text-align:center;color:var(--muted)}
+
+/* editor drawer */
+.ed{position:fixed;top:0;right:0;bottom:0;z-index:80;width:min(600px,100%);background:var(--bg);display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .45s var(--ease-out);box-shadow:0 0 80px rgba(0,0,0,.3)}
+.ed.on{transform:none}
+.ed-hd{height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--line);background:var(--surface)}
+.ed-hd h3{font-size:18px}
+.ed-body{flex:1;overflow-y:auto;padding:22px}
+.ed-ft{padding:14px 22px;border-top:1px solid var(--line);background:var(--surface);display:flex;gap:10px}
+.ed-ft .btn{flex:1;height:48px}
+.box{background:var(--surface);border:1px solid var(--line);padding:20px;margin-bottom:16px}
+.box h4{font:800 13px/1.2 var(--display);font-stretch:110%;text-transform:uppercase;color:var(--text);margin-bottom:6px}
+.box .hint{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.55}
+.box .field:last-child{margin-bottom:0}
+.field textarea{width:100%;min-height:110px;padding:12px 16px;background:var(--surface);border:1px solid var(--line-2);border-radius:2px;font-size:14.5px;line-height:1.6;outline:none;resize:vertical;color:var(--text)}
+.field textarea:focus{border-color:var(--text)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.prevcard{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin-bottom:16px}
+.prevcard .pm{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--tile);border:1px solid var(--line)}
+.prevcard .pm img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.prevcard b{display:block;font-size:17px;color:var(--text)}
+.prevcard span{font-size:13px;color:var(--muted)}
+.prevcard .pr{font-weight:800;color:var(--text);font-size:16px;margin-top:6px}
+
+/* photos */
+.phs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:12px}
+.ph{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--tile);border:1px solid var(--line)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph .main{position:absolute;top:6px;left:6px;font:700 9px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;background:#15130f;color:#f5f0e8;padding:5px 6px}
+.ph .acts{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:6px;background:linear-gradient(to top,rgba(8,7,6,.7),transparent)}
+.ph .acts button{width:26px;height:26px;border-radius:13px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;color:#15130f}
+.ph .acts button svg{width:13px;height:13px}
+.ph .acts button[disabled]{opacity:.3}
+.ph.loading::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.6) linear-gradient(100deg,transparent 30%,rgba(255,255,255,.8) 50%,transparent 70%) 0 0/200% 100%;animation:shim 1.1s linear infinite}
+.ph.loading span{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text)}
+@keyframes shim{to{background-position:-200% 0}}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:22px;border:1.5px dashed var(--line-3);text-align:center;cursor:pointer;
+  font-size:14px;color:var(--text-2);transition:all .25s;background:var(--surface-2)}
+.drop:hover,.drop.over{border-color:var(--gold);background:rgba(201,168,106,.08);color:var(--text)}
+.drop svg{width:26px;height:26px;color:var(--accent)}
+.drop u{font-weight:700}
+.drop small{font-size:12px;color:var(--muted)}
+
+/* switches */
+.sws2{display:grid;gap:12px}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer}
+.switch span b{display:block;font-size:14px;color:var(--text)}
+.switch span small{font-size:12.5px;color:var(--muted)}
+.switch input{position:absolute;opacity:0;pointer-events:none}
+.switch i{position:relative;flex-shrink:0;width:44px;height:26px;border-radius:13px;background:var(--line-3);transition:background .25s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s var(--ease-out);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.switch input:checked + i{background:#15130f}
+.switch input:checked + i::after{transform:translateX(18px)}
+.switch input:focus-visible + i{outline:2px solid var(--gold);outline-offset:2px}
+.danger{margin-top:6px;font-size:13px;font-weight:700;color:var(--bad);padding:10px 0}
+.danger:hover{text-decoration:underline}
+
+/* site content */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.slot{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--tile);border:1.5px dashed var(--line-3);display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted);cursor:pointer;text-align:center;padding:8px}
+.slot:hover{border-color:var(--gold);color:var(--text)}
+.slot svg{width:22px;height:22px}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slot.has{border-style:solid;border-color:var(--line)}
+.slot .rm{position:absolute;top:6px;right:6px;z-index:2;width:28px;height:28px;border-radius:14px;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;color:#15130f}
+.slot .rm svg{width:13px;height:13px}
+.lbk{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:12px}
+.lbk .it{background:var(--surface-2);border:1px solid var(--line)}
+.lbk .ph{border:0}
+.lbk input{width:100%;height:38px;border:0;border-top:1px solid var(--line);padding:0 10px;font-size:13px;background:var(--surface);outline:none}
+.revrow{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.revrow:last-child{border-bottom:0}
+.revrow .t{flex:1;min-width:0}
+.revrow .t b{font-size:14px;color:var(--text)}
+.revrow .t p{font-size:13px;color:var(--text-2);margin-top:4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.revrow .t small{font-size:12px;color:var(--muted)}
+.honest{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:#fbf0d9;color:#6b4a0c;font-size:13px;line-height:1.55;margin-bottom:14px}
+.honest svg{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+
+/* modal (reviews) */
+.modal{position:fixed;inset:0;z-index:90;background:rgba(8,7,6,.55);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.modal.on{opacity:1;visibility:visible}
+.modal .card2{width:100%;max-width:560px;background:var(--bg);padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.modal h3{font-size:20px;margin-bottom:16px}
+
+/* save bar */
+.savebar{position:fixed;left:50%;bottom:20px;z-index:70;transform:translate(-50%,160%);display:flex;align-items:center;gap:14px;padding:12px 12px 12px 20px;
+  background:#15130f;color:#f5f0e8;border-radius:34px;box-shadow:0 20px 50px rgba(0,0,0,.35);transition:transform .45s var(--ease-out);max-width:calc(100% - 24px)}
+.savebar.on{transform:translate(-50%,0)}
+.savebar .msg{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.savebar .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.savebar .btn{height:42px;padding:0 20px;border-radius:21px;font-size:11.5px}
+.savebar .ghost{color:#cfc7ba;font-size:12.5px;font-weight:600;padding:0 6px}
+.savebar .ghost:hover{color:#fff}
+
+/* login */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.lcard{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--line-2);padding:34px 30px;text-align:center}
+.lcard .logo{margin-bottom:18px}
+.lcard h1{font-size:22px;margin-bottom:6px}
+.lcard p{color:var(--muted);font-size:13.5px;margin-bottom:20px}
+.lcard .err{color:var(--bad);font-size:13px;font-weight:600;min-height:18px;margin-top:12px}
+
+@media (max-width:980px){
+  .prow{grid-template-columns:56px 1fr auto;grid-template-areas:"t i a" "t p s"}
+  .prow .pth{grid-area:t;width:56px;height:68px}.prow .pinfo{grid-area:i}.prow .pprice{grid-area:p;font-size:14px}.prow .pills{grid-area:s;justify-content:flex-end}.prow .pacts{grid-area:a}
+  .grid2{grid-template-columns:1fr}
+  .mtabs{margin-left:0}
+  .mtop .tb span{display:none}
+}
+@media (max-width:900px){
+  .savebar{left:12px;right:12px;transform:translateY(160%)}
+  .savebar.on{transform:none}
+  .savebar .msg{flex:1}
+}
+@media (max-width:640px){
+  .mtop .tag{display:none}
+  .mtabs a,.mtabs button{padding:0 10px;font-size:11px}
+  .f2{grid-template-columns:1fr}
+  .prow .pacts .ib2.mv{display:none}
+  .savebar{left:12px;right:12px;transform:translateY(160%)}
+  .savebar.on{transform:none}
+  .savebar .msg{flex:1}
+}
+</style>
+<script src="/assets/catalog.js"></script>
+<script>
+/* keep pristine copies of the built-in catalogue before the shared script decorates it */
+window.KP_DEFAULT_PRODUCTS = JSON.parse(JSON.stringify(window.KP_PRODUCTS));
+window.KP_DEFAULT_CONFIG = JSON.parse(JSON.stringify(window.KP_CONFIG));
+</script>
+<script src="/assets/site.js"></script>
+</head>
+<body>
+
+<section class="login" id="loginView" hidden>
+  <form class="lcard" id="loginForm">
+    <a class="logo" href="/" aria-label="KINGPIN LUX"><svg viewBox="0 0 64 44" aria-hidden="true" style="width:30px;color:var(--gold)"><path fill="currentColor" d="M4 40h56l-4-22-12 11L32 8 20 29 8 18 4 40z"/></svg><span class="nm">KINGPIN</span><span class="sb">LUX</span></a>
+    <h1>Store manager</h1>
+    <p>Log in with your admin password to manage products, photos and the website.</p>
+    <label class="field"><span class="sr">Password</span><input id="pw" type="password" autocomplete="current-password" placeholder="Admin password" required></label>
+    <button class="btn btn-dark btn-block" id="loginBtn" type="submit">Log in</button>
+    <div class="err" id="loginErr" role="alert"></div>
+  </form>
+</section>
+
+<div id="appView" hidden>
+  <header class="mtop dark">
+    <div class="wrap">
+      <a class="logo" href="/" target="_blank" rel="noopener" aria-label="View the store"><svg viewBox="0 0 64 44" aria-hidden="true" style="width:24px;color:var(--gold)"><path fill="currentColor" d="M4 40h56l-4-22-12 11L32 8 20 29 8 18 4 40z"/></svg><span class="nm">KINGPIN</span></a>
+      <span class="tag">ADMIN</span>
+      <nav class="mtabs" aria-label="Admin">
+        <a href="/admin">Orders</a>
+        <button type="button" data-tab="products" class="on">Products</button>
+        <button type="button" data-tab="site">Website</button>
+      </nav>
+      <span class="sp"></span>
+      <a class="tb" href="/" target="_blank" rel="noopener" id="viewStore"><span>View store</span></a>
+      <button class="tb" type="button" id="logoutBtn" aria-label="Log out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg><span>Log out</span></button>
+    </div>
+  </header>
+
+  <main class="mwrap">
+    <div class="notice" id="firstNotice" hidden></div>
+
+    <!-- PRODUCTS -->
+    <section id="tab-products">
+      <div class="mh">
+        <div><h1>Products</h1><p>Add watches, upload photos, set prices and choose what shows on the site. Changes go live when you press <b>Save</b>.</p></div>
+        <button class="btn btn-gold" type="button" id="addProduct"></button>
+      </div>
+      <div class="tools-row">
+        <input type="search" id="pSearch" placeholder="Search by name or number" aria-label="Search products">
+        <div class="squick" style="margin:0" id="pFilters"></div>
+      </div>
+      <div class="plist" id="plist"></div>
+    </section>
+
+    <!-- WEBSITE -->
+    <section id="tab-site" hidden>
+      <div class="mh"><div><h1>Website</h1><p>Photos, contact details, the promo code, reviews and what the home page features.</p></div></div>
+      <div class="grid2">
+        <div>
+          <div class="box">
+            <h4>Home page hero photos</h4>
+            <p class="hint">Up to 3 photos shown side by side at the top of the home page (one at a time on phones). Portrait photos with the watch in the upper middle work best. Leave empty to show the illustrated watches.</p>
+            <div class="slots" id="heroSlots"></div>
+          </div>
+          <div class="box">
+            <h4>Spotlight watch</h4>
+            <p class="hint">One watch featured in a large panel on the home page, with an Add to bag button.</p>
+            <label class="field"><span class="sr">Spotlight watch</span><select data-s="featuredId" id="featuredSel"></select></label>
+          </div>
+          <div class="box">
+            <h4>Lookbook</h4>
+            <p class="hint">Photos of your watches on the wrist or out in the world. Shown on the home page once you add 3 or more. Only use photos you own or have permission to use.</p>
+            <div class="lbk" id="lookList"></div>
+            <label class="drop" id="lookDrop"><input type="file" accept="image/*" multiple hidden id="lookFiles"><span id="lookDropIcon"></span>Add lookbook photos: drop them here or <u>browse</u></label>
+          </div>
+        </div>
+        <div>
+          <div class="box">
+            <h4>Contact details</h4>
+            <p class="hint">Shown in the footer, on product pages, at checkout and as a WhatsApp chat button. Leave a field empty to hide it.</p>
+            <label class="field"><span>Email</span><input type="email" data-s="contact.email" placeholder="concierge@yourdomain.com" autocomplete="off"></label>
+            <label class="field"><span>WhatsApp number, with country code</span><input type="tel" data-s="contact.whatsapp" placeholder="447700900123" autocomplete="off"></label>
+            <label class="field"><span>Instagram handle</span><input data-s="contact.instagram" placeholder="kingpinlux" autocomplete="off"></label>
+          </div>
+          <div class="box">
+            <h4>Promo code</h4>
+            <p class="hint">Shown in the top bar, on product cards and at checkout. Your order system accepts exactly this code.</p>
+            <div class="sws2" style="margin-bottom:14px"><label class="switch"><span><b>Promo on</b><small>Turn off to hide it everywhere and stop the code working</small></span><input type="checkbox" id="promoOn"><i></i></label></div>
+            <div class="f2" id="promoFields">
+              <label class="field"><span>Code</span><input data-s="promo.code" placeholder="KINGPIN10" autocomplete="off" style="text-transform:uppercase"></label>
+              <label class="field"><span>Discount %</span><input type="number" min="1" max="90" data-s="promo.percent" placeholder="10"></label>
+            </div>
+          </div>
+          <div class="box">
+            <h4>Customer reviews</h4>
+            <div class="honest" id="honest"></div>
+            <div id="revList"></div>
+            <button class="btn btn-line btn-sm" type="button" id="addReview" style="margin-top:12px">Add a review</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- product editor -->
+<aside class="ed" id="ed" aria-hidden="true" aria-label="Edit product">
+  <div class="ed-hd"><h3 id="edTitle">Edit product</h3><button class="x" type="button" data-ed="close" aria-label="Close"></button></div>
+  <div class="ed-body" id="edBody"></div>
+  <div class="ed-ft"><button class="btn btn-line" type="button" data-ed="duplicate">Duplicate</button><button class="btn btn-dark" type="button" data-ed="close">Done</button></div>
+</aside>
+<div class="scrim" id="edScrim"></div>
+
+<!-- review form -->
+<div class="modal" id="revModal" role="dialog" aria-modal="true" aria-labelledby="revH">
+  <form class="card2" id="revForm">
+    <h3 id="revH">Review</h3>
+    <div class="f2">
+      <label class="field"><span>Customer name</span><input name="name" maxlength="60" required placeholder="e.g. Marcus D."></label>
+      <label class="field"><span>Location (optional)</span><input name="place" maxlength="60" placeholder="e.g. London"></label>
+    </div>
+    <div class="f2">
+      <label class="field"><span>Rating</span><select name="rating"><option value="5">5 stars</option><option value="4">4 stars</option><option value="3">3 stars</option><option value="2">2 stars</option><option value="1">1 star</option></select></label>
+      <label class="field"><span>Date</span><input name="date" type="date"></label>
+    </div>
+    <label class="field"><span>Watch they bought (optional)</span><select name="productId" id="revProd"></select></label>
+    <label class="field"><span>What they said</span><textarea name="text" maxlength="800" required placeholder="Their words, as they wrote them"></textarea></label>
+    <div class="field"><span>Photo (optional)</span><div class="slots" style="grid-template-columns:120px"><div class="slot" id="revImgSlot"></div></div></div>
+    <label class="check" style="margin:16px 0 20px"><input type="checkbox" name="genuine" required> This is a genuine review from a real customer, in their own words.</label>
+    <div style="display:flex;gap:10px"><button class="btn btn-line" type="button" id="revCancel" style="flex:1">Cancel</button><button class="btn btn-dark" type="submit" style="flex:1">Save review</button></div>
+  </form>
+</div>
+
+<input type="file" accept="image/*" hidden id="oneFile">
+
+<div class="savebar" id="savebar" role="status"><span class="dot"></span><span class="msg" id="saveMsg">Unsaved changes</span>
+  <button class="ghost" type="button" id="discardBtn">Discard</button><button class="btn btn-gold" type="button" id="saveBtn">Save changes</button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span></div>
+
+<script>
+(function(){
+"use strict";
+var $=KP.$, $$=KP.$$, I=KP.icon, esc=KP.esc, money=KP.money, C=KP.collections;
+document.body.insertAdjacentHTML("afterbegin", KP.defsHTML());
+
+var FINISH=[["white","Iced White"],["yellow","Yellow"],["rose","Rose"],["twoy","Two-Tone Yellow"],["twor","Two-Tone Rose"]];
+var SHAPE=[["round","Round"],["cushion","Cushion"],["octagon","Octagon"],["square","Square"]];
+var DIAL=[["pave","Full pavé"],["black","Black"],["blue","Blue"],["skeleton","Skeleton"],["roman","Roman numerals"],["arabic","Arabic numerals"],["chrono","Chronograph"]];
+var label=function(list,k){ for(var i=0;i<list.length;i++) if(list[i][0]===k) return list[i][1]; return k; };
+
+var S=null, savedJSON=null, neverSaved=false, editing=null, filter="all", query="", busySave=false;
+var uploading={}, lookUp=0, lastPromo=null, listTimer=null;
+function renderListSoon(){ clearTimeout(listTimer); listTimer=setTimeout(renderList,180); }
+
+/* ---------- helpers ---------- */
+function toast(m){ var t=$("#toast"); $("#toastMsg").textContent=m; t.classList.add("on"); clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove("on")},2800); }
+function api(path,opts){
+  opts=opts||{};
+  return fetch(path,{credentials:"same-origin",method:opts.method||"GET",body:opts.body,
+    headers:opts.body?{"Content-Type":"application/json"}:{}})
+    .then(function(r){ return r.json().catch(function(){return {}}).then(function(j){ j.status=r.status; return j; }); });
+}
+function find(id){ for(var i=0;i<S.products.length;i++) if(S.products[i].id===id) return S.products[i]; return null; }
+function opts(list,cur){ return list.map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===cur?" selected":"")+">"+esc(o[1])+"</option>"; }).join(""); }
+function dirty(){ return neverSaved || JSON.stringify(S)!==savedJSON; }
+function syncSaveBar(){
+  var d=dirty();
+  $("#savebar").classList.toggle("on",d);
+  $("#saveMsg").textContent=neverSaved?"Not saved yet":"Unsaved changes";
+  $("#discardBtn").hidden=neverSaved;
+}
+function changed(){ syncSaveBar(); }
+window.addEventListener("beforeunload",function(e){ if(S&&dirty()&&!neverSaved){ e.preventDefault(); e.returnValue=""; } });
+
+/* ---------- photo processing: shrink + compress in the browser ---------- */
+function shrink(file){
+  return createImageBitmap(file,{imageOrientation:"from-image"}).then(function(bmp){
+    var max=1600, q=0.86;
+    function attempt(n){
+      var scale=Math.min(1,max/Math.max(bmp.width,bmp.height));
+      var w=Math.round(bmp.width*scale), h=Math.round(bmp.height*scale);
+      var c=document.createElement("canvas"); c.width=w; c.height=h;
+      var ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,w,h); ctx.drawImage(bmp,0,0,w,h);
+      return new Promise(function(res){ c.toBlob(res,"image/webp",q); }).then(function(b){
+        if(!b||b.type!=="image/webp") return new Promise(function(res){ c.toBlob(res,"image/jpeg",q); });
+        return b;
+      }).then(function(b){
+        if(b.size>1200000&&n<5){ max=Math.round(max*0.82); q-=0.06; return attempt(n+1); }
+        return {blob:b,w:w,h:h};
+      });
+    }
+    return attempt(0);
+  },function(){ throw new Error("This photo format isn't supported. Use JPG, PNG or WebP (on iPhone: Settings → Camera → Formats → Most Compatible)."); });
+}
+function toB64(blob){ return new Promise(function(res,rej){ var r=new FileReader(); r.onload=function(){ res(String(r.result).split(",")[1]); }; r.onerror=rej; r.readAsDataURL(blob); }); }
+function upload(file){
+  if(!/^image\//.test(file.type||"image/")) return Promise.reject(new Error(file.name+" is not an image"));
+  return shrink(file).then(function(x){
+    return toB64(x.blob).then(function(data){
+      return api("/api/admin/upload",{method:"POST",body:JSON.stringify({type:x.blob.type,data:data,w:x.w,h:x.h,name:file.name})});
+    });
+  }).then(function(r){
+    if(r.status===401){ showLogin("Your session expired. Log in again, then re-add the photo."); throw new Error("login required"); }
+    if(!r.ok) throw new Error(r.error||"upload failed");
+    return r.url;
+  });
+}
+function pick(multiple,cb){
+  var inp=$("#oneFile"); inp.multiple=!!multiple; inp.value="";
+  inp.onchange=function(){ cb(Array.prototype.slice.call(inp.files)); };
+  inp.click();
+}
+function wireDrop(zone,input,onFiles){
+  input.addEventListener("change",function(){ onFiles(Array.prototype.slice.call(input.files)); input.value=""; });
+  ["dragenter","dragover"].forEach(function(ev){ zone.addEventListener(ev,function(e){ e.preventDefault(); zone.classList.add("over"); }); });
+  ["dragleave","drop"].forEach(function(ev){ zone.addEventListener(ev,function(e){ e.preventDefault(); zone.classList.remove("over"); }); });
+  zone.addEventListener("drop",function(e){ onFiles(Array.prototype.slice.call(e.dataTransfer.files||[])); });
+}
+
+/* ---------- load ---------- */
+function fromDefaults(){
+  var cfg=window.KP_DEFAULT_CONFIG;
+  return {
+    products:window.KP_DEFAULT_PRODUCTS.map(function(p){
+      return {id:p.id,name:p.name,price:p.price||cfg.price||900,coll:p.coll,shape:p.shape,dial:p.dial,finish:p.finish,
+        tags:p.tags||[],images:p.images||[],desc:p.desc||"",caseSize:"",movement:"",status:"live",soldOut:false};
+    }),
+    settings:{contact:cfg.contact||{email:"",whatsapp:"",instagram:""},promo:cfg.promo||null,heroImages:cfg.heroImages||[],
+      featuredId:cfg.featuredId||null,lookbook:cfg.lookbook||[],reviews:cfg.reviews||[]}
+  };
+}
+function normalize(cat){
+  var st=cat.settings||{};
+  return {products:cat.products,settings:{contact:Object.assign({email:"",whatsapp:"",instagram:""},st.contact||{}),promo:st.promo||null,
+    heroImages:st.heroImages||[],featuredId:st.featuredId==null?null:st.featuredId,lookbook:st.lookbook||[],reviews:st.reviews||[]}};
+}
+function load(){
+  return api("/api/admin/store").then(function(r){
+    if(r.status===401) return showLogin();
+    if(r.status===503){ showLogin(r.error==="admin password not set"?"The admin password isn't set on the server yet.":"Storage isn't connected yet. See the README."); return; }
+    if(!r.ok) throw new Error(r.error||"couldn't load");
+    neverSaved=!r.catalog;
+    S=normalize(r.catalog||fromDefaults());
+    savedJSON=JSON.stringify(S);
+    $("#loginView").hidden=true; $("#appView").hidden=false;
+    $("#firstNotice").hidden=!neverSaved;
+    $("#firstNotice").innerHTML="<b>Welcome.</b> This is your current catalogue. Press <b>Save</b> once to start managing it from here; after that, every change you save appears on the site within about a minute.";
+    renderAll(); syncSaveBar();
+  }).catch(function(e){ toast("Couldn't load: "+e.message); });
+}
+function showLogin(msg){
+  $("#appView").hidden=true; $("#loginView").hidden=false;
+  $("#loginErr").textContent=msg||""; setTimeout(function(){ $("#pw").focus(); },50);
+}
+$("#loginForm").addEventListener("submit",function(e){
+  e.preventDefault(); var b=$("#loginBtn"); b.disabled=true; $("#loginErr").textContent="";
+  api("/api/admin/login",{method:"POST",body:JSON.stringify({password:$("#pw").value})}).then(function(r){
+    b.disabled=false;
+    if(r.ok){ $("#pw").value=""; if(S){ $("#loginView").hidden=true; $("#appView").hidden=false; toast("Logged in. Your unsaved changes are still here."); } else load(); }
+    else $("#loginErr").textContent=r.status===503?"The admin password isn't set on the server yet.":(r.error||"Couldn't log in");
+  }).catch(function(){ b.disabled=false; $("#loginErr").textContent="Network problem. Try again."; });
+});
+$("#logoutBtn").addEventListener("click",function(){
+  if(dirty()&&!neverSaved&&!confirm("You have unsaved changes. Log out anyway?")) return;
+  api("/api/admin/logout",{method:"POST",body:"{}"}).then(function(){ S=null; showLogin(); });
+});
+
+/* ---------- tabs ---------- */
+$$(".mtabs [data-tab]").forEach(function(b){ b.addEventListener("click",function(){
+  $$(".mtabs [data-tab]").forEach(function(x){ x.classList.toggle("on",x===b); });
+  $("#tab-products").hidden=b.dataset.tab!=="products"; $("#tab-site").hidden=b.dataset.tab!=="site";
+  window.scrollTo(0,0);
+}); });
+
+/* ---------- product list ---------- */
+$("#addProduct").innerHTML=I.plus+"Add product";
+$("#pFilters").innerHTML=[["all","All"],["live","On site"],["hidden","Hidden"],["soldout","Sold out"],["nophoto","No photos"]]
+  .map(function(f){ return '<button class="chip'+(f[0]==="all"?" on":"")+'" type="button" data-f="'+f[0]+'">'+f[1]+"</button>"; }).join("");
+$("#pFilters").addEventListener("click",function(e){ var b=e.target.closest("[data-f]"); if(!b) return; filter=b.dataset.f;
+  $$("#pFilters .chip").forEach(function(x){ x.classList.toggle("on",x===b); }); renderList(); });
+$("#pSearch").addEventListener("input",function(){ query=this.value.trim().toLowerCase(); renderList(); });
+
+function matches(p){
+  if(filter==="live"&&p.status==="hidden") return false;
+  if(filter==="hidden"&&p.status!=="hidden") return false;
+  if(filter==="soldout"&&!p.soldOut) return false;
+  if(filter==="nophoto"&&p.images.length) return false;
+  return !query||(p.name+" #"+p.id+" "+p.id).toLowerCase().indexOf(query)>-1;
+}
+function thumb(p){ return KP.media(p,{sparkles:0,scale:1.15}); }
+function renderList(){
+  var list=S.products.filter(matches), canMove=filter==="all"&&!query;
+  if(!list.length){ $("#plist").innerHTML='<div class="empty-list">No products match.</div>'; return; }
+  $("#plist").innerHTML=list.map(function(p){
+    var i=S.products.indexOf(p), c=KP.coll(p.coll)||{};
+    var pills=(p.status==="hidden"?'<span class="pill hid">Hidden</span>':'<span class="pill live">On site</span>')+
+      (p.soldOut?'<span class="pill so">Sold out</span>':"")+(p.images.length?"":'<span class="pill ph0">No photos</span>');
+    return '<div class="prow" data-id="'+p.id+'"><div class="pth">'+thumb(p)+'</div>'+
+      '<div class="pinfo"><b>'+esc(p.name)+"</b><span>"+esc(c.name||"")+" &middot; "+esc(label(FINISH,p.finish))+" &middot; #"+p.id+"</span></div>"+
+      '<div class="pprice">'+money(p.price)+'</div><div class="pills">'+pills+"</div>"+
+      '<div class="pacts"><button class="ib2 mv" type="button" data-mv="-1" title="Move up"'+(canMove&&i>0?"":" disabled")+">"+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>'+
+      '<button class="ib2 mv" type="button" data-mv="1" title="Move down"'+(canMove&&i<S.products.length-1?"":" disabled")+">"+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M6 13l6 6 6-6"/></svg></button>'+
+      '<button class="btn btn-dark btn-sm" type="button" data-edit>Edit</button></div></div>';
+  }).join("");
+}
+$("#plist").addEventListener("click",function(e){
+  var row=e.target.closest(".prow"); if(!row) return;
+  var id=+row.dataset.id, mv=e.target.closest("[data-mv]");
+  if(mv){ var i=S.products.indexOf(find(id)), j=i+(+mv.dataset.mv); if(j<0||j>=S.products.length) return;
+    var t=S.products[i]; S.products[i]=S.products[j]; S.products[j]=t; renderList(); changed(); return; }
+  openEditor(id);
+});
+$("#addProduct").addEventListener("click",function(){
+  var id=Math.max.apply(null,[29].concat(S.products.map(function(p){return p.id})))+1;
+  S.products.unshift({id:id,name:"New watch",price:(KP.config.price||900),coll:"classic",shape:"round",dial:"pave",finish:"white",
+    tags:["new"],images:[],desc:"",caseSize:"",movement:"",status:"live",soldOut:false});
+  renderList(); changed(); openEditor(id);
+});
+
+/* ---------- product editor ---------- */
+function field(lbl,inner){ return '<label class="field"><span>'+lbl+"</span>"+inner+"</label>"; }
+function sw(key,title,small,on){ return '<label class="switch"><span><b>'+title+"</b><small>"+small+'</small></span><input type="checkbox" data-t="'+key+'"'+(on?" checked":"")+"><i></i></label>"; }
+function openEditor(id){
+  var p=find(id); if(!p) return; editing=id;
+  $("#edTitle").textContent="#"+p.id+" "+p.name;
+  $("#edBody").innerHTML=
+    '<div class="prevcard" id="edPrev"></div>'+
+    '<div class="box"><h4>Photos</h4><p class="hint">The first photo is the main one; the second shows when shoppers hover. Square or portrait photos with the watch centred look best. Big photos are shrunk automatically.</p>'+
+      '<div class="phs" id="edPhotos"></div>'+
+      '<label class="drop" id="edDrop"><input type="file" accept="image/*" multiple hidden id="edFiles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M7 9l5-5 5 5M4 16v4h16v-4"/></svg>'+
+      "<span>Drop photos here or <u>browse</u></span><small>JPG, PNG or WebP</small></label></div>"+
+    '<div class="box"><h4>Details</h4>'+
+      field("Name",'<input data-p="name" maxlength="80" value="'+esc(p.name)+'">')+
+      '<div class="f2">'+field("Price (USD)",'<input data-p="price" type="number" min="1" step="any" value="'+esc(p.price)+'">')+
+        field("Collection","<select data-p=\"coll\">"+opts(C.map(function(c){return [c.key,c.name+" · "+c.label]}),p.coll)+"</select>")+"</div>"+
+      '<div class="f2">'+field("Finish","<select data-p=\"finish\">"+opts(FINISH,p.finish)+"</select>")+
+        field("Case shape","<select data-p=\"shape\">"+opts(SHAPE,p.shape)+"</select>")+"</div>"+
+      field("Dial","<select data-p=\"dial\">"+opts(DIAL,p.dial)+"</select>")+
+      field("Description (optional)",'<textarea data-p="desc" maxlength="1200" placeholder="Leave empty to use the standard KINGPIN description">'+esc(p.desc)+"</textarea>")+
+      '<div class="f2">'+field("Case size (optional)",'<input data-p="caseSize" maxlength="40" placeholder="e.g. 41 mm" value="'+esc(p.caseSize||"")+'">')+
+        field("Movement (optional)",'<input data-p="movement" maxlength="40" placeholder="e.g. Automatic" value="'+esc(p.movement||"")+'">')+"</div>"+
+      '<p class="hint" style="margin:0">Watches with the same collection, case shape and dial are grouped as one design with colour swatches.</p></div>'+
+    '<div class="box"><h4>On the site</h4><div class="sws2">'+
+      sw("live","Show on site","Hidden watches can't be seen or bought",p.status!=="hidden")+
+      sw("soldOut","Sold out","Still shown, but can't be added to the bag",p.soldOut)+
+      sw("new","“New” label","Badge on the card; listed under New in",p.tags.indexOf("new")>-1)+
+      sw("best","Signature piece","Featured in the home page grid",p.tags.indexOf("best")>-1)+
+    "</div></div>"+
+    '<button class="danger" type="button" data-ed="delete">Delete this product</button>';
+  renderEdPrev(p); renderEdPhotos(p);
+  wireDrop($("#edDrop"),$("#edFiles"),function(files){ addPhotos(p,files); });
+  $("#ed").classList.add("on"); $("#ed").setAttribute("aria-hidden","false"); $("#edScrim").classList.add("on");
+}
+function closeEditor(){ editing=null; $("#ed").classList.remove("on"); $("#ed").setAttribute("aria-hidden","true"); $("#edScrim").classList.remove("on"); }
+function renderEdPrev(p){
+  var c=KP.coll(p.coll)||{};
+  $("#edPrev").innerHTML='<div class="pm">'+thumb(p)+"</div><div><span>"+esc(c.label||"")+" &middot; "+esc(label(FINISH,p.finish))+"</span><b>"+esc(p.name)+'</b><div class="pr">'+money(p.price)+"</div></div>";
+}
+function renderEdPhotos(p){
+  var up=uploading[p.id]||0;
+  $("#edPhotos").innerHTML=p.images.map(function(src,i){
+    return '<div class="ph" data-i="'+i+'"><img src="'+esc(src)+'" alt="">'+(i===0?'<span class="main">Main</span>':"")+
+      '<div class="acts"><button type="button" data-ph="-1" title="Move left"'+(i?"":" disabled")+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>'+
+      '<button type="button" data-ph="x" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
+      '<button type="button" data-ph="1" title="Move right"'+(i<p.images.length-1?"":" disabled")+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div></div>';
+  }).join("")+new Array(up+1).join('<div class="ph loading"><span>Uploading…</span></div>');
+}
+function addPhotos(p,files){
+  files=files.slice(0,12-p.images.length);
+  if(!files.length) return toast("12 photos is the maximum per product");
+  uploading[p.id]=(uploading[p.id]||0)+files.length; renderEdPhotos(p);
+  files.reduce(function(chain,f){
+    return chain.then(function(){ return upload(f).then(function(url){ p.images.push(url); },function(e){ toast(e.message); })
+      .then(function(){ uploading[p.id]--; if(editing===p.id){ renderEdPhotos(p); renderEdPrev(p); } renderList(); changed(); }); });
+  },Promise.resolve());
+}
+$("#edBody").addEventListener("click",function(e){
+  var b=e.target.closest("[data-ph]"); if(!b) return;
+  e.preventDefault();
+  var p=find(editing), i=+b.closest(".ph").dataset.i, a=b.dataset.ph;
+  if(a==="x") p.images.splice(i,1);
+  else { var j=i+(+a); var t=p.images[i]; p.images[i]=p.images[j]; p.images[j]=t; }
+  renderEdPhotos(p); renderEdPrev(p); renderList(); changed();
+});
+$("#edBody").addEventListener("input",function(e){
+  var p=find(editing), el=e.target; if(!p) return;
+  if(el.dataset.p){
+    var k=el.dataset.p; p[k]=k==="price"?Math.max(0,Number(el.value)||0):el.value;
+    if(k==="name") $("#edTitle").textContent="#"+p.id+" "+p.name;
+  } else if(el.dataset.t){
+    var t=el.dataset.t;
+    if(t==="live") p.status=el.checked?"live":"hidden";
+    else if(t==="soldOut") p.soldOut=el.checked;
+    else { p.tags=p.tags.filter(function(x){return x!==t}); if(el.checked) p.tags.push(t); }
+  } else return;
+  renderEdPrev(p); renderListSoon(); changed();
+});
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-ed]"); if(!b) return;
+  var a=b.dataset.ed, p=find(editing);
+  if(a==="close") return closeEditor();
+  if(a==="delete"&&p){
+    if(!confirm("Delete “"+p.name+"”? It disappears from the site when you save. Past orders keep its name.")) return;
+    S.products.splice(S.products.indexOf(p),1);
+    if(S.settings.featuredId===p.id) S.settings.featuredId=null;
+    closeEditor(); renderAll(); changed(); toast("Deleted. Press Save to publish.");
+  }
+  if(a==="duplicate"&&p){
+    var id=Math.max.apply(null,[29].concat(S.products.map(function(x){return x.id})))+1;
+    var copy=JSON.parse(JSON.stringify(p)); copy.id=id; copy.name=p.name+" (copy)"; copy.images=[];
+    S.products.splice(S.products.indexOf(p)+1,0,copy);
+    renderList(); changed(); openEditor(id); toast("Copied. Change the finish and add its photos.");
+  }
+});
+$("#edScrim").addEventListener("click",closeEditor);
+document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ if($("#revModal").classList.contains("on")) closeReview(); else if(editing) closeEditor(); } });
+$("#ed .x").innerHTML=I.close;
+
+/* ---------- website settings ---------- */
+function get(path){ return path.split(".").reduce(function(o,k){ return o==null?o:o[k]; },S.settings); }
+function set(path,v){ var ks=path.split("."), o=S.settings; for(var i=0;i<ks.length-1;i++){ if(o[ks[i]]==null) o[ks[i]]={}; o=o[ks[i]]; } o[ks[ks.length-1]]=v; }
+function renderSite(){
+  $$("[data-s]").forEach(function(el){ if(el.id==="featuredSel") return; var v=get(el.dataset.s); el.value=v==null?"":v; });
+  var on=!!S.settings.promo; $("#promoOn").checked=on; $("#promoFields").style.opacity=on?1:.4;
+  $$("#promoFields input").forEach(function(i){ i.disabled=!on; });
+  $("#featuredSel").innerHTML='<option value="">Automatic (first signature piece)</option>'+S.products.filter(function(p){return p.status!=="hidden"})
+    .map(function(p){ return '<option value="'+p.id+'"'+(p.id===S.settings.featuredId?" selected":"")+">"+esc(p.name)+" (#"+p.id+")</option>"; }).join("");
+  renderHero(); renderLook(); renderReviews();
+}
+document.addEventListener("input",function(e){
+  var el=e.target; if(!el.dataset||!el.dataset.s||!S) return;
+  var k=el.dataset.s, v=el.value;
+  if(k==="featuredId") v=v?+v:null;
+  if(k==="promo.percent") v=Math.round(Number(v))||"";
+  if(k==="promo.code") v=v.toUpperCase().replace(/[^A-Z0-9]/g,"");
+  set(k,v); changed();
+});
+$("#featuredSel").addEventListener("change",function(){ S.settings.featuredId=this.value?+this.value:null; changed(); });
+$("#promoOn").addEventListener("change",function(){
+  if(this.checked) S.settings.promo=lastPromo||{code:"KINGPIN10",percent:10};
+  else { lastPromo=S.settings.promo; S.settings.promo=null; }
+  renderSite(); changed();
+});
+
+function slotHTML(src,i,lbl){
+  return src?'<div class="slot has" data-slot="'+i+'"><img src="'+esc(src)+'" alt=""><button class="rm" type="button" data-rm="'+i+'" title="Remove">'+I.close+"</button></div>"
+            :'<div class="slot" data-slot="'+i+'" role="button" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>'+lbl+"</div>";
+}
+function renderHero(){
+  var h=S.settings.heroImages;
+  $("#heroSlots").innerHTML=[0,1,2].map(function(i){ return slotHTML(h[i],i,"Photo "+(i+1)); }).join("");
+}
+document.addEventListener("keydown",function(e){ if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("slot")){ e.preventDefault(); e.target.click(); } });
+$("#heroSlots").addEventListener("click",function(e){
+  var rm=e.target.closest("[data-rm]");
+  if(rm){ S.settings.heroImages.splice(+rm.dataset.rm,1); renderHero(); changed(); return; }
+  var slot=e.target.closest(".slot"); if(!slot||slot.classList.contains("has")) return;
+  pick(false,function(files){ if(!files[0]) return;
+    slot.innerHTML="<span>Uploading…</span>"; slot.classList.add("loading");
+    upload(files[0]).then(function(url){ S.settings.heroImages.push(url); S.settings.heroImages=S.settings.heroImages.slice(0,3); changed(); },function(e){ toast(e.message); })
+      .then(renderHero);
+  });
+});
+
+function renderLook(){
+  var l=S.settings.lookbook;
+  $("#lookList").innerHTML=l.map(function(x,i){
+    return '<div class="it" data-i="'+i+'"><div class="ph"><img src="'+esc(x.src)+'" alt="">'+
+      '<div class="acts"><button type="button" data-lk="-1"'+(i?"":" disabled")+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>'+
+      '<button type="button" data-lk="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
+      '<button type="button" data-lk="1"'+(i<l.length-1?"":" disabled")+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div></div>'+
+      '<input data-cap="'+i+'" maxlength="80" placeholder="Caption (optional)" value="'+esc(x.caption||"")+'"></div>';
+  }).join("")+new Array(lookUp+1).join('<div class="it"><div class="ph loading"><span>Uploading…</span></div></div>');
+}
+$("#lookList").addEventListener("click",function(e){
+  var b=e.target.closest("[data-lk]"); if(!b) return;
+  var i=+b.closest(".it").dataset.i, a=b.dataset.lk, l=S.settings.lookbook;
+  if(a==="x") l.splice(i,1); else { var j=i+(+a), t=l[i]; l[i]=l[j]; l[j]=t; }
+  renderLook(); changed();
+});
+$("#lookList").addEventListener("input",function(e){ var c=e.target.dataset.cap; if(c==null) return; S.settings.lookbook[+c].caption=e.target.value; changed(); });
+$("#lookDropIcon").outerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M7 9l5-5 5 5M4 16v4h16v-4"/></svg>';
+wireDrop($("#lookDrop"),$("#lookFiles"),function(files){
+  files=files.slice(0,24-S.settings.lookbook.length);
+  lookUp+=files.length; renderLook();
+  files.reduce(function(chain,f){ return chain.then(function(){
+    return upload(f).then(function(url){ S.settings.lookbook.push({src:url,caption:""}); },function(e){ toast(e.message); })
+      .then(function(){ lookUp--; renderLook(); changed(); });
+  }); },Promise.resolve());
+});
+
+/* ---------- reviews ---------- */
+$("#honest").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.1"/></svg>'+
+  "<span>Only add real reviews from real customers, in their own words. Invented or edited reviews are illegal in the US, UK and EU, and shoppers can usually tell. The reviews section appears on the site once you add one.</span>";
+var revEdit=-1, revImg=null;
+function renderReviews(){
+  var r=S.settings.reviews;
+  $("#revList").innerHTML=r.length?r.map(function(x,i){
+    return '<div class="revrow"><div class="t">'+KP.stars(x.rating)+" <b>"+esc(x.name)+"</b>"+(x.place?' <small>&middot; '+esc(x.place)+"</small>":"")+"<p>"+esc(x.text)+"</p></div>"+
+      '<button class="ib2" type="button" data-rv="'+i+'" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg></button>'+
+      '<button class="ib2" type="button" data-rd="'+i+'" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13"/></svg></button></div>';
+  }).join(""):'<p class="hint" style="margin:0">No reviews yet.</p>';
+}
+function renderRevImg(){ $("#revImgSlot").outerHTML=slotHTML(revImg,0,"Add photo").replace('class="slot','id="revImgSlot" class="slot'); }
+function openReview(i){
+  revEdit=i; var r=i>-1?S.settings.reviews[i]:{name:"",place:"",rating:5,date:new Date().toISOString().slice(0,10),text:"",productId:null,img:null};
+  var f=$("#revForm"); f.name.value=r.name; f.place.value=r.place||""; f.rating.value=String(r.rating); f.date.value=r.date||""; f.text.value=r.text; f.genuine.checked=i>-1;
+  $("#revProd").innerHTML='<option value="">Not linked to a watch</option>'+S.products.map(function(p){ return '<option value="'+p.id+'"'+(p.id===r.productId?" selected":"")+">"+esc(p.name)+"</option>"; }).join("");
+  revImg=r.img||null; renderRevImg();
+  $("#revH").textContent=i>-1?"Edit review":"Add a review";
+  $("#revModal").classList.add("on"); setTimeout(function(){ f.name.focus(); },60);
+}
+function closeReview(){ $("#revModal").classList.remove("on"); }
+$("#addReview").addEventListener("click",function(){ openReview(-1); });
+$("#revCancel").addEventListener("click",closeReview);
+$("#revModal").addEventListener("click",function(e){
+  if(e.target===$("#revModal")) return closeReview();
+  if(e.target.closest("#revImgSlot [data-rm]")){ revImg=null; renderRevImg(); return; }
+  var slot=e.target.closest("#revImgSlot"); if(!slot||revImg) return;
+  pick(false,function(files){ if(!files[0]) return; slot.innerHTML="<span>Uploading…</span>";
+    upload(files[0]).then(function(url){ revImg=url; },function(e){ toast(e.message); }).then(renderRevImg); });
+});
+$("#revList").addEventListener("click",function(e){
+  var ed=e.target.closest("[data-rv]"), del=e.target.closest("[data-rd]");
+  if(ed) openReview(+ed.dataset.rv);
+  if(del&&confirm("Delete this review?")){ S.settings.reviews.splice(+del.dataset.rd,1); renderReviews(); changed(); }
+});
+$("#revForm").addEventListener("submit",function(e){
+  e.preventDefault(); var f=e.target;
+  var r={name:f.name.value.trim(),place:f.place.value.trim(),rating:+f.rating.value,date:f.date.value,text:f.text.value.trim(),
+    productId:f.productId.value?+f.productId.value:null,img:revImg};
+  if(revEdit>-1) S.settings.reviews[revEdit]=r; else S.settings.reviews.unshift(r);
+  closeReview(); renderReviews(); changed(); toast("Review added. Press Save to publish.");
+});
+
+/* ---------- save ---------- */
+function clean(){ return JSON.parse(JSON.stringify(S)); }
+$("#saveBtn").addEventListener("click",function(){
+  if(busySave) return;
+  var busyUp=lookUp>0||Object.keys(uploading).some(function(k){return uploading[k]>0});
+  if(busyUp) return toast("Wait for the photos to finish uploading");
+  busySave=true; var b=$("#saveBtn"); b.classList.add("busy"); b.textContent="Saving…";
+  var body=clean();
+  api("/api/admin/store",{method:"POST",body:JSON.stringify({products:body.products,settings:body.settings})}).then(function(r){
+    if(r.status===401){ showLogin("Your session expired. Log in and press Save again: your changes are still here."); return; }
+    if(!r.ok) return toast("Not saved: "+(r.error||"try again"));
+    neverSaved=false; S=normalize(r.catalog); savedJSON=JSON.stringify(S);
+    $("#firstNotice").hidden=true; renderAll(); syncSaveBar();
+    toast("Saved. Live on the site within about a minute.");
+  }).catch(function(){ toast("Network problem: not saved. Try again."); })
+  .then(function(){ busySave=false; b.classList.remove("busy"); b.textContent="Save changes"; });
+});
+$("#discardBtn").addEventListener("click",function(){
+  if(!confirm("Discard all unsaved changes?")) return;
+  S=JSON.parse(savedJSON); closeEditor(); renderAll(); syncSaveBar();
+});
+
+function renderAll(){ renderList(); renderSite(); }
+$("#viewStore").setAttribute("aria-label","View store"); $("#viewStore").insertAdjacentHTML("afterbegin",'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></svg>');
+load();
+})();
+</script>
+</body>
+</html>

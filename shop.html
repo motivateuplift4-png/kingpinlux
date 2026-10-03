@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All Watches | KINGPIN LUX</title>
+<meta name="description" content="Shop every KINGPIN LUX iced-out watch: skeleton, cushion, octagon, chronograph, square and classic, hand-set with VVS moissanite.">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0a09'/%3E%3Cpath fill='%23c9a86a' d='M8 46h48l-3.5-19-10.5 9.5L32 18 22 36.5 11.5 27 8 46z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.filters{position:sticky;top:var(--hd);z-index:20;background:rgba(246,244,240,.97);border-bottom:1px solid var(--line)}
+.filters .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:14px 0;min-width:0}
+.chips .chip{padding:0 15px}
+.chips::-webkit-scrollbar{display:none}
+.chips .chip{flex-shrink:0;cursor:pointer}
+.fright{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.fins{display:flex;gap:6px}
+@media (max-width:1560px){.count{display:none}}
+.fins button{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px 0 10px;border:1px solid var(--line-2);border-radius:20px;background:var(--surface);
+  font:600 11.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);transition:all .3s}
+.fins button:hover{border-color:var(--text);color:var(--text)}
+.fins button.on{border-color:var(--text);box-shadow:inset 0 0 0 1px var(--text);color:var(--text)}
+.fins .sw{width:16px;height:16px;pointer-events:none}
+.fins .sw::after{display:none}
+.sort{margin:0}
+.sort select{height:40px;min-width:150px;font-size:12px;font-weight:600;letter-spacing:.06em;border-radius:20px;padding:0 40px 0 16px;
+  background-position:calc(100% - 20px) 17px,calc(100% - 15px) 17px}
+.count{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.shop{padding:clamp(34px,4vw,56px) 0 clamp(80px,10vw,120px)}
+#shopGrid{transition:opacity .3s var(--ease)}
+#shopGrid.fade{opacity:0}
+.empty{text-align:center;padding:80px 0}
+.empty h3{font-size:30px;margin-bottom:10px}
+.empty p{color:var(--muted);margin-bottom:24px}
+.assist{margin-top:clamp(70px,9vw,110px);display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border:1px solid var(--line)}
+.assist > div{padding:30px 32px;border-left:1px solid var(--line)}
+.assist > div:first-child{border-left:0}
+.assist svg{width:28px;height:28px;color:var(--accent);margin-bottom:14px}
+.assist b{display:block;font:800 16px/1.2 var(--display);font-stretch:110%;text-transform:uppercase;color:var(--text);margin-bottom:8px}
+.assist p{font-size:14px;color:var(--muted);line-height:1.7}
+.assist a{color:var(--text);font-weight:600;border-bottom:1px solid var(--line-3)}
+@media (max-width:1040px){
+  .filters .wrap{flex-direction:column;align-items:stretch;gap:0;padding-bottom:12px}
+  .fright{justify-content:space-between}
+  .fins{overflow-x:auto;scrollbar-width:none}
+}
+@media (max-width:900px){
+  .assist{grid-template-columns:1fr}
+  .assist > div{border-left:0;border-top:1px solid var(--line)}
+  .assist > div:first-child{border-top:0}
+}
+@media (max-width:560px){
+  .fins button{padding:0 10px 0 8px;font-size:10.5px}
+  .count{display:none}
+}
+@media (max-width:1360px) and (min-width:1041px){.fins button{font-size:0;gap:0;padding:0 11px}.fins .sw{width:18px;height:18px}}
+</style>
+<script src="assets/catalog.js"></script>
+<script src="/api/catalog"></script>
+<script src="assets/site.js"></script>
+</head>
+<body>
+<script>KP.header("shop")</script>
+
+<main id="main">
+  <section class="page-hd compact">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><i></i><a href="shop.html">Watches</a><i id="crumbSep" hidden></i><span id="crumbColl"></span></nav>
+      <span class="eyebrow" id="shopEyebrow">Hand-set VVS moissanite</span>
+      <h1 id="shopTitle">All watches</h1>
+      <p id="shopDesc"></p>
+    </div>
+  </section>
+
+  <div class="filters">
+    <div class="wrap">
+      <div class="chips" id="chips" role="toolbar" aria-label="Filter by collection"></div>
+      <div class="fright">
+        <div class="fins" id="fins" role="toolbar" aria-label="Filter by finish"></div>
+        <label class="field sort"><span class="sr">Sort</span>
+          <select id="sort"><option value="">Featured</option><option value="new">New in</option><option value="az">Name A–Z</option></select>
+        </label>
+        <span class="count" id="count" aria-live="polite"></span>
+      </div>
+    </div>
+  </div>
+
+  <section class="shop">
+    <div class="wrap">
+      <div class="grid" id="shopGrid"></div>
+      <div class="empty" id="empty" hidden><h3>No watches match</h3><p>Try another finish or view the full collection.</p><button class="btn btn-dark" type="button" id="reset">Show all watches</button></div>
+      <div class="assist" id="assist"></div>
+    </div>
+  </section>
+</main>
+
+<script>KP.footer()</script>
+<script>
+(function(){
+var $=KP.$, $$=KP.$$, I=KP.icon, P=KP.products, C=KP.collections, F=KP.finishes;
+var qs=new URLSearchParams(location.search);
+var state={
+  c:C.some(function(c){return c.key===qs.get("c")})?qs.get("c"):"",
+  f:F.some(function(f){return f.key===qs.get("f")})?qs.get("f"):"",
+  s:["new","az"].indexOf(qs.get("s"))>-1?qs.get("s"):""
+};
+$("#sort").value=state.s;
+function has(p,t){return p.tags.indexOf(t)>-1}
+function sorted(list){
+  var l=list.slice();
+  if(state.s==="az") return l.sort(function(a,b){return a.name.localeCompare(b.name)});
+  var tag=state.s==="new"?"new":"best";
+  return l.sort(function(a,b){return (has(b,tag)?1:0)-(has(a,tag)?1:0)});   // stable: catalogue order otherwise
+}
+
+$("#chips").innerHTML='<button type="button" class="chip" data-c="">All</button>'+
+  C.map(function(c){return '<button type="button" class="chip" data-c="'+c.key+'" title="The '+KP.esc(c.name)+'">'+KP.esc(c.name)+"</button>"}).join("");
+$("#fins").innerHTML=F.map(function(f){
+  return '<button type="button" data-f="'+f.key+'" title="'+f.label+'"><span class="sw'+(f.c[1]?" two":"")+'" style="--c1:'+f.c[0]+(f.c[1]?";--c2:"+f.c[1]:"")+'"></span>'+f.label+"</button>";
+}).join("");
+
+function render(animate){
+  var fin=F.filter(function(f){return f.key===state.f})[0];
+  // pieces that match, then one card per design (showing the matching finish)
+  var pieces=P.filter(function(p){return (!state.c||p.coll===state.c)&&(!fin||fin.has(p))});
+  var list=sorted(KP.designs(sorted(pieces)));
+  var c=KP.coll(state.c);
+  $("#shopTitle").innerHTML=(c?"The <em>"+KP.esc(c.name)+"</em>":"All watches")+(fin?" &middot; "+fin.label:"");
+  $("#shopEyebrow").textContent=c?c.label+" collection":"Hand-set VVS moissanite";
+  $("#shopDesc").textContent=(c?c.blurb+" ":"")+"Every piece is set by hand with VVS moissanite and ships free, insured, worldwide.";
+  $("#crumbColl").textContent=c?c.name:""; $("#crumbSep").hidden=!c;
+  document.title=(c?"The "+c.name+" "+c.label+" Watches":"All Watches")+(fin?" in "+fin.label:"")+" | KINGPIN LUX";
+  $$("#chips .chip").forEach(function(b){var on=b.dataset.c===state.c;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+  $$("#fins button").forEach(function(b){var on=b.dataset.f===state.f;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+  $("#count").textContent=list.length+(list.length===1?" design":" designs")+" · "+pieces.length+" pieces";
+  var grid=$("#shopGrid");
+  function paint(){
+    grid.innerHTML=list.map(KP.card).join("");
+    $("#empty").hidden=list.length>0;
+    grid.classList.remove("fade");
+    KP.reveal();
+  }
+  if(animate&&!KP.reduce){grid.classList.add("fade");setTimeout(paint,220);}else paint();
+  var u=new URLSearchParams(); if(state.c)u.set("c",state.c); if(state.f)u.set("f",state.f); if(state.s)u.set("s",state.s);
+  history.replaceState(null,"","shop.html"+(u.toString()?"?"+u:""));
+}
+$("#chips").addEventListener("click",function(e){
+  var b=e.target.closest("[data-c]"); if(!b) return;
+  state.c=b.dataset.c; render(true);
+  b.scrollIntoView({block:"nearest",inline:"center",behavior:KP.reduce?"auto":"smooth"});
+});
+$("#fins").addEventListener("click",function(e){
+  var b=e.target.closest("[data-f]"); if(!b) return;
+  state.f=state.f===b.dataset.f?"":b.dataset.f; render(true);
+});
+$("#sort").addEventListener("change",function(){state.s=this.value;render(true)});
+$("#reset").addEventListener("click",function(){state={c:"",f:"",s:""};$("#sort").value="";render(true)});
+
+$("#assist").innerHTML=[
+  [I.globe,"Delivered insured","Free express shipping, tracked and insured, to any country. <a href=\"info.html#shipping\">Shipping details</a>"],
+  [I.bank,"Pay by bank transfer","Nothing is charged at checkout. Your piece is held 72 hours while your transfer arrives. <a href=\"info.html#payment\">How it works</a>"],
+  [I.returns,"30-day returns","Return it in its original condition with the box and certificate. <a href=\"info.html#returns\">Returns policy</a>"]
+].map(function(h){return '<div class="rv">'+h[0]+"<b>"+h[1]+"</b><p>"+h[2]+"</p></div>"}).join("");
+
+render(false);
+})();
+</script>
+</body>
+</html>

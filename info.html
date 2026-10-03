@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client Care | KINGPIN LUX</title>
+<meta name="description" content="Shipping, returns, lifetime warranty, paying by bank transfer and privacy at KINGPIN LUX.">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0a09'/%3E%3Cpath fill='%23c9a86a' d='M8 46h48l-3.5-19-10.5 9.5L32 18 22 36.5 11.5 27 8 46z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.care{display:grid;grid-template-columns:240px 1fr;gap:clamp(40px,7vw,110px);align-items:start;padding-top:clamp(40px,6vw,70px);padding-bottom:clamp(80px,10vw,120px)}
+.toc{position:sticky;top:calc(var(--hd) + 32px);display:grid;gap:2px;border-left:1px solid var(--line)}
+.toc a{display:block;padding:10px 0 10px 20px;margin-left:-1px;border-left:1px solid transparent;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);transition:color .3s,border-color .3s}
+.toc a:hover{color:var(--text)}
+.toc a.on{color:var(--text);border-left-color:var(--text)}
+.doc section{padding-bottom:56px;margin-bottom:56px;border-bottom:1px solid var(--line);scroll-margin-top:calc(var(--hd) + 30px)}
+.doc section:last-child{border-bottom:0;margin-bottom:0}
+.doc .ic{display:block;width:30px;height:30px;color:var(--accent);margin-bottom:18px}
+.doc h2{font-size:clamp(30px,3.4vw,46px);margin-bottom:18px}
+.doc h3{font:800 15px/1.3 var(--display);font-stretch:110%;text-transform:uppercase;color:var(--text);margin:28px 0 8px}
+.doc p,.doc li{font-size:15.5px;line-height:1.85;color:var(--text-2);max-width:720px}
+.doc p + p{margin-top:14px}
+.doc ul{margin:12px 0 0 20px;display:grid;gap:8px}
+.doc li::marker{color:var(--accent)}
+.doc b{color:var(--text);font-weight:500}
+.doc a{color:var(--text);font-weight:600;border-bottom:1px solid var(--line-3)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--surface);margin:26px 0 6px;max-width:760px}
+.facts div{padding:20px 22px;border-left:1px solid var(--line)}
+.facts div:first-child{border-left:0}
+.facts .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.facts .v{font:700 18px/1.3 var(--sans);color:var(--text)}
+.doc .contacts{margin-top:22px}
+.doc .contacts a{border-bottom:1px solid transparent}
+@media (max-width:900px){
+  .care{grid-template-columns:1fr}
+  .toc{position:static;display:flex;flex-wrap:wrap;gap:8px;border-left:0}
+  .toc a{padding:0 16px;height:38px;display:inline-flex;align-items:center;border:1px solid var(--line-2);margin:0;font-size:10.5px}
+  .toc a.on{border-color:var(--text)}
+  .facts{grid-template-columns:1fr}
+  .facts div{border-left:0;border-top:1px solid var(--line)}
+  .facts div:first-child{border-top:0}
+}
+</style>
+<script src="assets/catalog.js"></script>
+<script src="/api/catalog"></script>
+<script src="assets/site.js"></script>
+</head>
+<body>
+<script>KP.header("care")</script>
+
+<main id="main">
+  <section class="page-hd">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><i></i><span>Client Care</span></nav>
+      <span class="eyebrow">Client care</span>
+      <h1>How we <em>look after you</em></h1>
+      <p>Everything about delivery, returns, your warranty, paying by bank transfer and your data, in plain words.</p>
+    </div>
+  </section>
+
+  <div class="wrap care">
+    <nav class="toc" id="toc" aria-label="On this page">
+      <a href="#shipping">Shipping</a><a href="#returns">Returns</a><a href="#warranty">Warranty</a>
+      <a href="#payment">Payment</a><a href="#contact" data-if-contact hidden>Contact</a><a href="#privacy">Privacy</a>
+    </nav>
+
+    <div class="doc">
+      <section id="shipping">
+        <span class="ic" data-icon="globe"></span>
+        <h2>Shipping &amp; delivery</h2>
+        <p>Every order ships with <b>complimentary express delivery</b>, fully insured and tracked from our hands to yours, to any country.</p>
+        <div class="facts">
+          <div><div class="k">Dispatch</div><div class="v">Within 24 hours of payment</div></div>
+          <div><div class="k">Delivery</div><div class="v">3–6 business days</div></div>
+          <div><div class="k">Cost</div><div class="v">Complimentary</div></div>
+        </div>
+        <h3>Tracking</h3>
+        <p>Your tracking link is emailed the moment your watch leaves us, so you can follow it to your door.</p>
+        <h3>Packaging</h3>
+        <p>Each watch arrives in the signature KINGPIN LUX box with its certificate of authenticity.</p>
+      </section>
+
+      <section id="returns">
+        <span class="ic" data-icon="returns"></span>
+        <h2>Returns</h2>
+        <p>If it isn't right, you can return it within <b>30 days</b> of delivery.</p>
+        <ul>
+          <li>The watch must be in its original condition, with the box and certificate.</li>
+          <li>Contact us first so we can give you the return details.</li>
+          <li>Your refund goes back to the bank account you paid from, usually within 5 business days of the watch reaching us.</li>
+        </ul>
+      </section>
+
+      <section id="warranty">
+        <span class="ic" data-icon="shield"></span>
+        <h2>Lifetime warranty</h2>
+        <p>Your warranty covers <b>stone setting and movement</b> for as long as you own the piece. If a stone loosens or the movement needs attention, we repair or replace it.</p>
+        <p>It doesn't cover accidental damage, or normal wear to the finish over time.</p>
+      </section>
+
+      <section id="payment">
+        <span class="ic" data-icon="bank"></span>
+        <h2>Paying by bank transfer</h2>
+        <p>We accept bank transfer only. Nothing is charged automatically, and no card details are ever entered on this site.</p>
+        <h3>How it works</h3>
+        <ul>
+          <li><b>Place your order</b> with your contact and delivery details. Nothing is charged.</li>
+          <li><b>Get your details:</b> you immediately see our bank details, the exact amount and a unique order reference (KPL-…). You can save or print them.</li>
+          <li><b>Send the transfer</b> from your own bank and put the reference in the transfer description, so we can match it to your order.</li>
+          <li><b>We ship:</b> once the money arrives we confirm by email and dispatch within 24 hours.</li>
+        </ul>
+        <h3>Good to know</h3>
+        <ul>
+          <li>Your order is held for 72 hours while the transfer arrives.</li>
+          <li>Prices are in US dollars. Send the exact amount and choose <b>OUR</b> for bank charges so the full total reaches us.</li>
+          <li>International transfers usually take 1–3 business days to arrive.</li>
+        </ul>
+      </section>
+
+      <section id="contact" data-if-contact hidden>
+        <span class="ic" data-icon="mail"></span>
+        <h2>Contact us</h2>
+        <p>Questions about a piece, your order or delivery to your country? Speak to us directly. We reply personally.</p>
+        <div class="contacts" data-contacts></div>
+      </section>
+
+      <section id="privacy">
+        <span class="ic" data-icon="lock"></span>
+        <h2>Privacy</h2>
+        <p>We only collect what we need to deliver your order, and we never sell your data.</p>
+        <h3>What we collect</h3>
+        <p>When you place an order: your name, email, phone number, delivery address, the pieces you ordered, and whether you asked to hear about new pieces.</p>
+        <h3>Why</h3>
+        <p>To reserve and deliver your order, match your bank transfer to it, and contact you about it. We only send you news and offers if you ticked the box at checkout.</p>
+        <h3>Where it's kept</h3>
+        <p>Our order system runs on Vercel, and order records are stored with Upstash. Your shopping bag and recently viewed watches are saved in your own browser only. This site doesn't use advertising or analytics cookies.</p>
+        <h3>Email list</h3>
+        <p>If you join the KINGPIN list, we keep your email address to send you news about new pieces and offers. Ask us to remove it at any time.</p>
+        <h3>Payments</h3>
+        <p>You pay by transfer from your own bank, so we never see or store card details.</p>
+        <h3>Your choices</h3>
+        <p>You can ask us to show, correct or delete the details we hold about you at any time<span data-if-contact hidden>, using the contact details above</span>.</p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script>KP.footer()</script>
+<script>
+(function(){
+KP.$$("[data-icon]").forEach(function(el){ el.innerHTML=KP.icon[el.getAttribute("data-icon")]||""; });
+/* highlight the section in view */
+var links=KP.$$("#toc a");
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id); });
+    });
+  },{rootMargin:"-30% 0px -60% 0px"});
+  KP.$$(".doc section").forEach(function(s){ io.observe(s); });
+}
+})();
+</script>
+</body>
+</html>
