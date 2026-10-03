@@ -166,10 +166,10 @@ h1 em,h2 em,h3 em{font-family:var(--serif);font-style:italic;font-weight:500;fon
 .scrim{position:fixed;inset:0;z-index:90;background:rgba(8,7,6,.6);opacity:0;visibility:hidden;transition:opacity .45s var(--ease),visibility .45s}
 .scrim.on{opacity:1;visibility:visible}
 .panel{position:fixed;top:0;bottom:0;z-index:95;width:min(440px,100%);background:var(--surface);display:flex;flex-direction:column;
-  transition:transform .55s var(--ease-out);box-shadow:0 0 80px rgba(0,0,0,.35)}
+  visibility:hidden;transition:transform .55s var(--ease-out),visibility 0s .55s;box-shadow:0 0 80px rgba(0,0,0,.35)}
 .panel.right{right:0;transform:translateX(100%)}
 .panel.left{left:0;transform:translateX(-100%)}
-.panel.on{transform:none}
+.panel.on{transform:none;visibility:visible;transition:transform .55s var(--ease-out),visibility 0s}
 .panel-hd{height:72px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line)}
 .panel-hd h3{font-size:22px}
 .panel-hd h3 small{font:600 12px/1 var(--sans);letter-spacing:.1em;color:var(--muted);margin-left:6px}
@@ -267,7 +267,7 @@ h1 em,h2 em,h3 em{font-family:var(--serif);font-style:italic;font-weight:500;fon
 .card:hover .media::after{transform:translateX(70%)}
 .badges{position:absolute;top:12px;left:12px;z-index:2;display:flex}
 .badge{font:700 9.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:7px 9px;background:#15130f;color:#f5f0e8}
-.badge.g{background:var(--gold);color:#15110a}
+.badge.g{background:var(--gold);color:#15110a;letter-spacing:.06em}
 .qadd{position:absolute;left:0;right:0;bottom:0;z-index:2;height:48px;display:flex;align-items:center;justify-content:center;gap:10px;
   background:#15130f;color:#f5f0e8;font:700 11.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;
   transform:translateY(101%);transition:transform .45s var(--ease-out),background .3s,color .3s}
@@ -276,8 +276,9 @@ h1 em,h2 em,h3 em{font-family:var(--serif);font-style:italic;font-weight:500;fon
 .qadd:hover{background:var(--gold);color:#15110a}
 .qadd.done{background:var(--gold);color:#15110a}
 .card .info{padding-top:14px}
-.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:20px}
-.card .cl{font:700 10.5px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.grid > *{min-width:0}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:20px;min-width:0}
+.card .cl{font:700 10.5px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .card h3{font:500 16px/1.35 var(--sans);font-stretch:100%;text-transform:none;letter-spacing:0;margin:8px 0 6px;color:var(--text)}
 .card h3 a{transition:color .3s}
 .card h3 a:hover{color:var(--accent)}
@@ -413,7 +414,6 @@ body:has(.sticky.on) .wa-float{bottom:96px}
 .ft h5{font:700 11.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--text);margin-bottom:20px}
 .fh{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:default;display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left}
 .fh i{display:none}
-.badge .bs{display:none}
 .ft ul{list-style:none;display:grid;gap:11px}
 .ft li a{font-size:14px;color:var(--muted);transition:color .3s}
 .ft li a:hover{color:var(--accent)}
@@ -468,8 +468,6 @@ body:has(.sticky.on) .wa-float{bottom:96px}
   .shead p{font-size:14px}
   .eyebrow{font-size:10.5px;letter-spacing:.2em}
   .lede{font-size:15px}
-  .badge .bl{display:none}
-  .badge .bs{display:inline}
   .crumbs{flex-wrap:nowrap;white-space:nowrap;overflow:hidden;margin-bottom:12px}
   .crumbs span{overflow:hidden;text-overflow:ellipsis;min-width:0}
   .acc summary{padding:17px 0}
@@ -494,6 +492,7 @@ body:has(.sticky.on) .wa-float{bottom:96px}
   .card .pr span{font-size:11px}
   .card .cl{font-size:9.5px;letter-spacing:.12em}
   .sw{width:13px;height:13px}
+  .card .sws{gap:5px}
   .qadd{transform:none;left:auto;right:8px;bottom:8px;width:40px;height:40px;padding:0;border-radius:50%}
   .qadd span{display:none}
   .badges{top:8px;left:8px}

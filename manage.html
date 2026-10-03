@@ -61,14 +61,18 @@ body{font-size:14.5px}
 .empty-list{padding:50px 20px;text-align:center;color:var(--muted)}
 
 /* editor drawer */
-.ed{position:fixed;top:0;right:0;bottom:0;z-index:80;width:min(600px,100%);background:var(--bg);display:flex;flex-direction:column;
+/* layers: dark backdrop 90 < save bar 95 < editor 100 < review form 110 < toast 200 */
+.ed{position:fixed;top:0;right:0;bottom:0;z-index:100;width:min(600px,100%);background:var(--bg);display:flex;flex-direction:column;
   transform:translateX(100%);transition:transform .45s var(--ease-out);box-shadow:0 0 80px rgba(0,0,0,.3)}
 .ed.on{transform:none}
 .ed-hd{height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--line);background:var(--surface)}
 .ed-hd h3{font-size:18px}
 .ed-body{flex:1;overflow-y:auto;padding:22px}
 .ed-ft{padding:14px 22px;border-top:1px solid var(--line);background:var(--surface);display:flex;gap:10px}
-.ed-ft .btn{flex:1;height:48px}
+.ed-ft .btn{flex:1;height:48px;padding:0 12px}
+.ed-ft .btn-gold{flex:1.4}
+/* keep the save bar in view beside the editor */
+@media (min-width:901px){body.editing .savebar{left:calc((100% - 600px) / 2)}}
 .box{background:var(--surface);border:1px solid var(--line);padding:20px;margin-bottom:16px}
 .box h4{font:800 13px/1.2 var(--display);font-stretch:110%;text-transform:uppercase;color:var(--text);margin-bottom:6px}
 .box .hint{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.55}
@@ -141,13 +145,13 @@ body{font-size:14.5px}
 .honest svg{width:18px;height:18px;flex-shrink:0;margin-top:1px}
 
 /* modal (reviews) */
-.modal{position:fixed;inset:0;z-index:90;background:rgba(8,7,6,.55);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.modal{position:fixed;inset:0;z-index:110;background:rgba(8,7,6,.55);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .modal.on{opacity:1;visibility:visible}
 .modal .card2{width:100%;max-width:560px;background:var(--bg);padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
 .modal h3{font-size:20px;margin-bottom:16px}
 
 /* save bar */
-.savebar{position:fixed;left:50%;bottom:20px;z-index:70;transform:translate(-50%,160%);display:flex;align-items:center;gap:14px;padding:12px 12px 12px 20px;
+.savebar{position:fixed;left:50%;bottom:20px;z-index:95;transform:translate(-50%,160%);display:flex;align-items:center;gap:14px;padding:12px 12px 12px 20px;
   background:#15130f;color:#f5f0e8;border-radius:34px;box-shadow:0 20px 50px rgba(0,0,0,.35);transition:transform .45s var(--ease-out);max-width:calc(100% - 24px)}
 .savebar.on{transform:translate(-50%,0)}
 .savebar .msg{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -178,6 +182,14 @@ body{font-size:14.5px}
   .savebar .msg{flex:1}
 }
 @media (max-width:640px){
+  /* two-row top bar so nothing is wider than the phone */
+  .mtop .wrap{flex-wrap:wrap;height:auto;gap:8px 10px;padding-top:10px;padding-bottom:8px}
+  .mtop .logo .nm{font-size:17px;letter-spacing:.28em}
+  .mtabs{order:3;width:100%;overflow-x:auto;scrollbar-width:none;margin:0}
+  .mtabs::-webkit-scrollbar{display:none}
+  .mwrap{padding-top:18px}
+  .mh h1{font-size:28px}
+  .tools-row input[type=search]{min-width:0;width:100%}
   .mtop .tag{display:none}
   .mtabs a,.mtabs button{padding:0 10px;font-size:11px}
   .f2{grid-template-columns:1fr}
@@ -295,7 +307,7 @@ window.KP_DEFAULT_CONFIG = JSON.parse(JSON.stringify(window.KP_CONFIG));
 <aside class="ed" id="ed" aria-hidden="true" aria-label="Edit product">
   <div class="ed-hd"><h3 id="edTitle">Edit product</h3><button class="x" type="button" data-ed="close" aria-label="Close"></button></div>
   <div class="ed-body" id="edBody"></div>
-  <div class="ed-ft"><button class="btn btn-line" type="button" data-ed="duplicate">Duplicate</button><button class="btn btn-dark" type="button" data-ed="close">Done</button></div>
+  <div class="ed-ft"><button class="btn btn-line" type="button" data-ed="duplicate">Duplicate</button><button class="btn btn-line" type="button" data-ed="close">Done</button><button class="btn btn-gold" type="button" data-ed="save">Save &amp; publish</button></div>
 </aside>
 <div class="scrim" id="edScrim"></div>
 
@@ -537,9 +549,9 @@ function openEditor(id){
     '<button class="danger" type="button" data-ed="delete">Delete this product</button>';
   renderEdPrev(p); renderEdPhotos(p);
   wireDrop($("#edDrop"),$("#edFiles"),function(files){ addPhotos(p,files); });
-  $("#ed").classList.add("on"); $("#ed").setAttribute("aria-hidden","false"); $("#edScrim").classList.add("on");
+  $("#ed").classList.add("on"); $("#ed").setAttribute("aria-hidden","false"); $("#edScrim").classList.add("on"); document.body.classList.add("editing");
 }
-function closeEditor(){ editing=null; $("#ed").classList.remove("on"); $("#ed").setAttribute("aria-hidden","true"); $("#edScrim").classList.remove("on"); }
+function closeEditor(){ editing=null; $("#ed").classList.remove("on"); $("#ed").setAttribute("aria-hidden","true"); $("#edScrim").classList.remove("on"); document.body.classList.remove("editing"); }
 function renderEdPrev(p){
   var c=KP.coll(p.coll)||{};
   $("#edPrev").innerHTML='<div class="pm">'+thumb(p)+"</div><div><span>"+esc(c.label||"")+" &middot; "+esc(label(FINISH,p.finish))+"</span><b>"+esc(p.name)+'</b><div class="pr">'+money(p.price)+"</div></div>";
@@ -587,6 +599,7 @@ document.addEventListener("click",function(e){
   var b=e.target.closest("[data-ed]"); if(!b) return;
   var a=b.dataset.ed, p=find(editing);
   if(a==="close") return closeEditor();
+  if(a==="save"){ closeEditor(); $("#saveBtn").click(); return; }
   if(a==="delete"&&p){
     if(!confirm("Delete “"+p.name+"”? It disappears from the site when you save. Past orders keep its name.")) return;
     S.products.splice(S.products.indexOf(p),1);

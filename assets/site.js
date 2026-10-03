@@ -669,7 +669,7 @@ function reviewCard(r, i) {
 function card(p, i) {
   var c = coll(p.coll) || {}, isNew = (p.tags || []).indexOf("new") > -1;
   var badges = p.soldOut ? '<span class="badge">Sold out</span>'
-    : (isNew ? '<span class="badge">New</span>' : "") + (PROMO ? '<span class="badge g"><span class="bl">' + PROMO.percent + '% off with code</span><span class="bs">&minus;' + PROMO.percent + "%</span></span>" : "");
+    : (isNew ? '<span class="badge">New</span>' : "") + (PROMO ? '<span class="badge g">&minus;' + PROMO.percent + "%</span>" : "");
   return '<article class="card rv" data-d="' + ((i || 0) % 4 + 1) + '"><div class="mwrap">' +
     '<a class="media" href="product.html?id=' + p.id + '" aria-label="' + esc(p.name) + '">' + (badges ? '<span class="badges">' + badges + "</span>" : "") +
     media(p, { scale: 1.06 }) + (p.images && p.images[1] ? '<img class="alt" src="' + esc(p.images[1]) + '" alt="" loading="lazy" decoding="async">' : "") + "</a>" +
