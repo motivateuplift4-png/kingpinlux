@@ -48,6 +48,23 @@
   .fright{justify-content:space-between}
   .fins{overflow-x:auto;scrollbar-width:none}
 }
+.fins button{white-space:nowrap;flex-shrink:0}
+@media (max-width:560px){
+  /* on phones the filters scroll with the page instead of covering it */
+  .filters{position:static;background:transparent;border-bottom:0}
+  .filters .wrap{padding-bottom:4px}
+  .chips{padding:10px 0 8px}
+  .fright{gap:10px}
+  .fins{flex:1;min-width:0;padding-bottom:2px}
+  .fins::-webkit-scrollbar{display:none}
+  .sort select{min-width:0;width:118px;padding:0 30px 0 12px;font-size:16px}
+  .page-hd.compact{padding:24px 0 6px;border-bottom:0}
+  .page-hd.compact h1{font-size:34px}
+  .page-hd p{font-size:14px}
+  .shop{padding-top:18px}
+  .assist{margin-top:56px}
+  .assist > div{padding:22px}
+}
 @media (max-width:900px){
   .assist{grid-template-columns:1fr}
   .assist > div{border-left:0;border-top:1px solid var(--line)}

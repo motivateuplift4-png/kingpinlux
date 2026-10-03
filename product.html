@@ -117,7 +117,22 @@
   .sticky .nm b{font-size:16px}
 }
 @media (max-width:560px){
-  .specs{grid-template-columns:1fr}
+  .crumbs-row{padding-top:14px}
+  .pdp{gap:22px}
+  .thumbs button{flex-basis:64px;height:76px}
+  .buy h1{font-size:clamp(28px,8vw,36px);margin:8px 0 12px}
+  .price b{font-size:28px}
+  .finish{margin-top:18px;padding:16px 0 18px}
+  .finish .sw{width:30px;height:30px}
+  .desc{font-size:14.5px;margin:18px 0}
+  .specs{grid-template-columns:1fr 1fr}
+  .specs div{padding:11px 12px}
+  .specs dd{font-size:13px}
+  .actions .btn{padding:0 14px}
+  .alist{gap:12px;margin:22px 0;padding:18px 0}
+  .alist li{font-size:13px}
+  .paybox{padding:18px}
+  .inbox li{padding:14px 6px;font-size:12px}
   .sticky .btn{padding:0 18px}
   .actions .qty.lg button{width:40px}
   .inbox ul{grid-template-columns:1fr 1fr}
@@ -295,7 +310,7 @@ if(canHover){
   });
   stage.addEventListener("mouseleave",function(){stage.classList.remove("zooming")});
 }else{
-  $(".hint span",stage).textContent=imgs.length>1?"Tap arrows for more":"";
+  $(".hint span",stage).textContent=imgs.length>1?"Swipe for more views":"";
   if(imgs.length<2) $(".hint",stage).remove();
   stage.style.cursor="default";
   // swipe between photos

@@ -189,11 +189,53 @@
   .shead .tabs{width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
   .ftile b{font-size:14px}
   .ftile small{display:none}
-  .feats{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr}
-  .step{padding-right:0}
-  .stat{padding:24px 10px}
-  .spot-specs{grid-template-columns:1fr}
+  .more .btn{width:100%}
+  /* spotlight: compact */
+  .spot-in{gap:26px}
+  .spot-info h2{font-size:clamp(28px,8vw,36px);margin:10px 0 12px}
+  .spot-price{margin-bottom:12px}
+  .spot-price b{font-size:28px}
+  .spot-info .lede{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .spot-specs{grid-template-columns:repeat(3,1fr);margin:18px 0 16px}
+  .spot-specs div{padding:10px 10px}
+  .spot-specs dt{font-size:9px;letter-spacing:.12em}
+  .spot-specs dd{font-size:12.5px;line-height:1.35}
+  .spot-sw{margin-bottom:18px}
+  .spot-cta{gap:8px}
+  .spot-cta .btn{flex:1 1 0;padding:0 12px;font-size:11px;letter-spacing:.12em}
+  .spot-cta .btn svg{display:none}
+  .spot-eta{font-size:12.5px;align-items:flex-start}
+  /* the standard: shorter picture, two-up features */
+  .std{gap:28px}
+  .std-art{aspect-ratio:16/11}
+  .std h2{font-size:clamp(30px,8.4vw,38px);margin:10px 0 14px}
+  .feats{grid-template-columns:1fr 1fr;gap:22px 16px;margin-top:24px;padding-top:24px}
+  .feat svg{width:24px;height:24px;margin-bottom:8px}
+  .feat b{font-size:12.5px}
+  .feat p{font-size:12.5px;line-height:1.55}
+  .stats{margin-top:40px}
+  .stat{padding:22px 8px}
+  .stat b{font-size:38px}
+  .stat span{font-size:10px;letter-spacing:.12em}
+  /* how to order: a compact timeline */
+  .steps{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--line-2);margin-left:14px;row-gap:0}
+  .step{display:grid;grid-template-columns:44px 1fr;column-gap:6px;padding:0 0 26px 0;margin-left:-15px}
+  .step::before{display:none}
+  .step .n{grid-row:1/3;width:30px;height:30px;border-radius:50%;background:var(--bg);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;
+    font:700 11px/1 var(--sans);font-stretch:100%;color:var(--gold-2);-webkit-text-stroke:0;margin:0}
+  .step h3{font-size:16px;margin:6px 0 6px}
+  .step p{font-size:13.5px;line-height:1.6;max-width:none}
+  .assure{margin-top:18px;padding:18px}
+  .assure .t{font-size:13.5px;align-items:flex-start}
+  .assure .t svg{width:24px;height:24px}
+  /* faq + about */
+  .faq{gap:26px}
+  .faq-side h2{font-size:clamp(30px,8.4vw,38px)}
+  .faq-side p{margin-bottom:0}
+  .seo{gap:16px}
+  .seo-body{max-height:200px}
+  .closing{padding:64px 0}
+  .closing h2{font-size:clamp(32px,9vw,44px)}
   .look{columns:2 140px;column-gap:10px}
   .look figure{margin-bottom:10px}
 }

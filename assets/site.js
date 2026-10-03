@@ -481,6 +481,7 @@ function fillMenu() {
   }).join(""));
 }
 
+function fh(t) { return '<h5><button class="fh" type="button" aria-expanded="false">' + t + "<i></i></button></h5>"; }
 function footer(mode) {
   var s = document.currentScript, yr = new Date().getFullYear(), html;
   if (mode === "min") {
@@ -488,10 +489,10 @@ function footer(mode) {
       '<a href="info.html#shipping">Shipping</a><a href="info.html#returns">Returns</a><a href="info.html#payment">Payment</a><a href="info.html#privacy">Privacy</a></nav></div></footer>';
   } else {
     var cs = contacts();
-    var last = cs.length ? '<div><h5>Contact</h5><ul>' + cs.map(function (c) {
+    var last = cs.length ? '<div class="fcol">' + fh("Contact") + "<ul>" + cs.map(function (c) {
         return '<li><a href="' + esc(c.href) + '"' + (c.ext ? ' target="_blank" rel="noopener"' : "") + ">" + esc(c.text || c.label) + "</a></li>";
       }).join("") + "</ul></div>"
-      : '<div><h5>Ordering</h5><ul><li><a href="index.html#ordering">How to order</a></li><li><a href="info.html#payment">Paying by bank transfer</a></li><li><a href="info.html#shipping">Delivery times</a></li></ul></div>';
+      : '<div class="fcol">' + fh("Ordering") + '<ul><li><a href="index.html#ordering">How to order</a></li><li><a href="info.html#payment">Paying by bank transfer</a></li><li><a href="info.html#shipping">Delivery times</a></li></ul></div>';
     html = '<footer class="ft dark"><div class="wrap">' +
       '<div class="join"><div><span class="eyebrow">The KINGPIN list</span><h3>New pieces &amp; private offers, <em>first.</em></h3></div>' +
       '<div><form class="join-f" id="joinForm" novalidate><input type="email" name="email" placeholder="Your email address" autocomplete="email" aria-label="Email address">' +
@@ -500,11 +501,11 @@ function footer(mode) {
       '<div class="cols">' +
       "<div>" + LOGO + '<p class="about">Iced-out timepieces, set by hand with VVS moissanite and delivered insured to your door, anywhere in the world.</p>' +
       '<div class="pays"><span>BANK TRANSFER</span><span>SWIFT</span><span>IBAN</span></div></div>' +
-      '<div><h5>Collections</h5><ul><li><a href="shop.html">All watches</a></li>' + COLLS.map(function (c) {
+      '<div class="fcol">' + fh("Collections") + '<ul><li><a href="shop.html">All watches</a></li>' + COLLS.map(function (c) {
         return '<li><a href="shop.html?c=' + c.key + '">' + esc(c.name) + " &middot; " + esc(c.label) + "</a></li>";
       }).join("") + "</ul></div>" +
-      '<div><h5>Shop by finish</h5><ul>' + FINISHES.map(function (f) { return '<li><a href="shop.html?f=' + f.key + '">' + f.label + "</a></li>"; }).join("") + "</ul></div>" +
-      '<div><h5>Client care</h5><ul><li><a href="info.html#shipping">Shipping &amp; delivery</a></li><li><a href="info.html#returns">Returns</a></li>' +
+      '<div class="fcol">' + fh("Shop by finish") + "<ul>" + FINISHES.map(function (f) { return '<li><a href="shop.html?f=' + f.key + '">' + f.label + "</a></li>"; }).join("") + "</ul></div>" +
+      '<div class="fcol">' + fh("Client care") + '<ul><li><a href="info.html#shipping">Shipping &amp; delivery</a></li><li><a href="info.html#returns">Returns</a></li>' +
       '<li><a href="info.html#warranty">Lifetime warranty</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="info.html#privacy">Privacy</a></li></ul></div>' +
       last + '</div><div class="bot"><span>&copy; ' + yr + " KINGPIN LUX. All rights reserved.</span><span>" + I.lock + "Secure checkout &middot; Payment by bank transfer</span></div></div></footer>";
   }
@@ -668,7 +669,7 @@ function reviewCard(r, i) {
 function card(p, i) {
   var c = coll(p.coll) || {}, isNew = (p.tags || []).indexOf("new") > -1;
   var badges = p.soldOut ? '<span class="badge">Sold out</span>'
-    : (isNew ? '<span class="badge">New</span>' : "") + (PROMO ? '<span class="badge g">' + PROMO.percent + "% off with code</span>" : "");
+    : (isNew ? '<span class="badge">New</span>' : "") + (PROMO ? '<span class="badge g"><span class="bl">' + PROMO.percent + '% off with code</span><span class="bs">&minus;' + PROMO.percent + "%</span></span>" : "");
   return '<article class="card rv" data-d="' + ((i || 0) % 4 + 1) + '"><div class="mwrap">' +
     '<a class="media" href="product.html?id=' + p.id + '" aria-label="' + esc(p.name) + '">' + (badges ? '<span class="badges">' + badges + "</span>" : "") +
     media(p, { scale: 1.06 }) + (p.images && p.images[1] ? '<img class="alt" src="' + esc(p.images[1]) + '" alt="" loading="lazy" decoding="async">' : "") + "</a>" +
@@ -684,8 +685,17 @@ function init() {
   fillContacts();
   Cart.onChange(function () { if (openEl && openEl.id === "cart") renderCart(); });
 
-  var hd = $("#hd"), ticking = false;
-  function onScroll() { ticking = false; if (hd) hd.classList.toggle("scrolled", window.scrollY > 10); }
+  var hd = $("#hd"), ticking = false, lastY = window.scrollY, hidden = false, small = matchMedia("(max-width:900px)");
+  function setHidden(h) { if (h !== hidden) { hidden = h; document.body.classList.toggle("hd-hide", h); } }
+  function onScroll() {
+    ticking = false;
+    var y = window.scrollY;
+    if (hd) hd.classList.toggle("scrolled", y > 10);
+    if (!small.matches || openEl || y < 140) { setHidden(false); lastY = y; return; }
+    if (Math.abs(y - lastY) < 8) return;
+    setHidden(y > lastY);
+    lastY = y;
+  }
   window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   onScroll();
 
@@ -736,6 +746,11 @@ function init() {
     if (t.hasAttribute("data-inc")) Cart.set(id, line.qty + 1);
     else if (t.hasAttribute("data-dec")) Cart.set(id, line.qty - 1);
     else Cart.remove(id);
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest(".fh"); if (!b) return;
+    var col = b.closest(".fcol"), open = !col.classList.contains("open");
+    col.classList.toggle("open", open); b.setAttribute("aria-expanded", open);
   });
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") close();
