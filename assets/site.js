@@ -494,7 +494,7 @@ function footer(mode) {
       }).join("") + "</ul></div>"
       : '<div class="fcol">' + fh("Ordering") + '<ul><li><a href="index.html#ordering">How to order</a></li><li><a href="info.html#payment">Paying by bank transfer</a></li><li><a href="info.html#shipping">Delivery times</a></li></ul></div>';
     html = '<footer class="ft dark"><div class="wrap">' +
-      '<div class="join"><div><span class="eyebrow">The KINGPIN list</span><h3>New pieces &amp; private offers, <em>first.</em></h3></div>' +
+      '<div class="join" id="kp-join"><div><span class="eyebrow">The KINGPIN list</span><h3>New pieces &amp; private offers, <em>first.</em></h3></div>' +
       '<div><form class="join-f" id="joinForm" novalidate><input type="email" name="email" placeholder="Your email address" autocomplete="email" aria-label="Email address">' +
       '<input class="hp" type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><button class="btn btn-gold" type="submit">Join</button></form>' +
       '<p class="join-fine" id="joinMsg" role="status">By joining you agree to receive emails from KINGPIN LUX. Unsubscribe any time.</p></div></div>' +

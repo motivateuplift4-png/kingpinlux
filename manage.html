@@ -154,6 +154,8 @@ body{font-size:14.5px}
 .savebar{position:fixed;left:50%;bottom:20px;z-index:95;transform:translate(-50%,160%);display:flex;align-items:center;gap:14px;padding:12px 12px 12px 20px;
   background:#15130f;color:#f5f0e8;border-radius:34px;box-shadow:0 20px 50px rgba(0,0,0,.35);transition:transform .45s var(--ease-out);max-width:calc(100% - 24px)}
 .savebar.on{transform:translate(-50%,0)}
+/* messages sit above the save bar so they never cover the Save button */
+body:has(.savebar.on) .toast{bottom:100px}
 .savebar .msg{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .savebar .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
 .savebar .btn{height:42px;padding:0 20px;border-radius:21px;font-size:11.5px}
@@ -248,6 +250,7 @@ window.KP_DEFAULT_CONFIG = JSON.parse(JSON.stringify(window.KP_CONFIG));
       <div class="tools-row">
         <input type="search" id="pSearch" placeholder="Search by name or number" aria-label="Search products">
         <div class="squick" style="margin:0" id="pFilters"></div>
+        <button class="btn btn-line btn-sm" type="button" id="hideAll">Hide all from site</button>
       </div>
       <div class="plist" id="plist"></div>
     </section>
@@ -479,6 +482,15 @@ $("#pFilters").innerHTML=[["all","All"],["live","On site"],["hidden","Hidden"],[
 $("#pFilters").addEventListener("click",function(e){ var b=e.target.closest("[data-f]"); if(!b) return; filter=b.dataset.f;
   $$("#pFilters .chip").forEach(function(x){ x.classList.toggle("on",x===b); }); renderList(); });
 $("#pSearch").addEventListener("input",function(){ query=this.value.trim().toLowerCase(); renderList(); });
+/* take every watch off the site in one go; nothing is deleted */
+$("#hideAll").addEventListener("click",function(){
+  var live=S.products.filter(function(p){ return p.status!=="hidden"; });
+  if(!live.length){ toast("Every watch is already hidden."); return; }
+  if(!confirm("Hide all "+live.length+" watches from the website?\n\nNothing is deleted. They stay here with their photos, and you can switch each one back on in its editor.")) return;
+  live.forEach(function(p){ p.status="hidden"; });
+  renderList(); changed();
+  toast(live.length+" watches hidden. Press Save to take them off the site.");
+});
 
 function matches(p){
   if(filter==="live"&&p.status==="hidden") return false;

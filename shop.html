@@ -158,6 +158,7 @@ function render(animate){
   function paint(){
     grid.innerHTML=list.map(KP.card).join("");
     $("#empty").hidden=list.length>0;
+    if(!list.length&&!KP.products.length){ $("#empty h3").textContent="New pieces arriving soon"; $("#empty p").textContent="Join the KINGPIN list at the bottom of the page and you will hear first."; $("#reset").hidden=true; }
     grid.classList.remove("fade");
     KP.reveal();
   }

@@ -54,6 +54,9 @@
 #grid{transition:opacity .3s var(--ease)}
 #grid.fade{opacity:0}
 .more{display:flex;justify-content:center;margin-top:clamp(40px,5vw,60px)}
+.soon{text-align:center;padding:clamp(20px,4vw,50px) 0 10px}
+.soon h3{font-size:clamp(26px,3.2vw,40px);margin-bottom:12px}
+.soon p{color:var(--muted);margin-bottom:26px}
 
 /* ---------- shop by finish ---------- */
 .finishes{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
@@ -487,6 +490,14 @@ $("#colls").innerHTML=C.map(function(c,i){
     '<div class="cap"><b>'+KP.esc(c.name)+"</b><span>"+KP.esc(c.label)+" &middot; "+l.length+I.arrow+"</span></div></a>";
 }).join("");
 $("#collLink").innerHTML="Shop all collections "+I.arrow;
+
+/* every watch hidden in the Store manager: say "coming soon" instead of showing empty shelves */
+if(!P.length){
+  $("#watches .tabs").hidden=true; $("#watches .more").hidden=true;
+  $("#grid").insertAdjacentHTML("afterend",'<div class="soon"><h3>New pieces arriving soon</h3><p>Join the KINGPIN list below and you will hear first.</p>'+
+    '<a class="btn btn-gold" href="#kp-join">Join the list</a></div>');
+  $("#finish").hidden=true; $("#collections").hidden=true;
+}
 
 /* ---------- the standard ---------- */
 var sp=KP.prod(20); $("#stdArt").innerHTML=sp?KP.media(sp,{dark:true,tilt:9,scale:1.15,sparkles:10,reach:420}):"";
